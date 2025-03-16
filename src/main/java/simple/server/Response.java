@@ -12,4 +12,12 @@ public class Response {
         this.responseSuccess = responseSuccess;
         this.responseError = responseError;
     }
+
+    public ResponseSuccess getResponseSuccess() {
+        return responseSuccess;
+    }
+
+    public ResponseError getResponseError() {
+        return responseError;
+    }
 }
