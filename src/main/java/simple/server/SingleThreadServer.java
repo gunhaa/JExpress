@@ -1,6 +1,7 @@
 package simple.server;
 
-import com.google.gson.Gson;
+import simple.requestHandler.RequestHandler;
+import simple.requestHandler.RequestHandlerFactory;
 import simple.tempEntity.ResponseError;
 import simple.tempEntity.ResponseSuccess;
 
@@ -33,15 +34,25 @@ public class SingleThreadServer implements Server {
                 while ((tempString = line.readLine()) != null && !tempString.isEmpty()) {
 
                     String[] temp = tempString.split(" ");
-                    if (temp[0].equals("GET")) {
-                        System.out.println("GET 로직 실행");
-                        Response response = getMap.get(temp[1]);
-                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-                        response.getResponseSuccess().responseParser(out);
-                        break;
-                    } else if (temp[0].equals("POST")) {
-                        System.out.println("POST 로직 실행");
+                    RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
+                    RequestHandler handler = requestHandlerFactory.getHandler(temp[0]);
+
+                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+                    Response userCustomResponse = getMap.get(temp[1]);
+                    if(userCustomResponse == null){
+                        System.out.println("null이 들어왔음");
                     }
+                    handler.handleResponse(out, userCustomResponse);
+
+//                    if (temp[0].equals(HTTP_METHOD_GET)) {
+//                        System.out.println("GET 로직 실행");
+//                        Response response = getMap.get(temp[1]);
+//                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+//                        response.getResponseSuccess().responseParser(out);
+//                        break;
+//                    } else if (temp[0].equals(HTTP_METHOD_POST)) {
+//                        System.out.println("POST 로직 실행");
+//                    }
 
                 }
 
