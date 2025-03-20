@@ -33,36 +33,18 @@ public class SingleThreadServer implements Server {
 
                 String tempString;
                 while ((tempString = line.readLine()) != null && !tempString.isEmpty()) {
-                    if (tempString.isEmpty()) {
-                        break;
-                    }
 
-                    String[] temp = tempString.split(" ");
+                    String[] httpFirstLine = tempString.split(" ");
+                    String httpMethod = httpFirstLine[0];
+                    String httpUrl = httpFirstLine[1];
                     RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
-                    if(temp[0].equals(Constant.HTTP_METHOD_GET)){
-                        RequestHandler handler = requestHandlerFactory.getHandler(temp[0]);
+
+                    if(httpMethod.equals(Constant.HTTP_METHOD_GET)){
+                        RequestHandler handler = requestHandlerFactory.getHandler(httpMethod);
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-                        Response userCustomResponse = getMap.get(temp[1]);
+                        Response userCustomResponse = getMap.get(httpUrl);
                         handler.handleResponse(out, userCustomResponse);
                     }
-
-
-//                    if(userCustomResponse == null){
-//                        boolean keepAlive = clientSocket.getKeepAlive();
-//                        System.out.println(keepAlive);
-//                        System.out.println("null이 들어왔음");
-//                    }
-
-//                    if (temp[0].equals(HTTP_METHOD_GET)) {
-//                        System.out.println("GET 로직 실행");
-//                        Response response = getMap.get(temp[1]);
-//                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-//                        response.getResponseSuccess().responseParser(out);
-//                        break;
-//                    } else if (temp[0].equals(HTTP_METHOD_POST)) {
-//                        System.out.println("POST 로직 실행");
-//                    }
-
                 }
 
                 clientSocket.close();
