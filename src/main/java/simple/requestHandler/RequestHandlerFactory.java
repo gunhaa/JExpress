@@ -22,11 +22,12 @@ public class RequestHandlerFactory {
 
     public RequestHandler getHandler(String httpMethod){
         // 에러객체 변환으로 바꿔야함
+        // protocol parser 필요함
+        System.out.println("getHandler에 들어온 httpMethod : " + httpMethod);
         return requestHandlers.getOrDefault(httpMethod, new RequestErrorHandler());
     }
 
     public static RequestHandlerFactory getInstance(){
         return instance;
     }
-
 }

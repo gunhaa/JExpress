@@ -1,5 +1,6 @@
 package simple.server;
 
+import simple.constant.Constant;
 import simple.requestHandler.RequestHandler;
 import simple.requestHandler.RequestHandlerFactory;
 import simple.tempEntity.ResponseError;
@@ -32,17 +33,25 @@ public class SingleThreadServer implements Server {
 
                 String tempString;
                 while ((tempString = line.readLine()) != null && !tempString.isEmpty()) {
+                    if (tempString.isEmpty()) {
+                        break;
+                    }
 
                     String[] temp = tempString.split(" ");
                     RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
-                    RequestHandler handler = requestHandlerFactory.getHandler(temp[0]);
-
-                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-                    Response userCustomResponse = getMap.get(temp[1]);
-                    if(userCustomResponse == null){
-                        System.out.println("null이 들어왔음");
+                    if(temp[0].equals(Constant.HTTP_METHOD_GET)){
+                        RequestHandler handler = requestHandlerFactory.getHandler(temp[0]);
+                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+                        Response userCustomResponse = getMap.get(temp[1]);
+                        handler.handleResponse(out, userCustomResponse);
                     }
-                    handler.handleResponse(out, userCustomResponse);
+
+
+//                    if(userCustomResponse == null){
+//                        boolean keepAlive = clientSocket.getKeepAlive();
+//                        System.out.println(keepAlive);
+//                        System.out.println("null이 들어왔음");
+//                    }
 
 //                    if (temp[0].equals(HTTP_METHOD_GET)) {
 //                        System.out.println("GET 로직 실행");
