@@ -4,7 +4,7 @@ import simple.logger.JavaSingleThreadRuntimeLogger;
 import simple.logger.Logger;
 import simple.requestHandler.RequestHandler;
 import simple.requestHandler.RequestHandlerFactory;
-import simple.requestHandler.SimpleHttpRequest;
+import simple.requestHandler.SimpleHttpRequestDTO;
 import simple.tempEntity.ResponseError;
 import simple.tempEntity.ResponseSuccess;
 
@@ -35,14 +35,15 @@ public class SingleThreadServer implements Server {
 
 
                 String line;
-                SimpleHttpRequest simpleHttpRequest = new SimpleHttpRequest();
+                SimpleHttpRequestDTO simpleHttpRequest = new SimpleHttpRequestDTO();
                 Logger log = new JavaSingleThreadRuntimeLogger();
 
                 while ((line = request.readLine()) != null && !line.isEmpty()) {
 
                     log.add(line);
 
-                    if(simpleHttpRequest.isFirstLine()){
+                    if(simpleHttpRequest.isRequestLine()){
+                        simpleHttpRequest.setRequestLine(line);
                         String[] httpFirstLine = line.split(" ");
                         String httpMethod = httpFirstLine[0];
                         String httpUrl = httpFirstLine[1];
@@ -51,7 +52,7 @@ public class SingleThreadServer implements Server {
                         if(httpMethod.equals(HTTP_METHOD_GET)){
                             RequestHandler handler = requestHandlerFactory.getHandler(httpMethod);
                             // HttpRequest 객체를 만들어내야함
-                            simpleHttpRequest.addHeader(line);
+//                            simpleHttpRequest.setRe
 //                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 //                        Response userCustomResponse = getMap.get(httpUrl);
 //                        handler.handleResponse(out, userCustomResponse);
@@ -66,7 +67,13 @@ public class SingleThreadServer implements Server {
 //                                body.append(line).append("\n");
                             }
                         }
+                        simpleHttpRequest.setIsFirstLine(false);
                     }
+                    // logic
+                    if(simpleHttpRequest.isHeader()){
+                        simpleHttpRequest.addHeader(line);
+                    }
+
                 }
                 log.print();
                 clientSocket.close();
