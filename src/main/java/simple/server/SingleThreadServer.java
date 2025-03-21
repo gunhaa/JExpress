@@ -1,5 +1,7 @@
 package simple.server;
 
+import simple.logger.JavaSingleThreadRuntimeLogger;
+import simple.logger.Logger;
 import simple.requestHandler.RequestHandler;
 import simple.requestHandler.RequestHandlerFactory;
 import simple.requestHandler.SimpleHttpRequest;
@@ -33,9 +35,12 @@ public class SingleThreadServer implements Server {
 
 
                 String line;
-                StringBuilder body = new StringBuilder();
                 SimpleHttpRequest simpleHttpRequest = new SimpleHttpRequest();
+                Logger log = new JavaSingleThreadRuntimeLogger();
+
                 while ((line = request.readLine()) != null && !line.isEmpty()) {
+
+                    log.add(line);
 
                     if(simpleHttpRequest.isFirstLine()){
                         String[] httpFirstLine = line.split(" ");
@@ -58,17 +63,12 @@ public class SingleThreadServer implements Server {
                             }
 
                             if(simpleHttpRequest.isRequestBody()){
-                                body.append(line).append("\n");
+//                                body.append(line).append("\n");
                             }
                         }
                     }
-
-
-
-
                 }
-
-                System.out.println(body);
+                log.print();
                 clientSocket.close();
             }
 
