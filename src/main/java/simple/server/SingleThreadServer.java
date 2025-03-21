@@ -3,6 +3,7 @@ package simple.server;
 import simple.logger.SingleThreadRuntimeLogger;
 import simple.logger.Logger;
 import simple.httpRequest.HttpRequestDTO;
+import simple.parser.RequestParser;
 import simple.tempEntity.ResponseError;
 import simple.tempEntity.ResponseSuccess;
 
@@ -35,51 +36,11 @@ public class SingleThreadServer implements Server {
                 String line;
                 int ch;
                 HttpRequestDTO httpRequestDTO = new HttpRequestDTO();
-                Logger log = new SingleThreadRuntimeLogger();
+                Logger logger = new SingleThreadRuntimeLogger();
 
-                while ((ch = request.read()) != -1) {
+                RequestParser parser = new RequestParser(httpRequestDTO, logger);
 
-                    log.add((char) ch);
-                    if((char) ch != '\r' && (char) ch != '\n'){
-                        lineBuilder.append((char)ch);
-                        continue;
-                    } else if((char)ch == '\r') {
-                        continue;
-                    } else {
-                        line = lineBuilder.toString();
-
-                        if(lineBuilder.isEmpty()){
-                            httpRequestDTO.setParsingHeaders(false);
-                            httpRequestDTO.setParsingBody(true);
-                            lineBuilder.delete(0, lineBuilder.length());
-                            continue;
-                        }
-
-                        lineBuilder.delete(0, lineBuilder.length());
-                    }
-
-                    if(httpRequestDTO.isRequestLineParsed()){
-                        httpRequestDTO.parsingRequestLine(line);
-                        httpRequestDTO.setRequestLineParsed(false);
-                        httpRequestDTO.setParsingHeaders(true);
-                        continue;
-                    }
-
-                    if(httpRequestDTO.isParsingHeaders()){
-                        httpRequestDTO.addHeader(line);
-                    }
-
-                    if(httpRequestDTO.isParsingBody()){
-                        httpRequestDTO.addRequestBody(line);
-                    }
-
-                }
-
-                if(httpRequestDTO.isParsingBody()){
-                    httpRequestDTO.addRequestBody(lineBuilder.toString());
-                }
-
-                System.out.println(httpRequestDTO.getBody());
+                parser.parsing(request);
 
                 // 만들어진 httpRequest를 이용해 response 반환
                 //                        if(httpMethod.equals(HTTP_METHOD_GET)){
@@ -94,7 +55,12 @@ public class SingleThreadServer implements Server {
 //                        if(httpMethod.equals(HTTP_METHOD_POST)){
 //
 //                        }
-                log.print();
+
+                System.out.println(httpRequestDTO.getMethod());
+                System.out.println(httpRequestDTO.getUrl());
+                System.out.println(httpRequestDTO.getProtocol());
+                System.out.println(httpRequestDTO.getBody().toString().trim());
+//                logger.print();
                 clientSocket.close();
             }
 
