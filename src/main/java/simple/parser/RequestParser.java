@@ -51,7 +51,9 @@ public class RequestParser {
             httpRequestDTO.addRequestBody(lineBuilder.toString());
         }
 
-        httpRequestDTO.parsingJsonToMap(httpRequestDTO.getBody());
+        if(!httpRequestDTO.getBody().isEmpty()){
+            httpRequestDTO.parsingJsonToMap(httpRequestDTO.getBody());
+        }
     }
 
     private void processRequestLine(String line) {

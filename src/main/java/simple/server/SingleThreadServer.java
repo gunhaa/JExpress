@@ -50,8 +50,9 @@ public class SingleThreadServer implements Server {
 //
 //                        }
 
-                System.out.println(httpRequestDTO.getBody());
-                logger.print();
+                System.out.println("바디는 이것임 : "+ httpRequestDTO.getBody().toString());
+                System.out.println("qs는 이거임 : " + httpRequestDTO.getQueryString().get("asd"));
+//                logger.print();
                 clientSocket.close();
             }
 
