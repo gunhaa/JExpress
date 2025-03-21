@@ -31,63 +31,59 @@ public class SingleThreadServer implements Server {
 
                 BufferedReader request = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-
+                StringBuilder lineBuilder = new StringBuilder();
                 String line;
+                int ch;
                 HttpRequestDTO httpRequestDTO = new HttpRequestDTO();
                 Logger log = new SingleThreadRuntimeLogger();
 
-                /*
-                GET /hello HTTP/1.1
-                Host: localhost:8080
-                User-Agent: Java-HttpClient
+                while ((ch = request.read()) != -1) {
 
-                POST /data HTTP/1.1
-                Host: localhost:8080
-                User-Agent: Java-HttpClient
-                Content-Type: application/json
-                Content-Length: 28
+                    log.add((char) ch);
 
-                { "message": "Hello, Server!" }
-                */
+                    if((char) ch != '\r' && (char) ch != '\n'){
+                        lineBuilder.append((char)ch);
+                        continue;
+                    } else if((char)ch == '\r') {
+                        continue;
+                    } else {
+                        line = lineBuilder.toString();
 
-                while ((line = request.readLine()) != null && !line.isEmpty()) {
+                        if(lineBuilder.isEmpty()){
+                            httpRequestDTO.setParsingHeaders(false);
+                            httpRequestDTO.setParsingBody(true);
+                        }
 
-                    log.add(line);
+                        lineBuilder.delete(0, lineBuilder.length());
+                    }
 
-                    // logic
                     if(httpRequestDTO.isParsingHeaders()){
                         httpRequestDTO.addHeader(line);
                     }
 
                     if(httpRequestDTO.isRequestLineParsed()){
-                        httpRequestDTO.setRequestLine(line);
-                        String[] requestLine = line.split(" ");
-                        String httpMethod = requestLine[0];
+//                        httpRequestDTO.setRequestLine(line);
+//                        String[] requestLine = line.split(" ");
+//                        String httpMethod = requestLine[0];
 //                        String httpUrl = requestLine[1];
 //                        RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
 
-                        if(httpMethod.equals(HTTP_METHOD_GET)){
+//                        if(httpMethod.equals(HTTP_METHOD_GET)){
 //                            RequestHandler handler = requestHandlerFactory.getHandler(httpMethod);
                             // HttpRequest 객체를 만들어내야함
 //                            httpRequestDTO.setRe
 //                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 //                        Response userCustomResponse = getMap.get(httpUrl);
 //                        handler.handleResponse(out, userCustomResponse);
-                        }
+//                        }
 
-                        if(httpMethod.equals(HTTP_METHOD_POST)){
-
-                        }
+//                        if(httpMethod.equals(HTTP_METHOD_POST)){
+//
+//                        }
                         httpRequestDTO.setRequestLineParsed(false);
                         httpRequestDTO.setParsingHeaders(true);
                     }
 
-
-                    if(line.equals("")){
-                        httpRequestDTO.setParsingHeaders(false);
-                        httpRequestDTO.setParsingBody(true);
-                        System.out.println("\r\n 연락 호출");
-                    }
 
                     if(httpRequestDTO.isParsingBody()){
                         httpRequestDTO.addRequestBody(line);
