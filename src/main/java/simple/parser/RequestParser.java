@@ -2,6 +2,7 @@ package simple.parser;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import simple.httpRequest.SimpleHttpRequest;
 import simple.httpRequest.SimpleHttpRequestDTO;
 import simple.logger.Logger;
 
@@ -21,7 +22,7 @@ public class RequestParser {
         this.lineBuilder = new StringBuilder();
     }
 
-    public void parsing(BufferedReader request) throws IOException {
+    public SimpleHttpRequest parsing(BufferedReader request) throws IOException {
         int ch;
         String line;
 
@@ -54,6 +55,15 @@ public class RequestParser {
         if(!httpRequestDTO.getBody().isEmpty()){
             httpRequestDTO.parsingJsonToMap(httpRequestDTO.getBody());
         }
+
+        return SimpleHttpRequest.builder()
+                .method(httpRequestDTO.getMethod())
+                .url(httpRequestDTO.getUrl())
+                .protocol(httpRequestDTO.getProtocol())
+                .queryString(httpRequestDTO.getQueryString())
+                .header(httpRequestDTO.getHeader())
+                .bodyMap(httpRequestDTO.getBodyMap())
+                .build();
     }
 
     private void processRequestLine(String line) {

@@ -19,7 +19,7 @@ public class SimpleHttpRequestDTO {
     private final HashMap<String, String> queryString = new HashMap<>();
     private final HashMap<String, String> header = new HashMap<>();
     private StringBuilder body = new StringBuilder();
-    private Map<String, Object> bodyMap = new HashMap<>();
+    private HashMap<String, Object> bodyMap = new HashMap<>();
     private boolean requestLineParsed;
     private boolean parsingHeaders;
     private boolean parsingBody;

@@ -1,5 +1,6 @@
 package simple.server;
 
+import simple.httpRequest.SimpleHttpRequest;
 import simple.logger.SingleThreadRuntimeLogger;
 import simple.logger.Logger;
 import simple.httpRequest.SimpleHttpRequestDTO;
@@ -33,8 +34,8 @@ public class SingleThreadServer implements Server {
                 Logger logger = new SingleThreadRuntimeLogger();
                 RequestParser parser = new RequestParser(httpRequestDTO, logger);
 
-                parser.parsing(request);
-//                SimpleHttpRequest.builder().
+                SimpleHttpRequest simpleHttpRequest = parser.parsing(request);
+
 
                 // 만들어진 httpRequest를 이용해 response 반환
                 //                        if(httpMethod.equals(HTTP_METHOD_GET)){
