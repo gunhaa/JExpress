@@ -1,6 +1,6 @@
 package simple.logger;
 
-public class JavaSingleThreadRuntimeLogger implements Logger{
+public class SingleThreadRuntimeLogger implements Logger{
 
     private final StringBuilder log = new StringBuilder();
 

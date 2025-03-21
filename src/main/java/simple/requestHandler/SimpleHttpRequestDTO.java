@@ -14,9 +14,9 @@ public class SimpleHttpRequestDTO {
     private String requestLine;
     private final HashMap<String, String> header = new HashMap<>();
     private String jsonBody;
-    private boolean isRequestBody = false;
-    private boolean isFirstLine = true;
+    private boolean isRequestLine = true;
     private boolean isHeader = true;
+    private boolean isRequestBody = false;
 
     public SimpleHttpRequestDTO() {
     }
@@ -32,7 +32,7 @@ public class SimpleHttpRequestDTO {
     }
 
     public boolean isRequestLine() {
-        return isFirstLine;
+        return isRequestLine;
     }
 
     public boolean isHeader() {
