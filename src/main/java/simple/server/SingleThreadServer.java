@@ -57,20 +57,27 @@ public class SingleThreadServer implements Server {
                         lineBuilder.delete(0, lineBuilder.length());
                     }
 
+                    if(httpRequestDTO.isRequestLineParsed()){
+                        httpRequestDTO.parsingRequestLine(line);
+                        httpRequestDTO.setRequestLineParsed(false);
+                        httpRequestDTO.setParsingHeaders(true);
+                        continue;
+                    }
+
                     if(httpRequestDTO.isParsingHeaders()){
                         httpRequestDTO.addHeader(line);
                     }
 
-                    if(httpRequestDTO.isRequestLineParsed()){
-//                        httpRequestDTO.setRequestLine(line);
-//                        String[] requestLine = line.split(" ");
-//                        String httpMethod = requestLine[0];
-//                        String httpUrl = requestLine[1];
-//                        RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
+                    if(httpRequestDTO.isParsingBody()){
+                        httpRequestDTO.addRequestBody(line);
+                    }
 
-//                        if(httpMethod.equals(HTTP_METHOD_GET)){
+                }
+
+                // 만들어진 httpRequest를 이용해 response 반환
+                //                        if(httpMethod.equals(HTTP_METHOD_GET)){
 //                            RequestHandler handler = requestHandlerFactory.getHandler(httpMethod);
-                            // HttpRequest 객체를 만들어내야함
+                // HttpRequest 객체를 만들어내야함
 //                            httpRequestDTO.setRe
 //                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 //                        Response userCustomResponse = getMap.get(httpUrl);
@@ -80,16 +87,6 @@ public class SingleThreadServer implements Server {
 //                        if(httpMethod.equals(HTTP_METHOD_POST)){
 //
 //                        }
-                        httpRequestDTO.setRequestLineParsed(false);
-                        httpRequestDTO.setParsingHeaders(true);
-                    }
-
-
-                    if(httpRequestDTO.isParsingBody()){
-                        httpRequestDTO.addRequestBody(line);
-                    }
-
-                }
                 log.print();
                 clientSocket.close();
             }
