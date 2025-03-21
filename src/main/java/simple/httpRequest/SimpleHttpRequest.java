@@ -2,13 +2,17 @@ package simple.httpRequest;
 
 import lombok.Builder;
 import lombok.Getter;
+import simple.httpMethod.HttpMethod;
 
 import java.util.HashMap;
 
 @Builder
 @Getter
 public class SimpleHttpRequest {
-    private final String requestLine;
+    private HttpMethod method;
+    private String url;
+    private String protocol;
+    private final HashMap<String, String> queryString = new HashMap<>();
     private final HashMap<String, String> header = new HashMap<>();
-    private final String jsonBody;
+    private StringBuilder body;
 }

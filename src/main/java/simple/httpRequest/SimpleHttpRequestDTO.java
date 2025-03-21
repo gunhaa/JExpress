@@ -1,26 +1,30 @@
 package simple.httpRequest;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
 import simple.httpMethod.HttpMethod;
 
-import java.util.Arrays;
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
-public class HttpRequestDTO {
+public class SimpleHttpRequestDTO {
     private HttpMethod method;
     private String url;
     private String protocol;
     private final HashMap<String, String> queryString = new HashMap<>();
     private final HashMap<String, String> header = new HashMap<>();
     private StringBuilder body = new StringBuilder();
+    private Map<String, Object> bodyMap = new HashMap<>();
     private boolean requestLineParsed;
     private boolean parsingHeaders;
     private boolean parsingBody;
 
-    public HttpRequestDTO() {
+    public SimpleHttpRequestDTO() {
         this.requestLineParsed = true;
         this.parsingHeaders = false;
         this.parsingBody = false;
@@ -28,7 +32,6 @@ public class HttpRequestDTO {
 
     public void addHeader(String line) {
         String[] splitLine = line.split(": ");
-        System.out.println("test add header : " + Arrays.toString(splitLine));
         this.header.put(splitLine[0], splitLine[1]);
     }
 
@@ -41,7 +44,7 @@ public class HttpRequestDTO {
             System.exit(1);
         }
 
-        String[] url = request[1].split(" ");
+        String[] url = request[1].split("\\?");
         if(url.length == 1){
             this.url = url[0];
         } else {
@@ -59,4 +62,9 @@ public class HttpRequestDTO {
         this.body.append(line);
     }
 
+    public void parsingJsonToMap(StringBuilder json){
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, Object>>() {}.getType();
+        this.bodyMap = gson.fromJson(json.toString(), type);
+    }
 }

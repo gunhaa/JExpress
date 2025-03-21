@@ -1,18 +1,21 @@
 package simple.parser;
 
 import com.google.gson.Gson;
-import simple.httpRequest.HttpRequestDTO;
+import com.google.gson.reflect.TypeToken;
+import simple.httpRequest.SimpleHttpRequestDTO;
 import simple.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.Map;
 
 public class RequestParser {
-    private HttpRequestDTO httpRequestDTO;
+    private SimpleHttpRequestDTO httpRequestDTO;
     private Logger logger;
     private StringBuilder lineBuilder;
 
-    public RequestParser(HttpRequestDTO httpRequestDTO, Logger logger) {
+    public RequestParser(SimpleHttpRequestDTO httpRequestDTO, Logger logger) {
         this.httpRequestDTO = httpRequestDTO;
         this.logger = logger;
         this.lineBuilder = new StringBuilder();
@@ -47,6 +50,8 @@ public class RequestParser {
         if (httpRequestDTO.isParsingBody() && !lineBuilder.isEmpty()) {
             httpRequestDTO.addRequestBody(lineBuilder.toString());
         }
+
+        httpRequestDTO.parsingJsonToMap(httpRequestDTO.getBody());
     }
 
     private void processRequestLine(String line) {

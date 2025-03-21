@@ -6,9 +6,9 @@
 ## Todo
 - readme
 - Dockerfile 
-- dependency
+- ~~dependency~~
 - orm
 - singleThread
 - multiThread
-- httpRequest
+- ~~httpRequest~~
 - httpResponse

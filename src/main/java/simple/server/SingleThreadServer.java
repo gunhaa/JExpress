@@ -2,7 +2,7 @@ package simple.server;
 
 import simple.logger.SingleThreadRuntimeLogger;
 import simple.logger.Logger;
-import simple.httpRequest.HttpRequestDTO;
+import simple.httpRequest.SimpleHttpRequestDTO;
 import simple.parser.RequestParser;
 import simple.tempEntity.ResponseError;
 import simple.tempEntity.ResponseSuccess;
@@ -13,8 +13,6 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-
-import static simple.constant.Constant.*;
 
 public class SingleThreadServer implements Server {
 
@@ -31,11 +29,12 @@ public class SingleThreadServer implements Server {
                 System.out.println("client ip : " + clientSocket.getLocalPort());
 
                 BufferedReader request = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                HttpRequestDTO httpRequestDTO = new HttpRequestDTO();
+                SimpleHttpRequestDTO httpRequestDTO = new SimpleHttpRequestDTO();
                 Logger logger = new SingleThreadRuntimeLogger();
                 RequestParser parser = new RequestParser(httpRequestDTO, logger);
 
                 parser.parsing(request);
+//                SimpleHttpRequest.builder().
 
                 // 만들어진 httpRequest를 이용해 response 반환
                 //                        if(httpMethod.equals(HTTP_METHOD_GET)){
@@ -51,8 +50,8 @@ public class SingleThreadServer implements Server {
 //
 //                        }
 
-
-//                logger.print();
+                System.out.println(httpRequestDTO.getBody());
+                logger.print();
                 clientSocket.close();
             }
 
