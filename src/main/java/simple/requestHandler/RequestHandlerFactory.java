@@ -1,7 +1,5 @@
 package simple.requestHandler;
 
-import simple.server.Response;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +9,7 @@ public class RequestHandlerFactory {
 
     private final Map<String, RequestHandler> requestHandlers = new HashMap<>();
 
-    private static final RequestHandlerFactory instance = new RequestHandlerFactory();
+    private static final RequestHandlerFactory INSTANCE = new RequestHandlerFactory();
 
     private RequestHandlerFactory() {
         requestHandlers.put(HTTP_METHOD_GET, new RequestGetHandler());
@@ -28,6 +26,6 @@ public class RequestHandlerFactory {
     }
 
     public static RequestHandlerFactory getInstance(){
-        return instance;
+        return INSTANCE;
     }
 }

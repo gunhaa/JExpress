@@ -1,15 +1,14 @@
 package simple.server;
 
-import simple.constant.Constant;
 import simple.requestHandler.RequestHandler;
 import simple.requestHandler.RequestHandlerFactory;
+import simple.requestHandler.SimpleHttpRequest;
 import simple.tempEntity.ResponseError;
 import simple.tempEntity.ResponseSuccess;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -30,28 +29,46 @@ public class SingleThreadServer implements Server {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("client ip : " + clientSocket.getLocalPort());
 
-                BufferedReader line = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                BufferedReader request = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
 
-                String tempString;
-                StringBuilder sb = new StringBuilder();
-                while ((tempString = line.readLine()) != null && !tempString.isEmpty()) {
-                    sb.append(tempString).append("\n");
-                    String[] httpFirstLine = tempString.split(" ");
-                    String httpMethod = httpFirstLine[0];
-                    String httpUrl = httpFirstLine[1];
-                    RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
+                String line;
+                StringBuilder body = new StringBuilder();
+                SimpleHttpRequest simpleHttpRequest = new SimpleHttpRequest();
+                while ((line = request.readLine()) != null && !line.isEmpty()) {
 
-                    if(httpMethod.equals(HTTP_METHOD_GET) || httpMethod.equals(HTTP_METHOD_POST)){
-                        RequestHandler handler = requestHandlerFactory.getHandler(httpMethod);
-                        // HttpRequest 객체를 만들어내야함
-                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-                        Response userCustomResponse = getMap.get(httpUrl);
-                        handler.handleResponse(out, userCustomResponse);
+                    if(simpleHttpRequest.isFirstLine()){
+                        String[] httpFirstLine = line.split(" ");
+                        String httpMethod = httpFirstLine[0];
+                        String httpUrl = httpFirstLine[1];
+                        RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
+
+                        if(httpMethod.equals(HTTP_METHOD_GET)){
+                            RequestHandler handler = requestHandlerFactory.getHandler(httpMethod);
+                            // HttpRequest 객체를 만들어내야함
+                            simpleHttpRequest.addHeader(line);
+//                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+//                        Response userCustomResponse = getMap.get(httpUrl);
+//                        handler.handleResponse(out, userCustomResponse);
+                        }
+
+                        if(httpMethod.equals(HTTP_METHOD_POST)){
+                            if(line.equals("\n")){
+                                simpleHttpRequest.setIsRequestBody(true);
+                            }
+
+                            if(simpleHttpRequest.isRequestBody()){
+                                body.append(line).append("\n");
+                            }
+                        }
                     }
+
+
+
+
                 }
 
-                System.out.println(sb);
+                System.out.println(body);
                 clientSocket.close();
             }
 
