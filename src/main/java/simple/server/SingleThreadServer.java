@@ -2,9 +2,7 @@ package simple.server;
 
 import simple.logger.SingleThreadRuntimeLogger;
 import simple.logger.Logger;
-import simple.requestHandler.RequestHandler;
-import simple.requestHandler.RequestHandlerFactory;
-import simple.requestHandler.SimpleHttpRequestDTO;
+import simple.httpRequest.HttpRequestDTO;
 import simple.tempEntity.ResponseError;
 import simple.tempEntity.ResponseSuccess;
 
@@ -35,43 +33,64 @@ public class SingleThreadServer implements Server {
 
 
                 String line;
-                SimpleHttpRequestDTO simpleHttpRequestDTO = new SimpleHttpRequestDTO();
+                HttpRequestDTO httpRequestDTO = new HttpRequestDTO();
                 Logger log = new SingleThreadRuntimeLogger();
+
+                /*
+                GET /hello HTTP/1.1
+                Host: localhost:8080
+                User-Agent: Java-HttpClient
+
+                POST /data HTTP/1.1
+                Host: localhost:8080
+                User-Agent: Java-HttpClient
+                Content-Type: application/json
+                Content-Length: 28
+
+                { "message": "Hello, Server!" }
+                */
 
                 while ((line = request.readLine()) != null && !line.isEmpty()) {
 
                     log.add(line);
 
-                    if(simpleHttpRequestDTO.isRequestLine()){
-                        simpleHttpRequestDTO.setRequestLine(line);
-                        String[] httpFirstLine = line.split(" ");
-                        String httpMethod = httpFirstLine[0];
-                        String httpUrl = httpFirstLine[1];
-                        RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
+                    // logic
+                    if(httpRequestDTO.isParsingHeaders()){
+                        httpRequestDTO.addHeader(line);
+                    }
+
+                    if(httpRequestDTO.isRequestLineParsed()){
+                        httpRequestDTO.setRequestLine(line);
+                        String[] requestLine = line.split(" ");
+                        String httpMethod = requestLine[0];
+//                        String httpUrl = requestLine[1];
+//                        RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
 
                         if(httpMethod.equals(HTTP_METHOD_GET)){
-                            RequestHandler handler = requestHandlerFactory.getHandler(httpMethod);
+//                            RequestHandler handler = requestHandlerFactory.getHandler(httpMethod);
                             // HttpRequest 객체를 만들어내야함
-//                            simpleHttpRequestDTO.setRe
+//                            httpRequestDTO.setRe
 //                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 //                        Response userCustomResponse = getMap.get(httpUrl);
 //                        handler.handleResponse(out, userCustomResponse);
                         }
 
                         if(httpMethod.equals(HTTP_METHOD_POST)){
-                            if(line.equals("\n")){
-                                simpleHttpRequestDTO.setRequestBody(true);
-                            }
 
-                            if(simpleHttpRequestDTO.isRequestBody()){
-//                                body.append(line).append("\n");
-                            }
                         }
-                        simpleHttpRequestDTO.setRequestLine(false);
+                        httpRequestDTO.setRequestLineParsed(false);
+                        httpRequestDTO.setParsingHeaders(true);
                     }
-                    // logic
-                    if(simpleHttpRequestDTO.isHeader()){
-                        simpleHttpRequestDTO.addHeader(line);
+
+
+                    if(line.equals("")){
+                        httpRequestDTO.setParsingHeaders(false);
+                        httpRequestDTO.setParsingBody(true);
+                        System.out.println("\r\n 연락 호출");
+                    }
+
+                    if(httpRequestDTO.isParsingBody()){
+                        httpRequestDTO.addRequestBody(line);
                     }
 
                 }
