@@ -31,13 +31,8 @@ public class SingleThreadServer implements Server {
                 System.out.println("client ip : " + clientSocket.getLocalPort());
 
                 BufferedReader request = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-                StringBuilder lineBuilder = new StringBuilder();
-                String line;
-                int ch;
                 HttpRequestDTO httpRequestDTO = new HttpRequestDTO();
                 Logger logger = new SingleThreadRuntimeLogger();
-
                 RequestParser parser = new RequestParser(httpRequestDTO, logger);
 
                 parser.parsing(request);
@@ -56,10 +51,7 @@ public class SingleThreadServer implements Server {
 //
 //                        }
 
-                System.out.println(httpRequestDTO.getMethod());
-                System.out.println(httpRequestDTO.getUrl());
-                System.out.println(httpRequestDTO.getProtocol());
-                System.out.println(httpRequestDTO.getBody().toString().trim());
+
 //                logger.print();
                 clientSocket.close();
             }

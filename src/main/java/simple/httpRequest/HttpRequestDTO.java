@@ -13,6 +13,7 @@ public class HttpRequestDTO {
     private HttpMethod method;
     private String url;
     private String protocol;
+    private final HashMap<String, String> queryString = new HashMap<>();
     private final HashMap<String, String> header = new HashMap<>();
     private StringBuilder body = new StringBuilder();
     private boolean requestLineParsed;
@@ -39,7 +40,18 @@ public class HttpRequestDTO {
             System.out.println("Invalid Http Method : " + request[0]);
             System.exit(1);
         }
-        this.url = request[1];
+
+        String[] url = request[1].split(" ");
+        if(url.length == 1){
+            this.url = url[0];
+        } else {
+            this.url = url[0];
+            for(int i=1; i<url.length; i++){
+                String[] splitQueryString = url[i].split("=");
+                this.queryString.put(splitQueryString[0], splitQueryString[1]);
+            }
+        }
+
         this.protocol = request[2];
     }
 

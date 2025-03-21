@@ -1,5 +1,6 @@
 package simple.parser;
 
+import com.google.gson.Gson;
 import simple.httpRequest.HttpRequestDTO;
 import simple.logger.Logger;
 
