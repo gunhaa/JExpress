@@ -40,7 +40,6 @@ public class SingleThreadServer implements Server {
                 while ((ch = request.read()) != -1) {
 
                     log.add((char) ch);
-
                     if((char) ch != '\r' && (char) ch != '\n'){
                         lineBuilder.append((char)ch);
                         continue;
@@ -52,6 +51,8 @@ public class SingleThreadServer implements Server {
                         if(lineBuilder.isEmpty()){
                             httpRequestDTO.setParsingHeaders(false);
                             httpRequestDTO.setParsingBody(true);
+                            lineBuilder.delete(0, lineBuilder.length());
+                            continue;
                         }
 
                         lineBuilder.delete(0, lineBuilder.length());
@@ -73,6 +74,12 @@ public class SingleThreadServer implements Server {
                     }
 
                 }
+
+                if(httpRequestDTO.isParsingBody()){
+                    httpRequestDTO.addRequestBody(lineBuilder.toString());
+                }
+
+                System.out.println(httpRequestDTO.getBody());
 
                 // 만들어진 httpRequest를 이용해 response 반환
                 //                        if(httpMethod.equals(HTTP_METHOD_GET)){
