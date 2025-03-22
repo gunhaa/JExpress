@@ -1,4 +1,4 @@
-package simple.tempEntity;
+package simple.response;
 
 import simple.httpMethod.HttpStatus;
 

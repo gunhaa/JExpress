@@ -8,8 +8,8 @@ import simple.parser.RequestParser;
 import simple.requestHandler.RequestHandler;
 import simple.requestHandler.RequestHandlerFactory;
 import simple.response.Response;
-import simple.tempEntity.ResponseError;
-import simple.tempEntity.ResponseSuccess;
+import simple.response.ResponseError;
+import simple.response.ResponseSuccess;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class SingleThreadServer implements Server {
 
                 RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
                 RequestHandler handler = requestHandlerFactory.getHandler(simpleHttpRequest);
-
+                handler.sendResponse(clientSocket.getOutputStream() , simpleHttpRequest);
 //                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 //                        Response userCustomResponse = getMap.get(httpUrl);
 //                        handler.handleResponse(out, userCustomResponse);

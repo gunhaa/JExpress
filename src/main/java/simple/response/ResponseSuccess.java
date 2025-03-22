@@ -1,24 +1,23 @@
-package simple.tempEntity;
+package simple.response;
 
 import com.google.gson.Gson;
+import lombok.Getter;
 import simple.httpMethod.HttpStatus;
 
 import java.io.PrintWriter;
 
+@Getter
 public class ResponseSuccess {
 
-    private HttpStatus httpStatusCode;
-    private Object entity;
-    private Gson gson = new Gson();
+    private final HttpStatus httpStatusCode;
+    private final Object entity;
+    private final Gson gson = new Gson();
 
     public ResponseSuccess(HttpStatus httpStatusCode, Object entity) {
         this.httpStatusCode = httpStatusCode;
         this.entity = entity;
     }
 
-    public Object getEntity() {
-        return entity;
-    }
 
     public void responseParser(PrintWriter out){
         String entityJson = gson.toJson(entity);

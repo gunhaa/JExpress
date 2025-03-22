@@ -3,8 +3,8 @@ package simple;
 import simple.server.Server;
 import simple.server.SingleThreadServer;
 import simple.tempEntity.Member;
-import simple.tempEntity.ResponseError;
-import simple.tempEntity.ResponseSuccess;
+import simple.response.ResponseError;
+import simple.response.ResponseSuccess;
 
 import java.io.IOException;
 

@@ -1,8 +1,5 @@
 package simple.response;
 
-import simple.tempEntity.ResponseError;
-import simple.tempEntity.ResponseSuccess;
-
 public class Response {
 
     private ResponseSuccess responseSuccess;

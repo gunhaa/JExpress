@@ -1,8 +1,8 @@
 package simple.server;
 
 
-import simple.tempEntity.ResponseError;
-import simple.tempEntity.ResponseSuccess;
+import simple.response.ResponseError;
+import simple.response.ResponseSuccess;
 
 import java.io.IOException;
 
