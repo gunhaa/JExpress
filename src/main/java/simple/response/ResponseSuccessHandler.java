@@ -1,4 +1,4 @@
-package simple.server;
+package simple.response;
 
 @FunctionalInterface
 public interface ResponseSuccessHandler {

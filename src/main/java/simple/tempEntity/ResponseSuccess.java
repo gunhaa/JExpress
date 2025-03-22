@@ -1,17 +1,18 @@
 package simple.tempEntity;
 
 import com.google.gson.Gson;
+import simple.httpMethod.HttpStatus;
 
 import java.io.PrintWriter;
 
 public class ResponseSuccess {
 
-    private int statusCode;
+    private HttpStatus httpStatusCode;
     private Object entity;
     private Gson gson = new Gson();
 
-    public ResponseSuccess(int statusCode, Object entity) {
-        this.statusCode = statusCode;
+    public ResponseSuccess(HttpStatus httpStatusCode, Object entity) {
+        this.httpStatusCode = httpStatusCode;
         this.entity = entity;
     }
 

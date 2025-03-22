@@ -1,4 +1,4 @@
-package simple.server;
+package simple.response;
 
 import simple.tempEntity.ResponseError;
 import simple.tempEntity.ResponseSuccess;

@@ -5,6 +5,9 @@ import simple.logger.SingleThreadRuntimeLogger;
 import simple.logger.Logger;
 import simple.httpRequest.SimpleHttpRequestDTO;
 import simple.parser.RequestParser;
+import simple.requestHandler.RequestHandler;
+import simple.requestHandler.RequestHandlerFactory;
+import simple.response.Response;
 import simple.tempEntity.ResponseError;
 import simple.tempEntity.ResponseSuccess;
 
@@ -32,16 +35,13 @@ public class SingleThreadServer implements Server {
                 BufferedReader request = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 SimpleHttpRequestDTO httpRequestDTO = new SimpleHttpRequestDTO();
                 Logger logger = new SingleThreadRuntimeLogger();
-                RequestParser parser = new RequestParser(httpRequestDTO, logger);
+                RequestParser httpRequestParser = new RequestParser(httpRequestDTO, logger);
 
-                SimpleHttpRequest simpleHttpRequest = parser.parsing(request);
+                SimpleHttpRequest simpleHttpRequest = httpRequestParser.parsing(request);
 
+                RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
+                RequestHandler handler = requestHandlerFactory.getHandler(simpleHttpRequest);
 
-                // 만들어진 httpRequest를 이용해 response 반환
-                //                        if(httpMethod.equals(HTTP_METHOD_GET)){
-//                            RequestHandler handler = requestHandlerFactory.getHandler(httpMethod);
-                // HttpRequest 객체를 만들어내야함
-//                            httpRequestDTO.setRe
 //                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 //                        Response userCustomResponse = getMap.get(httpUrl);
 //                        handler.handleResponse(out, userCustomResponse);

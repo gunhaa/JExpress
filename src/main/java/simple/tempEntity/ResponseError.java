@@ -1,11 +1,13 @@
 package simple.tempEntity;
 
+import simple.httpMethod.HttpStatus;
+
 public class ResponseError {
-    private int statusCode;
+    private HttpStatus httpStatusCode;
     private String errorMessage;
 
-    public ResponseError(int statusCode, String errorMessage) {
-        this.statusCode = statusCode;
+    public ResponseError(HttpStatus httpStatusCode, String errorMessage) {
+        this.httpStatusCode = httpStatusCode;
         this.errorMessage = errorMessage;
     }
 }

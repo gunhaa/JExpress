@@ -1,6 +1,6 @@
 package simple.requestHandler;
 
-import simple.server.Response;
+import simple.response.Response;
 
 import java.io.PrintWriter;
 
