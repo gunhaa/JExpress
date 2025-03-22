@@ -2,10 +2,9 @@ package simple.httpRequest;
 
 import lombok.Builder;
 import lombok.Getter;
-import simple.httpMethod.HttpMethod;
+import simple.constant.HttpMethod;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Builder
 @Getter

@@ -8,13 +8,11 @@ import simple.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.Map;
 
 public class RequestParser {
-    private SimpleHttpRequestDTO httpRequestDTO;
-    private Logger logger;
-    private StringBuilder lineBuilder;
+    private final SimpleHttpRequestDTO httpRequestDTO;
+    private final Logger logger;
+    private final StringBuilder lineBuilder;
 
     public RequestParser(SimpleHttpRequestDTO httpRequestDTO, Logger logger) {
         this.httpRequestDTO = httpRequestDTO;

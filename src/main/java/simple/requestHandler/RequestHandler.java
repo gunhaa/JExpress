@@ -7,5 +7,5 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 public interface RequestHandler {
-    void sendResponse(OutputStream outputStream, SimpleHttpRequest simpleHttpRequest);
+    void sendResponse(OutputStream outputStream, Response response);
 }

@@ -1,4 +1,4 @@
-package simple.httpMethod;
+package simple.constant;
 
 public enum HttpMethod {
     GET,

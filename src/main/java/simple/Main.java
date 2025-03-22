@@ -8,8 +8,8 @@ import simple.response.ResponseSuccess;
 
 import java.io.IOException;
 
-import static simple.httpMethod.HttpStatus.BAD_REQUEST_400;
-import static simple.httpMethod.HttpStatus.OK_200;
+import static simple.constant.HttpStatus.BAD_REQUEST_400;
+import static simple.constant.HttpStatus.OK_200;
 
 public class Main {
     public static void main(String[] args) throws IOException{

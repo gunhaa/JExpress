@@ -1,6 +1,6 @@
 package simple.response;
 
-import simple.httpMethod.HttpStatus;
+import simple.constant.HttpStatus;
 
 public class ResponseError {
     private HttpStatus httpStatusCode;

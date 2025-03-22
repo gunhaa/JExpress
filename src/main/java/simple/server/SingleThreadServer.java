@@ -6,7 +6,7 @@ import simple.logger.Logger;
 import simple.httpRequest.SimpleHttpRequestDTO;
 import simple.parser.RequestParser;
 import simple.requestHandler.RequestHandler;
-import simple.requestHandler.RequestHandlerFactory;
+import simple.factory.RequestHandlerFactory;
 import simple.response.Response;
 import simple.response.ResponseError;
 import simple.response.ResponseSuccess;
@@ -41,18 +41,8 @@ public class SingleThreadServer implements Server {
 
                 RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
                 RequestHandler handler = requestHandlerFactory.getHandler(simpleHttpRequest);
-                handler.sendResponse(clientSocket.getOutputStream() , simpleHttpRequest);
-//                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-//                        Response userCustomResponse = getMap.get(httpUrl);
-//                        handler.handleResponse(out, userCustomResponse);
-//                        }
+                handler.sendResponse(clientSocket.getOutputStream() , getMap.get(simpleHttpRequest.getUrl()));
 
-//                        if(httpMethod.equals(HTTP_METHOD_POST)){
-//
-//                        }
-
-                System.out.println("바디는 이것임 : "+ httpRequestDTO.getBody().toString());
-                System.out.println("qs는 이거임 : " + httpRequestDTO.getQueryString().get("asd"));
 //                logger.print();
                 clientSocket.close();
             }

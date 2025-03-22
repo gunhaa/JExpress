@@ -12,7 +12,7 @@ public class RequestGetHandler implements RequestHandler{
     }
 
     @Override
-    public void sendResponse(OutputStream outputStream, SimpleHttpRequest simpleHttpRequest) {
-//        userCustomResponse.getResponseSuccess().responseParser(out);
+    public void sendResponse(OutputStream outputStream,  Response userCustomResponse) {
+        userCustomResponse.getResponseSuccess().basic(outputStream);
     }
 }

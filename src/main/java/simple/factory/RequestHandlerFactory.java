@@ -1,7 +1,8 @@
-package simple.requestHandler;
+package simple.factory;
 
-import simple.httpMethod.HttpMethod;
+import simple.constant.HttpMethod;
 import simple.httpRequest.SimpleHttpRequest;
+import simple.requestHandler.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +16,9 @@ public class RequestHandlerFactory {
 
     private RequestHandlerFactory() {
         requestHandlers.put(HttpMethod.GET, new RequestGetHandler());
-//        requestHandlers.put(HTTP_METHOD_POST, RequestPostHandler);
-//        requestHandlers.put(HTTP_METHOD_PUT, RequestPutHandler);
-//        requestHandlers.put(HTTP_METHOD_DELETE, RequestDeleteHandler);
+        requestHandlers.put(HttpMethod.POST, new RequestPostHandler());
+        requestHandlers.put(HttpMethod.PUT, new RequestPutHandler());
+        requestHandlers.put(HttpMethod.DELETE, new RequestDeleteHandler());
     }
 
     public RequestHandler getHandler(SimpleHttpRequest simpleHttpRequest){

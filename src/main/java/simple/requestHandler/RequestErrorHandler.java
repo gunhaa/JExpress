@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 public class RequestErrorHandler implements RequestHandler {
     
     @Override
-    public void sendResponse(OutputStream outputStream, SimpleHttpRequest simpleHttpRequest) {
+    public void sendResponse(OutputStream outputStream, Response response) {
         System.out.println("에러 발생했음");
     }
 }
