@@ -1,7 +1,5 @@
 package simple.parser;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.httpRequest.SimpleHttpRequestDTO;
 import simple.logger.Logger;
@@ -10,12 +8,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class RequestParser {
-    private final SimpleHttpRequestDTO httpRequestDTO;
+    private final SimpleHttpRequestDTO simpleHttpRequestDTO;
     private final Logger logger;
     private final StringBuilder lineBuilder;
 
-    public RequestParser(SimpleHttpRequestDTO httpRequestDTO, Logger logger) {
-        this.httpRequestDTO = httpRequestDTO;
+    public RequestParser(Logger logger) {
+        this.simpleHttpRequestDTO = new SimpleHttpRequestDTO();
         this.logger = logger;
         this.lineBuilder = new StringBuilder();
     }
@@ -25,7 +23,6 @@ public class RequestParser {
         String line;
 
         while (request.ready() && (ch = request.read()) != -1) {
-//            System.out.println("parsing : " + (char) ch);
             logger.add((char) ch);
             if ((char) ch != '\r' && (char) ch != '\n') {
                 lineBuilder.append((char) ch);
@@ -34,8 +31,8 @@ public class RequestParser {
             } else {
 
                 if(lineBuilder.isEmpty()){
-                    httpRequestDTO.setParsingHeaders(false);
-                    httpRequestDTO.setParsingBody(true);
+                    simpleHttpRequestDTO.setParsingHeaders(false);
+                    simpleHttpRequestDTO.setParsingBody(true);
                     lineBuilder.setLength(0);
                     continue;
                 }
@@ -45,38 +42,39 @@ public class RequestParser {
                 lineBuilder.setLength(0);
             }
         }
-        if (httpRequestDTO.isParsingBody() && !lineBuilder.isEmpty()) {
-            httpRequestDTO.addRequestBody(lineBuilder.toString());
+        if (simpleHttpRequestDTO.isParsingBody() && !lineBuilder.isEmpty()) {
+            simpleHttpRequestDTO.addRequestBody(lineBuilder.toString());
         }
 
-        if(!httpRequestDTO.getBody().isEmpty()){
-            httpRequestDTO.parsingJsonToMap(httpRequestDTO.getBody());
+        if(!simpleHttpRequestDTO.getBody().isEmpty()){
+            simpleHttpRequestDTO.parsingJsonToMap(simpleHttpRequestDTO.getBody());
         }
 
         return SimpleHttpRequest.builder()
-                .method(httpRequestDTO.getMethod())
-                .url(httpRequestDTO.getUrl())
-                .protocol(httpRequestDTO.getProtocol())
-                .queryString(httpRequestDTO.getQueryString())
-                .header(httpRequestDTO.getHeader())
-                .bodyMap(httpRequestDTO.getBodyMap())
+                .method(simpleHttpRequestDTO.getMethod())
+                .url(simpleHttpRequestDTO.getUrl())
+                .protocol(simpleHttpRequestDTO.getProtocol())
+                .queryString(simpleHttpRequestDTO.getQueryString())
+                .header(simpleHttpRequestDTO.getHeader())
+                .bodyMap(simpleHttpRequestDTO.getBodyMap())
                 .build();
     }
 
     private void processRequestLine(String line) {
-        if (httpRequestDTO.isRequestLineParsed()) {
-            httpRequestDTO.parsingRequestLine(line);
-            httpRequestDTO.setRequestLineParsed(false);
-            httpRequestDTO.setParsingHeaders(true);
+        if (simpleHttpRequestDTO.isRequestLineParsed()) {
+            simpleHttpRequestDTO.parsingRequestLine(line);
+            simpleHttpRequestDTO.setRequestLineParsed(false);
+            simpleHttpRequestDTO.setParsingHeaders(true);
             return;
         }
 
-        if (httpRequestDTO.isParsingHeaders()) {
-            httpRequestDTO.addHeader(line);
+        if (simpleHttpRequestDTO.isParsingHeaders()) {
+            simpleHttpRequestDTO.addHeader(line);
+            return;
         }
 
-        if (httpRequestDTO.isParsingBody()) {
-            httpRequestDTO.addRequestBody(line);
+        if (simpleHttpRequestDTO.isParsingBody()) {
+            simpleHttpRequestDTO.addRequestBody(line);
         }
     }
 

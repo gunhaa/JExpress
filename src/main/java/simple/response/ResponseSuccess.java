@@ -25,14 +25,5 @@ public class ResponseSuccess {
         pw.print(hb.getSb());
         pw.flush();
         pw.close();
-//        String entityJson = gson.toJson(response);
-//        pw.println("HTTP/1.1 200 OK");
-//        pw.println("Content-Type: application/json");
-//        pw.println("Content-Length: " + entityJson.length());
-//        pw.println();
-//        pw.println(entityJson);
-//        pw.flush();
-//        pw.close();
-
     }
 }

@@ -26,37 +26,28 @@ public class SingleThreadServer implements Server {
         System.out.println("single thread server run on port : " + port);
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
-                // 추가 요청 블로킹
-                Socket clientSocket = serverSocket.accept();
-//                if (clientSocket.isConnected()) {
-//                    System.out.println("3-Way Handshake 완료됨");
-//                }
 
-                InputStream clientInputStream = clientSocket.getInputStream();
-                BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream));
-                SimpleHttpRequestDTO httpRequestDTO = new SimpleHttpRequestDTO();
-                Logger logger = new SingleThreadRuntimeLogger();
-                RequestParser httpRequestParser = new RequestParser(httpRequestDTO, logger);
+                try(Socket clientSocket = serverSocket.accept();
+                    InputStream clientInputStream = clientSocket.getInputStream();
+                    BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))){
 
-                SimpleHttpRequest simpleHttpRequest = httpRequestParser.parsing(request);
+                    Logger logger = new SingleThreadRuntimeLogger();
+                    RequestParser httpRequestParser = new RequestParser(logger);
+                    SimpleHttpRequest simpleHttpRequest = httpRequestParser.parsing(request);
 
-                if(simpleHttpRequest.isHandshake()){
-                    logger.add("handshake 요청");
+                    if(simpleHttpRequest.isHandshake()){
+                        logger.add("handshake 요청");
+                        logger.print();
+                        continue;
+                    }
+
+                    RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
+                    RequestHandler handler = requestHandlerFactory.getHandler(simpleHttpRequest);
+                    handler.sendResponse(clientSocket.getOutputStream() , getMap.get(simpleHttpRequest.getUrl()), simpleHttpRequest);
+
                     logger.print();
-                    request.close();
-                    clientSocket.close();
-                    continue;
                 }
-
-                RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
-                RequestHandler handler = requestHandlerFactory.getHandler(simpleHttpRequest);
-                handler.sendResponse(clientSocket.getOutputStream() , getMap.get(simpleHttpRequest.getUrl()), simpleHttpRequest);
-
-                logger.print();
-                request.close();
-                clientSocket.close();
             }
-
         }
     }
 

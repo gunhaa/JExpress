@@ -13,13 +13,12 @@ import static simple.constant.HttpStatus.OK_200;
 
 public class Main {
     public static void main(String[] args) throws IOException{
-        System.out.println("실행 테스트");
         Server app = new SingleThreadServer();
 
         app.get(
                 "/members",
                 new ResponseSuccess(OK_200, new Member("gunha", 10)),
-                new ResponseError(BAD_REQUEST_400, "Not Found")
+                new ResponseError(BAD_REQUEST_400)
         );
 
         app.run(8020);

@@ -4,10 +4,8 @@ import simple.constant.HttpStatus;
 
 public class ResponseError {
     private HttpStatus httpStatusCode;
-    private String errorMessage;
 
-    public ResponseError(HttpStatus httpStatusCode, String errorMessage) {
+    public ResponseError(HttpStatus httpStatusCode) {
         this.httpStatusCode = httpStatusCode;
-        this.errorMessage = errorMessage;
     }
 }
