@@ -25,7 +25,8 @@ public class RequestParser {
         String line;
 
         while (request.ready() && (ch = request.read()) != -1) {
-            System.out.println("parsing : " + (char) ch);
+//            System.out.println("parsing : " + (char) ch);
+            logger.add((char) ch);
             if ((char) ch != '\r' && (char) ch != '\n') {
                 lineBuilder.append((char) ch);
             } else if ((char) ch == '\r') {

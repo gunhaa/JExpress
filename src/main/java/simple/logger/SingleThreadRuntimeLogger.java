@@ -7,6 +7,11 @@ public class SingleThreadRuntimeLogger implements Logger{
 
 
     @Override
+    public void add(String message) {
+        log.append(message);
+    }
+
+    @Override
     public void add(char message) {
         log.append(message);
     }

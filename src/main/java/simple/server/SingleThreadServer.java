@@ -11,10 +11,7 @@ import simple.response.Response;
 import simple.response.ResponseError;
 import simple.response.ResponseSuccess;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -31,18 +28,31 @@ public class SingleThreadServer implements Server {
             while (true) {
                 // 추가 요청 블로킹
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("port : " + clientSocket.getLocalPort());
+//                if (clientSocket.isConnected()) {
+//                    System.out.println("3-Way Handshake 완료됨");
+//                }
 
-                BufferedReader request = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                InputStream clientInputStream = clientSocket.getInputStream();
+                BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream));
                 SimpleHttpRequestDTO httpRequestDTO = new SimpleHttpRequestDTO();
                 Logger logger = new SingleThreadRuntimeLogger();
                 RequestParser httpRequestParser = new RequestParser(httpRequestDTO, logger);
 
                 SimpleHttpRequest simpleHttpRequest = httpRequestParser.parsing(request);
+
+                if(simpleHttpRequest.isHandshake()){
+                    logger.add("handshake 요청");
+                    logger.print();
+                    request.close();
+                    clientSocket.close();
+                    continue;
+                }
+
                 RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
                 RequestHandler handler = requestHandlerFactory.getHandler(simpleHttpRequest);
                 handler.sendResponse(clientSocket.getOutputStream() , getMap.get(simpleHttpRequest.getUrl()), simpleHttpRequest);
 
+                logger.print();
                 request.close();
                 clientSocket.close();
             }
