@@ -22,8 +22,7 @@ public class ResponseSuccess {
         PrintWriter pw = new PrintWriter(out);
         HttpBuilder hb = new HttpBuilder(simpleHttpRequest, this.userCustomHttpStatus, this.entity);
         hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().body();
-        System.out.println(hb.getSb());
-        pw.print(hb.getSb().toString());
+        pw.print(hb.getSb());
         pw.flush();
         pw.close();
 //        String entityJson = gson.toJson(response);

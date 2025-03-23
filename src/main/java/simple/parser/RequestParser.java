@@ -23,11 +23,9 @@ public class RequestParser {
     public SimpleHttpRequest parsing(BufferedReader request) throws IOException {
         int ch;
         String line;
-        System.out.println("현 위치 도달1");
 
-        while ((ch = request.read()) != -1) {
-            System.out.println("현 위치 도달2 : " + (char)ch);
-
+        while (request.ready() && (ch = request.read()) != -1) {
+            System.out.println("parsing : " + (char) ch);
             if ((char) ch != '\r' && (char) ch != '\n') {
                 lineBuilder.append((char) ch);
             } else if ((char) ch == '\r') {
@@ -46,7 +44,6 @@ public class RequestParser {
                 lineBuilder.setLength(0);
             }
         }
-
         if (httpRequestDTO.isParsingBody() && !lineBuilder.isEmpty()) {
             httpRequestDTO.addRequestBody(lineBuilder.toString());
         }
