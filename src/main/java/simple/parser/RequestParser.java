@@ -24,23 +24,22 @@ public class RequestParser {
 
         while (request.ready() && (ch = request.read()) != -1) {
             logger.add((char) ch);
-            if ((char) ch != '\r' && (char) ch != '\n') {
-                lineBuilder.append((char) ch);
-            } else if ((char) ch == '\r') {
+            if(ch == '\r'){
                 continue;
-            } else {
+            }
 
+            if(ch == '\n'){
                 if(lineBuilder.isEmpty()){
                     simpleHttpRequestDTO.setParsingHeaders(false);
                     simpleHttpRequestDTO.setParsingBody(true);
-                    lineBuilder.setLength(0);
-                    continue;
+                } else {
+                    processRequestLine(lineBuilder.toString());
                 }
-
-                line = lineBuilder.toString();
-                processRequestLine(line);
                 lineBuilder.setLength(0);
+            } else {
+                lineBuilder.append((char) ch);
             }
+
         }
         if (simpleHttpRequestDTO.isParsingBody() && !lineBuilder.isEmpty()) {
             simpleHttpRequestDTO.addRequestBody(lineBuilder.toString());
