@@ -41,7 +41,7 @@ public class SingleThreadServer implements Server {
 
                 RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
                 RequestHandler handler = requestHandlerFactory.getHandler(simpleHttpRequest);
-                handler.sendResponse(clientSocket.getOutputStream() , getMap.get(simpleHttpRequest.getUrl()));
+                handler.sendResponse(clientSocket.getOutputStream() , getMap.get(simpleHttpRequest.getUrl()),simpleHttpRequest);
 
 //                logger.print();
                 clientSocket.close();

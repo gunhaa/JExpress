@@ -11,23 +11,25 @@ import java.io.PrintWriter;
 public class ResponseSuccess {
 
     private final HttpStatus httpStatusCode;
-    private final Object response;
-    private final Gson gson = new Gson();
+    private final Object entity;
 
     public ResponseSuccess(HttpStatus httpStatusCode, Object entity) {
         this.httpStatusCode = httpStatusCode;
-        this.response = entity;
+        this.entity = entity;
     }
 
-    public void basic(OutputStream out){
+    public void getDefaultResponse(OutputStream out){
         PrintWriter pw = new PrintWriter(out);
-        String entityJson = gson.toJson(response);
-        pw.println("HTTP/1.1 200 OK");
-        pw.println("Content-Type: application/json");
-        pw.println("Content-Length: " + entityJson.length());
-        pw.println();
-        pw.println(entityJson);
-        pw.flush();
-        pw.close();
+        HttpBuilder hb = new HttpBuilder();
+        Gson gson = new Gson();
+//        String entityJson = gson.toJson(response);
+//        pw.println("HTTP/1.1 200 OK");
+//        pw.println("Content-Type: application/json");
+//        pw.println("Content-Length: " + entityJson.length());
+//        pw.println();
+//        pw.println(entityJson);
+//        pw.flush();
+//        pw.close();
+
     }
 }

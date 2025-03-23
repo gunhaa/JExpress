@@ -7,7 +7,7 @@ import java.io.OutputStream;
 
 public class RequestDeleteHandler implements RequestHandler{
     @Override
-    public void sendResponse(OutputStream outputStream,  Response response) {
+    public void sendResponse(OutputStream outputStream,  Response response, SimpleHttpRequest simpleHttpRequest) {
 
     }
 }

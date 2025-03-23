@@ -22,7 +22,6 @@ public class Main {
                 new ResponseError(BAD_REQUEST_400, "Not Found")
         );
 
-
         app.run(8020);
     }
 }
