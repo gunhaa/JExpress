@@ -1,6 +1,7 @@
 package simple.httpRequest;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class SimpleHttpRequestDTO {
     private final HashMap<String, String> queryString = new HashMap<>();
     private final HashMap<String, String> header = new HashMap<>();
     private StringBuilder body = new StringBuilder();
-    private HashMap<String, Object> bodyMap = new HashMap<>();
+    private LinkedTreeMap<String, Object> bodyMap = new LinkedTreeMap<>();
     private boolean requestLineParsed;
     private boolean parsingHeaders;
     private boolean parsingBody;

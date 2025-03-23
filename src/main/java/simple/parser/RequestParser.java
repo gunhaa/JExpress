@@ -23,9 +23,10 @@ public class RequestParser {
     public SimpleHttpRequest parsing(BufferedReader request) throws IOException {
         int ch;
         String line;
+        System.out.println("현 위치 도달1");
 
         while ((ch = request.read()) != -1) {
-            logger.add((char) ch);
+            System.out.println("현 위치 도달2 : " + (char)ch);
 
             if ((char) ch != '\r' && (char) ch != '\n') {
                 lineBuilder.append((char) ch);

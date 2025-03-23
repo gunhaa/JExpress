@@ -12,6 +12,6 @@ public class RequestGetHandler implements RequestHandler{
 
     @Override
     public void sendResponse(OutputStream outputStream,  Response userCustomResponse, SimpleHttpRequest simpleHttpRequest) {
-        userCustomResponse.getResponseSuccess().getDefaultResponse(outputStream);
+        userCustomResponse.getResponseSuccess().getDefaultResponse(outputStream, simpleHttpRequest);
     }
 }
