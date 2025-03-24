@@ -26,17 +26,20 @@
 
 ## ISSUE
 
-- POSTMAN 사용시 문제 생길 때 있음(이슈 파악 완료)
-  - curl -X GET localhost:8020/members 로는 문제 없음
-  - 큰 문제는 아닌 것 같지만, 더 알아보고 해결 해 봐야할듯
-    - stackoverflow에 똑같은 사례가 한개 있었는데, 답변이 없었다.. 더 찾아봐야함
-  - Connection: close(실패)
-  - POSTMAN 설정 변경(실패)
-  - BufferedReader.ready() 이슈
-    - body를 파악하기 위해 readLine() 이 아닌 read()로 \r\n을 읽을 수 있도록 리팩토링 하였으나 문제 발생
-    - POSTMAN을 사용한 두번째 요청에서 해당 ready()상태가 true가 아닌 false로 되어 스트림을 읽지 못함
-    - Content-type을 감지하면 그 만큼 body를 읽는 로직으로 수정 예정
-      - BufferedReader.ready()의 동작 방식
-      - ready()는 현재 버퍼에 읽을 수 있는 데이터가 있는지 확인하는 메서드이다.
-      - 문제는 네트워크 소켓의 데이터 도착을 보장하지 않는다.
-      - 즉, 요청이 아직 네트워크에서 도착하지 않았으면 false를 반환하여, 요청을 읽지 못하는 상황이 발생할 수 있다.
+### BufferedReader.ready() 이슈
+
+#### 문제 상황
+- `readLine()` 대신 `read()`를 사용하여 `\r\n`을 직접 읽도록 리팩토링했으나 문제 발생
+- POSTMAN에서 두 번째 요청 시 `ready()` 상태가 `false`가 되어 스트림을 읽지 못함
+- `curl -X GET` 요청 시 문제 없음
+
+#### 원인 분석
+- `BufferedReader.ready()`는 현재 버퍼에 읽을 데이터가 있는지 확인하는 메서드
+  - 네트워크 소켓에서 데이터 도착을 보장하지 않음
+  - 요청이 아직 네트워크에서 도착하지 않았다면 `false`를 반환 → 스트림을 읽지 못하는 문제 발생
+
+#### 해결 방향
+- `ready()`를 사용하지 않고 추가 로직을 구현하여 해결 가능
+- `Content-Length` 헤더를 포함하지 않고 `Body`를 넣는 사용자를 생각해 `read()`로 리팩토링을 하였으나..
+  - `read()`를 계속 사용하며 로직 수정을 하는 방법도 있으나, `Content-Length` 헤더를 감지하여 그만큼 Body를 읽는 방식으로 변경 예정
+  - 형식을 지키는 것이 서버에게 더 중요한 것 같아 잘못된 요청의 경우 `400_BAD_REQUEST` 를 내보내고 `read()`에서  `readLine()` 방식으로 변경 하는 것이 더 좋을 것이라고 판단 해 변경 예정
