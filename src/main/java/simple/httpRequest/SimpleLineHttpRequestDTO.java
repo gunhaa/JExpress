@@ -21,26 +21,31 @@ public class SimpleLineHttpRequestDTO {
     private final HashMap<String, String> header = new HashMap<>();
     private StringBuilder body = new StringBuilder();
     private LinkedTreeMap<String, Object> bodyMap = new LinkedTreeMap<>();
+    private int contentLength;
     private boolean requestLineParsed;
     private boolean parsingHeaders;
-    private boolean hasBody;
-    private boolean parsingBodyFinish;
+    private boolean parsingBody;
 
     public SimpleLineHttpRequestDTO() {
         this.requestLineParsed = true;
         this.parsingHeaders = false;
-        this.hasBody = false;
-        this.parsingBodyFinish = false;
+        this.parsingBody = false;
     }
 
     public void addHeader(String line) {
-        if (line.isEmpty()){
+        String contentLength = this.getHeader().get("Content-Length");
+        if (line.isEmpty() && contentLength != null){
             this.parsingHeaders = false;
-            this.hasBody = true;
+            this.parsingBody = true;
+            this.contentLength = Integer.parseInt(contentLength);
             return;
         }
         String[] splitLine = line.split(": ");
         this.header.put(splitLine[0], splitLine[1]);
+    }
+
+    public boolean isFinishBodyParsing(){
+        return this.contentLength==0;
     }
 
     public void requestLineParsingEnd() {
@@ -71,7 +76,13 @@ public class SimpleLineHttpRequestDTO {
         this.requestLineParsingEnd();
     }
 
+    
+    /**
+      해당 방법은 readLine()이r \n \r\n 을 제외하고 읽어오기 때문에 Content-Length를 이용해 정확히 읽을 수 없다
+    */
     public void addRequestBody(String line) {
+        int length = line.length();
+        this.contentLength -= length;
         this.body.append(line);
     }
 
@@ -80,7 +91,6 @@ public class SimpleLineHttpRequestDTO {
             Gson gson = new Gson();
             Type type = new TypeToken<Map<String, Object>>() {}.getType();
             this.bodyMap = gson.fromJson(json.toString(), type);
-            this.parsingBodyFinish = true;
         }
     }
 }

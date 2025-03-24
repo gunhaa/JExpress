@@ -23,15 +23,10 @@ public class RequestLineParser implements Parser{
         while((line = request.readLine())!=null){
             logger.add(line);
             processRequestLine(line);
-
-            if(simpleLineHttpRequestDTO.isHasBody() && !simpleLineHttpRequestDTO.isParsingHeaders()){
+            if(simpleLineHttpRequestDTO.isParsingBody() && simpleLineHttpRequestDTO.isFinishBodyParsing()){
                 StringBuilder requestBody = simpleLineHttpRequestDTO.getBody();
                 simpleLineHttpRequestDTO.parsingJsonToMap(requestBody);
-
-                if(simpleLineHttpRequestDTO.isParsingBodyFinish()){
-                    break;
-                }
-
+                break;
             }
 
         }
@@ -57,7 +52,7 @@ public class RequestLineParser implements Parser{
             return;
         }
 
-        if (simpleLineHttpRequestDTO.isHasBody()) {
+        if (simpleLineHttpRequestDTO.isParsingBody()) {
             simpleLineHttpRequestDTO.addRequestBody(line);
         }
     }
