@@ -36,7 +36,6 @@ public class SingleThreadServer implements Server {
                     Parser requestParser = new RequestLineParser(logger);
                     SimpleHttpRequest simpleHttpRequest = requestParser.parsing(request);
 
-                    // 정확한 handshake 요청 방법 파악 필요
 //                    if(simpleHttpRequest.isHandshake()){
 //                        logger.add("handshake 요청");
 //                        logger.print();

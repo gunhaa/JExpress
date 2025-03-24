@@ -1,21 +1,19 @@
 package simple.parser;
 
 import simple.httpRequest.SimpleHttpRequest;
-import simple.httpRequest.SimpleHttpRequestDTO;
+import simple.httpRequest.SimpleLineHttpRequestDTO;
 import simple.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
 public class RequestLineParser implements Parser{
-    private final SimpleHttpRequestDTO simpleHttpRequestDTO;
+    private final SimpleLineHttpRequestDTO simpleLineHttpRequestDTO;
     private final Logger logger;
-    private final StringBuilder lineBuilder;
 
     public RequestLineParser(Logger logger) {
-        this.simpleHttpRequestDTO = new SimpleHttpRequestDTO();
+        this.simpleLineHttpRequestDTO = new SimpleLineHttpRequestDTO();
         this.logger = logger;
-        this.lineBuilder = new StringBuilder();
     }
 
     @Override
@@ -23,9 +21,44 @@ public class RequestLineParser implements Parser{
 
         String line;
         while((line = request.readLine())!=null){
-            System.out.println(line);
+            logger.add(line);
+            processRequestLine(line);
+
+            if(simpleLineHttpRequestDTO.isHasBody() && !simpleLineHttpRequestDTO.isParsingHeaders()){
+                StringBuilder requestBody = simpleLineHttpRequestDTO.getBody();
+                simpleLineHttpRequestDTO.parsingJsonToMap(requestBody);
+
+                if(simpleLineHttpRequestDTO.isParsingBodyFinish()){
+                    break;
+                }
+
+            }
+
         }
 
-        return null;
+        return SimpleHttpRequest.builder()
+                .method(simpleLineHttpRequestDTO.getMethod())
+                .url(simpleLineHttpRequestDTO.getUrl())
+                .protocol(simpleLineHttpRequestDTO.getProtocol())
+                .queryString(simpleLineHttpRequestDTO.getQueryString())
+                .header(simpleLineHttpRequestDTO.getHeader())
+                .bodyMap(simpleLineHttpRequestDTO.getBodyMap())
+                .build();
+    }
+
+    private void processRequestLine(String line) {
+        if (simpleLineHttpRequestDTO.isRequestLineParsed()) {
+            simpleLineHttpRequestDTO.parsingRequestLine(line);
+            return;
+        }
+
+        if (simpleLineHttpRequestDTO.isParsingHeaders()) {
+            simpleLineHttpRequestDTO.addHeader(line);
+            return;
+        }
+
+        if (simpleLineHttpRequestDTO.isHasBody()) {
+            simpleLineHttpRequestDTO.addRequestBody(line);
+        }
     }
 }

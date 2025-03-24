@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class SimpleHttpRequestDTO {
+public class SimpleCharHttpRequestDTO {
     private HttpMethod method;
     private String url;
     private String protocol;
@@ -25,7 +25,7 @@ public class SimpleHttpRequestDTO {
     private boolean parsingHeaders;
     private boolean parsingBody;
 
-    public SimpleHttpRequestDTO() {
+    public SimpleCharHttpRequestDTO() {
         this.requestLineParsed = true;
         this.parsingHeaders = false;
         this.parsingBody = false;

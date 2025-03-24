@@ -8,7 +8,7 @@ public class SingleThreadRuntimeLogger implements Logger{
 
     @Override
     public void add(String message) {
-        log.append(message);
+        log.append(message).append("\n");
     }
 
     @Override

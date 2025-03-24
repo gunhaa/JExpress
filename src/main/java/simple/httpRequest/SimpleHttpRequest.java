@@ -17,6 +17,7 @@ public class SimpleHttpRequest {
     private final HashMap<String, String> header;
     private final LinkedTreeMap<String, Object> bodyMap;
 
+    @Deprecated
     public boolean isHandshake(){
         return this.url == null && this.method == null && this.protocol == null;
     }
