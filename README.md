@@ -35,4 +35,8 @@
   - BufferedReader.ready() 이슈
     - body를 파악하기 위해 readLine() 이 아닌 read()로 \r\n을 읽을 수 있도록 리팩토링 하였으나 문제 발생
     - POSTMAN을 사용한 두번째 요청에서 해당 ready()상태가 true가 아닌 false로 되어 스트림을 읽지 못함
-    - Content-type을 감지하면 그 만큼 body를 읽는 로직으로 수정예정
+    - Content-type을 감지하면 그 만큼 body를 읽는 로직으로 수정 예정
+      - BufferedReader.ready()의 동작 방식
+      - ready()는 현재 버퍼에 읽을 수 있는 데이터가 있는지 확인하는 메서드이다.
+      - 문제는 네트워크 소켓의 데이터 도착을 보장하지 않는다.
+      - 즉, 요청이 아직 네트워크에서 도착하지 않았으면 false를 반환하여, 요청을 읽지 못하는 상황이 발생할 수 있다.

@@ -22,6 +22,7 @@ public class RequestParser {
         int ch;
 
         // request.ready() 부분 문제 있음
+        System.out.println(request.ready());
         while (request.ready() && (ch = request.read()) != -1) {
 
             logger.add((char) ch);
