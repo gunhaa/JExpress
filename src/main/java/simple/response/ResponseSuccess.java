@@ -20,11 +20,11 @@ public class ResponseSuccess {
 
     public void getDefaultResponse(OutputStream out, SimpleHttpRequest simpleHttpRequest){
 
-        try(PrintWriter pw = new PrintWriter(out)){
+        try(PrintWriter pw = new PrintWriter(out, true)){
             HttpBuilder hb = new HttpBuilder(simpleHttpRequest, this.userCustomHttpStatus, this.entity);
             hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().body();
             pw.print(hb.getSb());
-            pw.flush();
+//            pw.flush();
         }
 
     }

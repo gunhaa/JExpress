@@ -20,8 +20,8 @@ public class RequestParser {
 
     public SimpleHttpRequest parsing(BufferedReader request) throws IOException {
         int ch;
-        String line;
 
+        // request.ready() 부분 문제 있음
         while (request.ready() && (ch = request.read()) != -1) {
 
             logger.add((char) ch);

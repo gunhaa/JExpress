@@ -34,7 +34,9 @@ public class SingleThreadServer implements Server {
                     Logger logger = new SingleThreadRuntimeLogger();
                     RequestParser requestParser = new RequestParser(logger);
                     SimpleHttpRequest simpleHttpRequest = requestParser.parsing(request);
-
+                    System.out.println("simpleHttpRequest.getUrl() = " + simpleHttpRequest.getUrl());
+                    System.out.println("simpleHttpRequest.getProtocol() = " + simpleHttpRequest.getProtocol());
+                    System.out.println("simpleHttpRequest.getMethod() = " + simpleHttpRequest.getMethod());
                     if(simpleHttpRequest.isHandshake()){
                         logger.add("handshake 요청");
                         logger.print();
