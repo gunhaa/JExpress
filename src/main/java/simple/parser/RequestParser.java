@@ -23,7 +23,9 @@ public class RequestParser {
         String line;
 
         while (request.ready() && (ch = request.read()) != -1) {
+
             logger.add((char) ch);
+
             if(ch == '\r'){
                 continue;
             }
