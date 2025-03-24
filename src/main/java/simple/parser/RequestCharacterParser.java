@@ -7,22 +7,22 @@ import simple.logger.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class RequestParser {
+public class RequestCharacterParser implements Parser{
     private final SimpleHttpRequestDTO simpleHttpRequestDTO;
     private final Logger logger;
     private final StringBuilder lineBuilder;
 
-    public RequestParser(Logger logger) {
+    public RequestCharacterParser(Logger logger) {
         this.simpleHttpRequestDTO = new SimpleHttpRequestDTO();
         this.logger = logger;
         this.lineBuilder = new StringBuilder();
     }
 
+    @Override
     public SimpleHttpRequest parsing(BufferedReader request) throws IOException {
         int ch;
 
         // request.ready() 부분 문제 있음
-        System.out.println(request.ready());
         while (request.ready() && (ch = request.read()) != -1) {
 
             logger.add((char) ch);
