@@ -16,7 +16,9 @@ public class ResponseBuilder {
     private final SimpleHttpRequest simpleHttpRequest;
     private final ErrorStatus errorStatus;
     private final Gson gson = new Gson();
+    private final Object entity;
     private final String entityJson;
+
 
     // 불변 필드
     private static final String CRLF = "\r\n";
@@ -34,6 +36,7 @@ public class ResponseBuilder {
     public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, ErrorStatus errorStatus, Object entity) {
         this.simpleHttpRequest = simpleHttpRequest;
         this.errorStatus = errorStatus;
+        this.entity = entity;
         this.entityJson = gson.toJson(entity);
     }
 
@@ -52,7 +55,7 @@ public class ResponseBuilder {
             return this;
         } else {
             int statusCode = errorStatus.getHttpStatus().getStatusCode();
-            String message = errorStatus.getMessage();
+            String message = errorStatus.getHttpStatus().getMessage();
             sb.append(statusCode).append(" ").append(message).append(CRLF);
             return this;
         }
@@ -94,8 +97,15 @@ public class ResponseBuilder {
     }
 
     public ResponseBuilder body(){
-        sb.append(entityJson);
-        return this;
+
+        if(errorStatus == null){
+            sb.append(entityJson);
+            return this;
+        } else {
+            sb.append(errorStatus.getMessage());
+            return this;
+        }
+
     }
 
     public StringBuilder getResponse() {

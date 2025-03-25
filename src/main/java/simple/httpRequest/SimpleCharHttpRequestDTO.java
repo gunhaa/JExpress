@@ -1,6 +1,8 @@
 package simple.httpRequest;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
@@ -103,6 +105,20 @@ public class SimpleCharHttpRequestDTO {
         Gson gson = new Gson();
         Type type = new TypeToken<Map<String, Object>>() {
         }.getType();
-        this.bodyMap = gson.fromJson(json.toString(), type);
+        if(isValidJson(json)){
+            this.bodyMap = gson.fromJson(json.toString(), type);
+        } else {
+            System.err.println("Invalid json body Error");
+            errorQueue.add(new ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid json body Error"));
+        }
+    }
+
+    private boolean isValidJson(StringBuilder json) {
+        try {
+            JsonParser.parseString(json.toString());
+            return true;
+        } catch (JsonSyntaxException e) {
+            return false;
+        }
     }
 }
