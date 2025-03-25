@@ -65,6 +65,7 @@ public class RequestCharacterParser implements Parser{
                 .queryString(simpleCharHttpRequestDTO.getQueryString())
                 .header(simpleCharHttpRequestDTO.getHeader())
                 .bodyMap(simpleCharHttpRequestDTO.getBodyMap())
+                .errorQueue(simpleCharHttpRequestDTO.getErrorQueue())
                 .build();
     }
 

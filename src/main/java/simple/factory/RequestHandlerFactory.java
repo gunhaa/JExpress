@@ -22,6 +22,10 @@ public class RequestHandlerFactory {
     }
 
     public RequestHandler getHandler(SimpleHttpRequest simpleHttpRequest){
+
+        if(!simpleHttpRequest.getErrorQueue().isEmpty()){
+            return new RequestErrorHandler();
+        }
         return requestHandlers.getOrDefault(simpleHttpRequest.getMethod(), new RequestErrorHandler());
     }
 

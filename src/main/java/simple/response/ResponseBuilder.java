@@ -1,7 +1,9 @@
 package simple.response;
 
 import com.google.gson.Gson;
+import simple.constant.HttpMethod;
 import simple.constant.HttpStatus;
+import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
 
 import java.text.SimpleDateFormat;
@@ -9,11 +11,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class HttpBuilder {
+public class ResponseBuilder {
     private final StringBuilder sb = new StringBuilder();
     private final SimpleHttpRequest simpleHttpRequest;
-    private final HttpStatus userCustomHttpStatus;
-    private final Object entity;
+    private final ErrorStatus errorStatus;
     private final Gson gson = new Gson();
     private final String entityJson;
 
@@ -30,77 +31,74 @@ public class HttpBuilder {
 
     private static final String DEFAULT_SERVER_NAME = "SimpREST/1.0";
 
-    /*
-    HTTP/1.1 200 OK\r\n
-    Date: Sun, 23 Mar 2025 12:00:00 GMT\r\n
-    Server: MyServer/1.0\r\n
-    Content-Type: text/html; charset=UTF-8\r\n
-    Content-Length: 48\r\n
-    Connection: close\r\n
-    \r\n
-    <html><body><h1>Hello, World!</h1></body></html>
-    */
-
-    public HttpBuilder(SimpleHttpRequest simpleHttpRequest, HttpStatus userCustomHttpStatus, Object entity) {
+    public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, ErrorStatus errorStatus, Object entity) {
         this.simpleHttpRequest = simpleHttpRequest;
-        this.userCustomHttpStatus = userCustomHttpStatus;
-        this.entity = entity;
+        this.errorStatus = errorStatus;
         this.entityJson = gson.toJson(entity);
     }
 
-    public HttpBuilder protocol(){
+    public ResponseBuilder protocol(){
         String protocol = simpleHttpRequest.getProtocol();
         sb.append(protocol).append(" ");
         return this;
     }
 
-    public HttpBuilder httpStatus(){
-        int statusCode = userCustomHttpStatus.getStatusCode();
-        String message = userCustomHttpStatus.getMessage();
-        sb.append(statusCode).append(" ").append(message).append(CRLF);
-        return this;
+    public ResponseBuilder httpStatus(){
+
+        if(errorStatus == null){
+            HttpMethod method = simpleHttpRequest.getMethod();
+            HttpStatus httpStatus = method.getHttpStatus();
+            sb.append(httpStatus.getStatusCode()).append(" ").append(httpStatus.getMessage()).append(CRLF);
+            return this;
+        } else {
+            int statusCode = errorStatus.getHttpStatus().getStatusCode();
+            String message = errorStatus.getMessage();
+            sb.append(statusCode).append(" ").append(message).append(CRLF);
+            return this;
+        }
+
     }
 
-    public HttpBuilder date(){
+    public ResponseBuilder date(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         sb.append(FIELD_DATE).append(dateFormat.format(new Date())).append(CRLF);
         return this;
     }
 
-    public HttpBuilder server(){
+    public ResponseBuilder server(){
         sb.append(FIELD_SERVER).append(DEFAULT_SERVER_NAME).append(CRLF);
         return this;
     }
     /*
     Connection: close\r\n
     */
-    public HttpBuilder contentType(){
+    public ResponseBuilder contentType(){
         sb.append(FIELD_CONTENT_TYPE).append(VALUE_CONTENT_TYPE).append(CRLF);
         return this;
     }
 
-    public HttpBuilder contentLength(){
+    public ResponseBuilder contentLength(){
         sb.append(FIELD_CONTENT_LENGTH).append(entityJson.length()).append(CRLF);
         return this;
     }
 
-    public HttpBuilder connection(){
+    public ResponseBuilder connection(){
         sb.append(FIELD_CONNECTION).append(VALUE_CONNECTION_CLOSED).append(CRLF);
         return this;
     }
 
-    public HttpBuilder crlf(){
+    public ResponseBuilder crlf(){
         sb.append(CRLF);
         return this;
     }
 
-    public HttpBuilder body(){
+    public ResponseBuilder body(){
         sb.append(entityJson);
         return this;
     }
 
-    public StringBuilder getSb() {
+    public StringBuilder getResponse() {
         return sb;
     }
 }

@@ -1,15 +1,28 @@
 package simple.requestHandler;
 
+import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
+import simple.response.ResponseBuilder;
 import simple.response.Response;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 public class RequestErrorHandler implements RequestHandler {
     
     @Override
-    public void sendResponse(OutputStream outputStream, Response response, SimpleHttpRequest simpleHttpRequest) {
-        System.out.println("에러 발생했음");
+    public void sendResponse(OutputStream outputStream, Response userCustomResponse, SimpleHttpRequest simpleHttpRequest) {
+//        System.out.println("에러 발생했음");
+        try(PrintWriter pw = new PrintWriter(outputStream, true)){
+
+            Optional<ErrorStatus> optionalErrorStatus = Optional.ofNullable(simpleHttpRequest.getErrorQueue().peek());
+
+            ErrorStatus errorStatus = optionalErrorStatus.orElse(ErrorStatus.getDefaultErrorStatus());
+
+            ResponseBuilder hb = new ResponseBuilder(simpleHttpRequest, errorStatus, simpleHttpRequest.getErrorQueue());
+            StringBuilder res = hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().body().getResponse();
+            pw.print(res);
+        }
     }
 }

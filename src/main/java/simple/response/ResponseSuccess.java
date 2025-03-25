@@ -18,14 +18,14 @@ public class ResponseSuccess {
         this.entity = entity;
     }
 
-    public void getDefaultResponse(OutputStream out, SimpleHttpRequest simpleHttpRequest){
-
-        try(PrintWriter pw = new PrintWriter(out, true)){
-            HttpBuilder hb = new HttpBuilder(simpleHttpRequest, this.userCustomHttpStatus, this.entity);
-            hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().body();
-            pw.print(hb.getSb());
-//            pw.flush();
-        }
-
-    }
+//    @Deprecated
+//    public void getDefaultResponse(OutputStream out, SimpleHttpRequest simpleHttpRequest){
+//
+//        try(PrintWriter pw = new PrintWriter(out, true)){
+//            ResponseBuilder hb = new ResponseBuilder(simpleHttpRequest, this.userCustomHttpStatus, this.entity);
+//            StringBuilder response = hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().body().getResponse();
+//            pw.print(response);
+//        }
+//
+//    }
 }

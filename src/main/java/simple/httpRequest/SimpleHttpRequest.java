@@ -6,6 +6,7 @@ import lombok.Getter;
 import simple.constant.HttpMethod;
 
 import java.util.HashMap;
+import java.util.Queue;
 
 @Builder
 @Getter
@@ -16,6 +17,7 @@ public class SimpleHttpRequest {
     private final HashMap<String, String> queryString;
     private final HashMap<String, String> header;
     private final LinkedTreeMap<String, Object> bodyMap;
+    private Queue<ErrorStatus> errorQueue;
 
     @Deprecated
     public boolean isHandshake(){

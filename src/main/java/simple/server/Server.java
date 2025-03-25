@@ -10,7 +10,7 @@ public interface Server {
 
     void run(int port) throws IOException;
 
-    void get(String URL, ResponseSuccess responseSuccess, ResponseError responseError);
+    void get(String URL, ResponseSuccess responseSuccess);
 
     void post();
 }

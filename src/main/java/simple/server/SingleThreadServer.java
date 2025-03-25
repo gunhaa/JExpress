@@ -36,12 +36,6 @@ public class SingleThreadServer implements Server {
                     Parser requestParser = new RequestCharacterParser(logger);
                     SimpleHttpRequest simpleHttpRequest = requestParser.parsing(request);
 
-//                    if(simpleHttpRequest.isHandshake()){
-//                        logger.add("handshake 요청");
-//                        logger.print();
-//                        continue;
-//                    }
-
                     RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
                     RequestHandler handler = requestHandlerFactory.getHandler(simpleHttpRequest);
                     handler.sendResponse(clientSocket.getOutputStream() , getMap.get(simpleHttpRequest.getUrl()), simpleHttpRequest);
@@ -53,8 +47,8 @@ public class SingleThreadServer implements Server {
     }
 
     @Override
-    public void get(String URL, ResponseSuccess responseSuccess, ResponseError responseError) {
-        getMap.put(URL, new Response(responseSuccess, responseError));
+    public void get(String URL, ResponseSuccess responseSuccess) {
+        getMap.put(URL, new Response(responseSuccess));
     }
 
     @Override

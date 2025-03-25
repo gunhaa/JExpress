@@ -6,11 +6,11 @@ import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
 import simple.constant.HttpMethod;
+import simple.constant.HttpStatus;
 
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
@@ -25,12 +25,15 @@ public class SimpleCharHttpRequestDTO {
     private boolean requestLineParsed;
     private boolean parsingHeaders;
     private boolean parsingBody;
-    private int contentLength = -1;
+    private int contentLength;
+    private Queue<simple.httpRequest.ErrorStatus> errorQueue;
 
     public SimpleCharHttpRequestDTO() {
         this.requestLineParsed = true;
         this.parsingHeaders = false;
         this.parsingBody = false;
+        this.contentLength = -1;
+        this.errorQueue = new ArrayDeque<>();
     }
 
     public void addHeader(String line) {
@@ -42,9 +45,10 @@ public class SimpleCharHttpRequestDTO {
         String[] request = line.split(" ");
         try {
             this.method = HttpMethod.valueOf(request[0]);
-        } catch (IllegalStateException e) {
-            System.out.println("Invalid Http Method : " + request[0]);
-            System.exit(1);
+        } catch (IllegalArgumentException e) {
+            // error Logic
+            System.err.println("Invalid Method Error");
+            errorQueue.add(new simple.httpRequest.ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid Method Error"));
         }
 
         String[] url = request[1].split("\\?");
@@ -74,6 +78,7 @@ public class SimpleCharHttpRequestDTO {
             } catch (NumberFormatException e) {
                 // error Logic
                 System.err.println("Content-Length Error");
+                errorQueue.add(new simple.httpRequest.ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid Content-Length Error"));
             }
         } else {
             this.contentLength = 0;
