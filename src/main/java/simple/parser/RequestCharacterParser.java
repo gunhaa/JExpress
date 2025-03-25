@@ -22,28 +22,34 @@ public class RequestCharacterParser implements Parser{
     public SimpleHttpRequest parsing(BufferedReader request) throws IOException {
         int ch;
 
-        // request.ready() 부분 문제 있음
-        while (request.ready() && (ch = request.read()) != -1) {
+        while ( simpleCharHttpRequestDTO.getContentLength() != 0
+                && (ch = request.read()) != -1) {
 
             logger.add((char) ch);
+
+            if(simpleCharHttpRequestDTO.isParsingBody()){
+                processHttpBody((char)ch);
+                continue;
+            }
 
             if(ch == '\r'){
                 continue;
             }
 
             if(ch == '\n'){
+
                 if(lineBuilder.isEmpty()){
-                    simpleCharHttpRequestDTO.setParsingHeaders(false);
-                    simpleCharHttpRequestDTO.setParsingBody(true);
+                    simpleCharHttpRequestDTO.updateRemainingBodyLength();
                 } else {
-                    processRequestLine(lineBuilder.toString());
+                    processHttpRequest(lineBuilder);
                 }
                 lineBuilder.setLength(0);
+
             } else {
                 lineBuilder.append((char) ch);
             }
-
         }
+
         if (simpleCharHttpRequestDTO.isParsingBody() && !lineBuilder.isEmpty()) {
             simpleCharHttpRequestDTO.addRequestBody(lineBuilder.toString());
         }
@@ -62,22 +68,24 @@ public class RequestCharacterParser implements Parser{
                 .build();
     }
 
-    private void processRequestLine(String line) {
+    private void processHttpRequest(StringBuilder line) {
         if (simpleCharHttpRequestDTO.isRequestLineParsed()) {
-            simpleCharHttpRequestDTO.parsingRequestLine(line);
-            simpleCharHttpRequestDTO.setRequestLineParsed(false);
-            simpleCharHttpRequestDTO.setParsingHeaders(true);
+            simpleCharHttpRequestDTO.addRequestLine(line.toString());
             return;
         }
 
         if (simpleCharHttpRequestDTO.isParsingHeaders()) {
-            simpleCharHttpRequestDTO.addHeader(line);
+            simpleCharHttpRequestDTO.addHeader(line.toString());
             return;
         }
 
         if (simpleCharHttpRequestDTO.isParsingBody()) {
-            simpleCharHttpRequestDTO.addRequestBody(line);
+            simpleCharHttpRequestDTO.addRequestBody(line.toString());
         }
+    }
+
+    private void processHttpBody(char c){
+        simpleCharHttpRequestDTO.addRequestBody(c);
     }
 
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 import simple.constant.HttpMethod;
 
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ public class SimpleCharHttpRequestDTO {
     private boolean requestLineParsed;
     private boolean parsingHeaders;
     private boolean parsingBody;
+    private int contentLength = -1;
 
     public SimpleCharHttpRequestDTO() {
         this.requestLineParsed = true;
@@ -36,36 +38,66 @@ public class SimpleCharHttpRequestDTO {
         this.header.put(splitLine[0], splitLine[1]);
     }
 
-    public void parsingRequestLine(String line){
+    public void addRequestLine(String line) {
         String[] request = line.split(" ");
         try {
             this.method = HttpMethod.valueOf(request[0]);
-        } catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             System.out.println("Invalid Http Method : " + request[0]);
             System.exit(1);
         }
 
         String[] url = request[1].split("\\?");
-        if(url.length == 1){
+        if (url.length == 1) {
             this.url = url[0];
         } else {
             this.url = url[0];
-            for(int i=1; i<url.length; i++){
+            for (int i = 1; i < url.length; i++) {
                 String[] splitQueryString = url[i].split("=");
                 this.queryString.put(splitQueryString[0], splitQueryString[1]);
             }
         }
 
         this.protocol = request[2];
+        this.requestLineParsed = false;
+        this.parsingHeaders = true;
     }
 
-    public void addRequestBody(String line){
+    public void updateRemainingBodyLength(){
+        this.parsingHeaders = false;
+        this.parsingBody = true;
+
+        String contentLength = this.getHeader().get("Content-Length");
+        if (contentLength != null) {
+            try {
+                this.contentLength = Integer.parseInt(contentLength);
+            } catch (NumberFormatException e) {
+                // error Logic
+                System.err.println("Content-Length Error");
+            }
+        } else {
+            this.contentLength = 0;
+        }
+    }
+
+    public void addRequestBody(String line) {
+        byte[] bytes = line.getBytes(StandardCharsets.UTF_8);
+        int length = bytes.length;
+        this.contentLength -= length;
         this.body.append(line);
     }
 
-    public void parsingJsonToMap(StringBuilder json){
+    public void addRequestBody(char c) {
+        byte[] bytes = Character.toString(c).getBytes(StandardCharsets.UTF_8);
+        int length = bytes.length;
+        this.contentLength -= length;
+        this.body.append(c);
+    }
+
+    public void parsingJsonToMap(StringBuilder json) {
         Gson gson = new Gson();
-        Type type = new TypeToken<Map<String, Object>>() {}.getType();
+        Type type = new TypeToken<Map<String, Object>>() {
+        }.getType();
         this.bodyMap = gson.fromJson(json.toString(), type);
     }
 }

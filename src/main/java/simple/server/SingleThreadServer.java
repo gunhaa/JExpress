@@ -33,7 +33,7 @@ public class SingleThreadServer implements Server {
                     BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))){
 
                     Logger logger = new SingleThreadRuntimeLogger();
-                    Parser requestParser = new RequestLineParser(logger);
+                    Parser requestParser = new RequestCharacterParser(logger);
                     SimpleHttpRequest simpleHttpRequest = requestParser.parsing(request);
 
 //                    if(simpleHttpRequest.isHandshake()){
