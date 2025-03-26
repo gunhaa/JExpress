@@ -1,6 +1,7 @@
 package simple.server;
 
 import simple.constant.ApplicationSetting;
+import simple.context.ApplicationContext;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.logger.SingleThreadRuntimeLogger;
 import simple.logger.Logger;
@@ -20,6 +21,7 @@ public class SingleThreadServer implements Server {
 
     private final HashMap<String, ResponseHandler> getMap = new HashMap<>();
     private final HashMap<String, Response> postMap = new HashMap<>();
+    private final ApplicationContext applicationContext = ApplicationContext.getInstance();
 
     @Override
     public void run(int port) throws IOException {
@@ -47,7 +49,7 @@ public class SingleThreadServer implements Server {
 
     @Override
     public void use(ApplicationSetting applicationSetting, boolean bool){
-
+        applicationContext.setContext(applicationSetting, bool);
     }
 
     @Override
