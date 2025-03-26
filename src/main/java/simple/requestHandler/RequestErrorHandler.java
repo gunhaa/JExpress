@@ -17,10 +17,9 @@ public class RequestErrorHandler implements RequestHandler {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
             Optional<ErrorStatus> optionalErrorStatus = Optional.ofNullable(simpleHttpRequest.getErrorQueue().peek());
-
             ErrorStatus errorStatus = optionalErrorStatus.orElse(ErrorStatus.getDefaultErrorStatus());
 
-            ResponseBuilder hb = new ResponseBuilder(simpleHttpRequest, errorStatus, simpleHttpRequest.getErrorQueue());
+            ResponseBuilder hb = new ResponseBuilder(simpleHttpRequest, simpleHttpRequest.getErrorQueue(), errorStatus);
             StringBuilder res = hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().body().getResponse();
             pw.print(res);
         }

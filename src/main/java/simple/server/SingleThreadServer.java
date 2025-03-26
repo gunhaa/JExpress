@@ -11,6 +11,7 @@ import simple.factory.RequestHandlerFactory;
 import simple.response.Response;
 import simple.response.ResponseError;
 import simple.response.ResponseSuccess;
+import simple.response.ResponseSuccessHandler;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -19,7 +20,7 @@ import java.util.HashMap;
 
 public class SingleThreadServer implements Server {
 
-    private final HashMap<String, Response> getMap = new HashMap<>();
+    private final HashMap<String, ResponseSuccessHandler> getMap = new HashMap<>();
     private final HashMap<String, Response> postMap = new HashMap<>();
 
     @Override
@@ -47,8 +48,8 @@ public class SingleThreadServer implements Server {
     }
 
     @Override
-    public void get(String URL, ResponseSuccess responseSuccess) {
-        getMap.put(URL, new Response(responseSuccess));
+    public void get(String URL, ResponseSuccessHandler responseSuccessHandler) {
+        getMap.put(URL, responseSuccessHandler);
     }
 
     @Override

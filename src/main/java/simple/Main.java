@@ -13,10 +13,14 @@ public class Main {
     public static void main(String[] args) throws IOException{
         Server app = new SingleThreadServer();
 
-        app.get(
-                "/members",
-                new ResponseSuccess(OK_200, new Member("gunha", 10))
-        );
+//        app.get(
+//                "/members",
+//                new ResponseSuccess(OK_200, new Member("gunha", 10))
+//        );
+
+//        app.get("/members" , (req, res) -> {
+//            String qs = req.getQueryString().get("id");
+//            res.send(new Member("gunha", 10)), OK_200);
 
         app.run(8020);
     }

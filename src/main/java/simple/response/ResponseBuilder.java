@@ -33,7 +33,14 @@ public class ResponseBuilder {
 
     private static final String DEFAULT_SERVER_NAME = "SimpREST/1.0";
 
-    public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, ErrorStatus errorStatus, Object entity) {
+    public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, Object entity) {
+        this.simpleHttpRequest = simpleHttpRequest;
+        this.entity = entity;
+        this.entityJson = gson.toJson(entity);
+        this.errorStatus = null;
+    }
+
+    public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, Object entity, ErrorStatus errorStatus) {
         this.simpleHttpRequest = simpleHttpRequest;
         this.errorStatus = errorStatus;
         this.entity = entity;

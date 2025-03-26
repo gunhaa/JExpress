@@ -16,7 +16,7 @@ public class RequestGetHandler implements RequestHandler{
     public void sendResponse(OutputStream outputStream,  Response userCustomResponse, SimpleHttpRequest simpleHttpRequest) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
             Object responseBody = userCustomResponse.getResponseSuccess().getEntity();
-            ResponseBuilder hb = new ResponseBuilder(simpleHttpRequest, null, responseBody);
+            ResponseBuilder hb = new ResponseBuilder(simpleHttpRequest, responseBody);
             StringBuilder response = hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().body().getResponse();
             pw.print(response);
         }
