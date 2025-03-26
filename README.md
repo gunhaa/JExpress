@@ -6,22 +6,13 @@
 
 ```java
         Server app = new SingleThreadServer();
-        // 간단하게 get 요청을 만들 수 있다
-        app.get("/members", new ResponseSuccess(OK_200, new Member("gunha", 10)), new ResponseError(BAD_REQUEST_400));
 
-                app.run(8020);
-```
-
-- 람다식으로 변경 예정
-
-```java
-        Server app = new SingleThreadServer();
-        // 간단하게 get 요청을 만들 수 있다
         app.get("/members" , (req, res) -> {
-            String qs = req.getQueryString().get("id");
-            res.send(new Member("gunha", 10)), OK_200);
-//            res.send(findById(Member.class, qs), OK_200);
+//            String qs = req.getQueryString().get("id");
+        res.send(new Member("gunha", 10));
         });
+
+        app.run(8020);
 ```
 
 ## Todo
@@ -33,6 +24,7 @@
   - orm을 이용한 response 반환 추가예정
 - ~~singleThread~~
 - multiThread
+- ~~람다식을 이용한 req,res handling~~
 - ~~httpRequest~~
 - ~~httpResponse~~
 
