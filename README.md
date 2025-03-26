@@ -12,6 +12,18 @@
                 app.run(8020);
 ```
 
+- 람다식으로 변경 예정
+
+```java
+        Server app = new SingleThreadServer();
+        // 간단하게 get 요청을 만들 수 있다
+        app.get("/members" , (req, res) -> {
+            String qs = req.getQueryString().get("id");
+            res.send(new Member("gunha", 10)), OK_200);
+//            res.send(findById(Member.class, qs), OK_200);
+        });
+```
+
 ## Todo
 
 - ~~readme~~

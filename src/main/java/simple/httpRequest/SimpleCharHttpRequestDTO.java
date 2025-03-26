@@ -28,7 +28,7 @@ public class SimpleCharHttpRequestDTO {
     private boolean parsingHeaders;
     private boolean parsingBody;
     private int contentLength;
-    private Queue<simple.httpRequest.ErrorStatus> errorQueue;
+    private Queue<ErrorStatus> errorQueue;
 
     public SimpleCharHttpRequestDTO() {
         this.requestLineParsed = true;
@@ -48,7 +48,6 @@ public class SimpleCharHttpRequestDTO {
         try {
             this.method = HttpMethod.valueOf(request[0]);
         } catch (IllegalArgumentException e) {
-            // error Logic
             System.err.println("Invalid Method Error");
             errorQueue.add(new simple.httpRequest.ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid Method Error"));
         }
@@ -79,7 +78,7 @@ public class SimpleCharHttpRequestDTO {
                 this.contentLength = Integer.parseInt(contentLength);
             } catch (NumberFormatException e) {
                 // error Logic
-                System.err.println("Content-Length Error");
+                System.err.println("Invalid Content-Length Error");
                 errorQueue.add(new simple.httpRequest.ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid Content-Length Error"));
             }
         } else {
