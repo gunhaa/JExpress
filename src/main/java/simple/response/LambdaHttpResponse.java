@@ -17,17 +17,7 @@ public class LambdaHttpResponse {
 
     public void send(Object responseBody){
             ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, responseBody);
-            StringBuilder response = responseBuilder
-                    .protocol()
-                    .httpStatus()
-                    .date()
-                    .contentType()
-                    .contentLength()
-                    .server()
-                    .connection()
-                    .crlf()
-                    .body()
-                    .getResponse();
+            StringBuilder response = responseBuilder.getDefaultResponse();
             pw.print(response);
     };
 }

@@ -118,4 +118,17 @@ public class ResponseBuilder {
     public StringBuilder getResponse() {
         return sb;
     }
+
+    public StringBuilder getDefaultResponse(){
+        return this.protocol()
+                .httpStatus()
+                .date()
+                .contentType()
+                .contentLength()
+                .server()
+                .connection()
+                .crlf()
+                .body()
+                .getResponse();
+    }
 }
