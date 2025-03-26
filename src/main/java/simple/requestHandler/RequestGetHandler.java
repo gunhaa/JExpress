@@ -1,8 +1,9 @@
 package simple.requestHandler;
 
+import simple.httpRequest.LambdaHttpRequest;
 import simple.httpRequest.SimpleHttpRequest;
-import simple.response.Response;
-import simple.response.ResponseBuilder;
+import simple.response.LambdaHttpResponse;
+import simple.response.ResponseHandler;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -13,12 +14,14 @@ public class RequestGetHandler implements RequestHandler{
     }
 
     @Override
-    public void sendResponse(OutputStream outputStream,  Response userCustomResponse, SimpleHttpRequest simpleHttpRequest) {
+    public void sendResponse(OutputStream outputStream, ResponseHandler responseHandler, SimpleHttpRequest simpleHttpRequest) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
-            Object responseBody = userCustomResponse.getResponseSuccess().getEntity();
-            ResponseBuilder hb = new ResponseBuilder(simpleHttpRequest, responseBody);
-            StringBuilder response = hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().body().getResponse();
-            pw.print(response);
+
+            LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(simpleHttpRequest);
+            LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(simpleHttpRequest, pw);
+
+            responseHandler.execute(lambdaHttpRequest, lambdaHttpResponse);
+
         }
     }
 }
