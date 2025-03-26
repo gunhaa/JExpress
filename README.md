@@ -1,15 +1,17 @@
 # SimpREST
 
-- 간단하게 REST API를 만들고 명세가 나오는 서버
+- 간단하게 REST API를 만들고 명세가 나오는 웹 프레임워크
 
 ## 사용법
 
 ```java
         Server app = new SingleThreadServer();
 
+        app.use(API_DOCS , true);
+
         app.get("/members" , (req, res) -> {
 //            String qs = req.getQueryString().get("id");
-        res.send(new Member("gunha", 10));
+            res.send(new Member("gunha", 10));
         });
 
         app.run(8020);
