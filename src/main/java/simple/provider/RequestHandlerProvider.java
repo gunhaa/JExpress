@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class RequestHandlerProvider {
 
-    private final Map<HttpMethod, RequestHandler> requestHandlers = new HashMap<>();
+    private static final Map<HttpMethod, RequestHandler> requestHandlers = new HashMap<>();
 
     private static final RequestHandlerProvider INSTANCE = new RequestHandlerProvider();
 
@@ -26,8 +26,18 @@ public class RequestHandlerProvider {
         if(!simpleHttpRequest.getErrorQueue().isEmpty()){
             return new RequestErrorHandler();
         }
+
+//        setHandlerBySettings(simpleHttpRequest);
+
         return requestHandlers.getOrDefault(simpleHttpRequest.getMethod(), new RequestErrorHandler());
     }
+
+//    @Deprecated
+//    private static void setHandlerBySettings(SimpleHttpRequest simpleHttpRequest){
+//        if(simpleHttpRequest.getUrl().startsWith("/api-docs")){
+//            requestHandlers.put(HttpMethod.GET, RequestStaticHandler.getInstance());
+//        }
+//    }
 
     public static RequestHandlerProvider getInstance(){
         return INSTANCE;

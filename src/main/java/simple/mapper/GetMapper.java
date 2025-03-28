@@ -31,13 +31,15 @@ public class GetMapper implements Mapper{
     }
 
     @Override
-    public String getUrl() {
-        return "";
+    @Deprecated
+    public ResponseHandler getUrl(String url) {
+        // 메소드 수정 필요
+        return getMap.get(url);
     }
 
     @Override
-    public ResponseHandler getHandler() {
-        return null;
+    public ResponseHandler getHandler(String url) {
+        return getMap.get(url);
     }
 
 

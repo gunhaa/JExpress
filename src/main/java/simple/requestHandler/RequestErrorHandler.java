@@ -3,7 +3,6 @@ package simple.requestHandler;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.response.ResponseBuilder;
-import simple.response.Response;
 import simple.response.ResponseHandler;
 
 import java.io.OutputStream;
@@ -21,7 +20,7 @@ public class RequestErrorHandler implements RequestHandler {
             ErrorStatus errorStatus = optionalErrorStatus.orElse(ErrorStatus.getDefaultErrorStatus());
 
             ResponseBuilder hb = new ResponseBuilder(simpleHttpRequest, simpleHttpRequest.getErrorQueue(), errorStatus);
-            StringBuilder res = hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().body().getResponse();
+            StringBuilder res = hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().jsonBody().getResponse();
             pw.print(res);
         }
     }

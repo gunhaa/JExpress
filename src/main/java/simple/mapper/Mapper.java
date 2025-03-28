@@ -5,7 +5,7 @@ import simple.response.ResponseHandler;
 
 public interface Mapper {
     HttpMethod getMethod();
-    String getUrl();
-    ResponseHandler getHandler();
+    ResponseHandler getUrl(String url);
+    ResponseHandler getHandler(String url);
     void addUrl(String URL, ResponseHandler responseSuccessHandler);
 }

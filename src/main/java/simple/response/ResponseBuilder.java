@@ -103,7 +103,7 @@ public class ResponseBuilder {
         return this;
     }
 
-    public ResponseBuilder body(){
+    public ResponseBuilder jsonBody(){
 
         if(errorStatus == null){
             sb.append(entityJson);
@@ -128,7 +128,7 @@ public class ResponseBuilder {
                 .server()
                 .connection()
                 .crlf()
-                .body()
+                .jsonBody()
                 .getResponse();
     }
 }

@@ -19,14 +19,16 @@ public class ApplicationContext {
 
     public static void initializeApplicationContext(){
         ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
-        List<ApplicationSetting> settingList = applicationConfig.getApplicationConfig();
-
         MiddlewareProvider middlewareProvider = MiddlewareProvider.getInstance();
-        for (ApplicationSetting applicationSetting : settingList) {
 
-            middlewareProvider.execute(applicationSetting);
-            System.out.println("설정된 applicationSetting : " + applicationSetting);
+        int config = applicationConfig.getApplicationConfig();
 
+        for (ApplicationSetting setting : ApplicationSetting.values()) {
+            if ((config & setting.getBit()) == setting.getBit()) {
+                middlewareProvider.execute(setting);
+                System.out.println("설정된 applicationSetting : " + setting);
+            }
         }
+
     }
 }

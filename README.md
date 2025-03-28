@@ -47,9 +47,10 @@ public class Main {
 - Dockerfile 
 - ~~dependency~~
 - orm
-  - orm을 이용한 response 반환 추가예정
 - ~~singleThread~~
 - multiThread
+- 미들웨어
+- config
 - ~~람다식을 이용한 req,res handling~~
 - ~~httpRequest~~
 - ~~httpResponse~~

@@ -7,8 +7,8 @@ import java.io.PrintWriter;
 
 public class LambdaHttpResponse {
 
-    private SimpleHttpRequest simpleHttpRequest;
-    private PrintWriter pw;
+    private final SimpleHttpRequest simpleHttpRequest;
+    private final PrintWriter pw;
 
     public LambdaHttpResponse(SimpleHttpRequest simpleHttpRequest, PrintWriter pw) {
         this.simpleHttpRequest = simpleHttpRequest;
@@ -16,8 +16,9 @@ public class LambdaHttpResponse {
     }
 
     public void send(Object responseBody){
-            ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, responseBody);
-            StringBuilder response = responseBuilder.getDefaultResponse();
-            pw.print(response);
+        ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, responseBody);
+        // config의 상태에 따라 사용 메서드 변경(cors, api-docs)
+        StringBuilder response = responseBuilder.getDefaultResponse();
+        pw.print(response);
     };
 }

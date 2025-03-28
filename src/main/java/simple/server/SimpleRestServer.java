@@ -80,7 +80,7 @@ public class SimpleRestServer implements Server {
                     RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
                     RequestHandler handler = requestHandlerProvider.getHandler(simpleHttpRequest);
 
-                    handler.sendResponse(clientSocket.getOutputStream() , getMap.get(simpleHttpRequest.getUrl()), simpleHttpRequest);
+                    handler.sendResponse(clientSocket.getOutputStream() , getMap.getHandler(simpleHttpRequest.getUrl()), simpleHttpRequest);
 
                     logger.print();
                 }
