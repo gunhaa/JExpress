@@ -12,6 +12,8 @@ public interface Server {
 
     void use(ApplicationSetting applicationSetting);
 
+//    void use(ApplicationSetting applicationSetting, int connectionPool);
+
     void get(String URL, ResponseHandler responseSuccessHandler);
 
     void post();

@@ -2,22 +2,24 @@ package simple;
 
 import simple.constant.ApplicationSetting;
 import simple.server.Server;
-import simple.server.SingleThreadServer;
+import simple.server.SimpleRestServer;
 import simple.tempEntity.Member;
-import simple.response.ResponseSuccess;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static simple.constant.ApplicationSetting.API_DOCS;
-import static simple.constant.HttpStatus.OK_200;
+import static simple.constant.ApplicationSetting.*;
 
 public class Main {
     public static void main(String[] args) throws IOException{
-        Server app = new SingleThreadServer();
+        Server app = new SimpleRestServer();
+        // Server app = new SimpleRestServer(15);
 
         app.use(API_DOCS);
+        app.use(RESPONSE_TIME);
+        app.use(GET_CACHE);
+//        app.use(THREAD_POOL, 50);
 
         app.get("/member" , (req, res) -> {
             // url = "/member?id=3"

@@ -1,15 +1,15 @@
 package simple.server;
 
+import simple.config.ServerConfig;
 import simple.constant.ApplicationSetting;
-import simple.context.ApplicationContext;
+import simple.context.ApplicationConfig;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.logger.SingleThreadRuntimeLogger;
 import simple.logger.Logger;
 import simple.parser.Parser;
 import simple.parser.RequestCharacterParser;
 import simple.requestHandler.RequestHandler;
-import simple.factory.RequestHandlerProvider;
-import simple.response.Response;
+import simple.provider.RequestHandlerProvider;
 import simple.response.ResponseHandler;
 
 import java.io.*;
@@ -17,11 +17,25 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-public class SingleThreadServer implements Server {
+public class SimpleRestServer implements Server {
 
     private final HashMap<String, ResponseHandler> getMap = new HashMap<>();
-    private final HashMap<String, Response> postMap = new HashMap<>();
-    private final ApplicationContext applicationContext = ApplicationContext.getInstance();
+    private final HashMap<String, ResponseHandler> postMap = new HashMap<>();
+    private final ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
+//    private final ServerConfig serverConfig = ServerConfig.getInstance();
+    private final int threadPool;
+
+    public SimpleRestServer() {
+        this.threadPool = 0;
+    }
+
+    public SimpleRestServer(int threadPool) {
+        if(threadPool<2){
+            this.threadPool = 0;
+        } else {
+            this.threadPool = threadPool;
+        }
+    }
 
     @Override
     public void run(int port) throws IOException {
@@ -35,10 +49,12 @@ public class SingleThreadServer implements Server {
 
                     Logger logger = new SingleThreadRuntimeLogger();
                     Parser requestParser = new RequestCharacterParser(logger);
+
                     SimpleHttpRequest simpleHttpRequest = requestParser.parsing(request);
 
                     RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
                     RequestHandler handler = requestHandlerProvider.getHandler(simpleHttpRequest);
+
                     handler.sendResponse(clientSocket.getOutputStream() , getMap.get(simpleHttpRequest.getUrl()), simpleHttpRequest);
 
                     logger.print();
@@ -49,8 +65,12 @@ public class SingleThreadServer implements Server {
 
     @Override
     public void use(ApplicationSetting applicationSetting){
-        applicationContext.setContext(applicationSetting);
+        applicationConfig.setConfig(applicationSetting);
     }
+
+//    @Override
+//    public void use(ApplicationSetting applicationSetting, int connectionPool){
+//    }
 
     @Override
     public void get(String URL, ResponseHandler responseSuccessHandler) {

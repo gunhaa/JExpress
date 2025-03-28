@@ -1,4 +1,4 @@
-package simple.factory;
+package simple.provider;
 
 import simple.constant.HttpMethod;
 import simple.httpRequest.SimpleHttpRequest;
