@@ -18,8 +18,8 @@ public class Main {
         // Server app = new SimpleRestServer(15);
 
         app.use(API_DOCS);
-        app.use(RESPONSE_TIME);
-        app.use(GET_CACHE);
+//        app.use(RESPONSE_TIME);
+//        app.use(GET_CACHE);
 
         app.get("/member" , (req, res) -> {
             // url = "/member?id=3"

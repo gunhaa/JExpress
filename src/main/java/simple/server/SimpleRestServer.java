@@ -3,7 +3,7 @@ package simple.server;
 import simple.constant.ApplicationSetting;
 import simple.context.ApplicationConfig;
 import simple.httpRequest.SimpleHttpRequest;
-import simple.logger.SingleThreadRuntimeLogger;
+import simple.logger.RuntimeLogger;
 import simple.logger.Logger;
 import simple.parser.Parser;
 import simple.parser.RequestCharacterParser;
@@ -70,7 +70,7 @@ public class SimpleRestServer implements Server {
                     InputStream clientInputStream = clientSocket.getInputStream();
                     BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))){
 
-                    Logger logger = new SingleThreadRuntimeLogger();
+                    Logger logger = new RuntimeLogger();
                     Parser requestParser = new RequestCharacterParser(logger);
 
                     SimpleHttpRequest simpleHttpRequest = requestParser.parsing(request);

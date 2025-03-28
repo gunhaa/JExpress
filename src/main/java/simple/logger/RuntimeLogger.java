@@ -1,7 +1,7 @@
 package simple.logger;
 
 
-public class SingleThreadRuntimeLogger implements Logger{
+public class RuntimeLogger implements Logger{
 
     private final StringBuilder log = new StringBuilder();
 
