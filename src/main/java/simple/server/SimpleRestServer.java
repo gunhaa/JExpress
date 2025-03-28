@@ -1,6 +1,5 @@
 package simple.server;
 
-import simple.config.ServerConfig;
 import simple.constant.ApplicationSetting;
 import simple.context.ApplicationConfig;
 import simple.httpRequest.SimpleHttpRequest;
@@ -8,6 +7,7 @@ import simple.logger.SingleThreadRuntimeLogger;
 import simple.logger.Logger;
 import simple.parser.Parser;
 import simple.parser.RequestCharacterParser;
+import simple.context.ApplicationContext;
 import simple.requestHandler.RequestHandler;
 import simple.provider.RequestHandlerProvider;
 import simple.response.ResponseHandler;
@@ -22,6 +22,7 @@ public class SimpleRestServer implements Server {
     private final HashMap<String, ResponseHandler> getMap = new HashMap<>();
     private final HashMap<String, ResponseHandler> postMap = new HashMap<>();
     private final ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
+    private final ApplicationContext applicationContext = ApplicationContext.getInstance();
 //    private final ServerConfig serverConfig = ServerConfig.getInstance();
     private final int threadPool;
 
@@ -38,7 +39,29 @@ public class SimpleRestServer implements Server {
     }
 
     @Override
+    public void use(ApplicationSetting applicationSetting){
+        applicationConfig.setConfig(applicationSetting);
+    }
+
+//    @Override
+//    public void use(ApplicationSetting applicationSetting, int connectionPool){
+//    }
+
+    @Override
+    public void get(String URL, ResponseHandler responseSuccessHandler) {
+        getMap.put(URL, responseSuccessHandler);
+    }
+
+    @Override
+    public void post() {
+//        getMap.put(URL, new Response(responseSuccess, responseError));
+    }
+
+    @Override
     public void run(int port) throws IOException {
+
+        ApplicationContext.initializeApplicationContext();
+
         System.out.println("single thread server run on port : " + port);
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
@@ -63,23 +86,5 @@ public class SimpleRestServer implements Server {
         }
     }
 
-    @Override
-    public void use(ApplicationSetting applicationSetting){
-        applicationConfig.setConfig(applicationSetting);
-    }
-
-//    @Override
-//    public void use(ApplicationSetting applicationSetting, int connectionPool){
-//    }
-
-    @Override
-    public void get(String URL, ResponseHandler responseSuccessHandler) {
-        getMap.put(URL, responseSuccessHandler);
-    }
-
-    @Override
-    public void post() {
-//        getMap.put(URL, new Response(responseSuccess, responseError));
-    }
 
 }

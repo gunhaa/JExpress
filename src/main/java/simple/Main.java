@@ -14,12 +14,12 @@ import static simple.constant.ApplicationSetting.*;
 public class Main {
     public static void main(String[] args) throws IOException{
         Server app = new SimpleRestServer();
+        // threadPool을 이용한 서버 생성방법
         // Server app = new SimpleRestServer(15);
 
         app.use(API_DOCS);
         app.use(RESPONSE_TIME);
         app.use(GET_CACHE);
-//        app.use(THREAD_POOL, 50);
 
         app.get("/member" , (req, res) -> {
             // url = "/member?id=3"

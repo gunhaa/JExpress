@@ -8,7 +8,7 @@ import java.util.List;
 public class ApplicationConfig {
 
     private static final ApplicationConfig INSTANCE = new ApplicationConfig();
-    private final List<ApplicationSetting> applicationContext = new ArrayList<>();
+    private final List<ApplicationSetting> applicationConfig = new ArrayList<>();
 
     private ApplicationConfig(){}
 
@@ -17,6 +17,10 @@ public class ApplicationConfig {
     }
 
     public void setConfig(ApplicationSetting applicationSetting){
-        applicationContext.add(applicationSetting);
+        applicationConfig.add(applicationSetting);
+    }
+
+    public List<ApplicationSetting> getApplicationConfig(){
+        return applicationConfig;
     }
 }
