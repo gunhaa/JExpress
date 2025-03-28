@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class RequestHandlerFactory {
+public class RequestHandlerProvider {
 
     private final Map<HttpMethod, RequestHandler> requestHandlers = new HashMap<>();
 
-    private static final RequestHandlerFactory INSTANCE = new RequestHandlerFactory();
+    private static final RequestHandlerProvider INSTANCE = new RequestHandlerProvider();
 
-    private RequestHandlerFactory() {
+    private RequestHandlerProvider() {
         requestHandlers.put(HttpMethod.GET, RequestGetHandler.getInstance());
         requestHandlers.put(HttpMethod.POST, RequestPostHandler.getInstance());
         requestHandlers.put(HttpMethod.PUT, RequestPutHandler.getInstance());
@@ -29,7 +29,7 @@ public class RequestHandlerFactory {
         return requestHandlers.getOrDefault(simpleHttpRequest.getMethod(), new RequestErrorHandler());
     }
 
-    public static RequestHandlerFactory getInstance(){
+    public static RequestHandlerProvider getInstance(){
         return INSTANCE;
     }
 }

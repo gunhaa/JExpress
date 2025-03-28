@@ -8,7 +8,7 @@ import simple.logger.Logger;
 import simple.parser.Parser;
 import simple.parser.RequestCharacterParser;
 import simple.requestHandler.RequestHandler;
-import simple.factory.RequestHandlerFactory;
+import simple.factory.RequestHandlerProvider;
 import simple.response.Response;
 import simple.response.ResponseHandler;
 
@@ -37,8 +37,8 @@ public class SingleThreadServer implements Server {
                     Parser requestParser = new RequestCharacterParser(logger);
                     SimpleHttpRequest simpleHttpRequest = requestParser.parsing(request);
 
-                    RequestHandlerFactory requestHandlerFactory = RequestHandlerFactory.getInstance();
-                    RequestHandler handler = requestHandlerFactory.getHandler(simpleHttpRequest);
+                    RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
+                    RequestHandler handler = requestHandlerProvider.getHandler(simpleHttpRequest);
                     handler.sendResponse(clientSocket.getOutputStream() , getMap.get(simpleHttpRequest.getUrl()), simpleHttpRequest);
 
                     logger.print();
