@@ -5,6 +5,8 @@ import simple.context.ApplicationConfig;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.logger.RuntimeLogger;
 import simple.logger.Logger;
+import simple.mapper.GetMapper;
+import simple.mapper.Mapper;
 import simple.parser.Parser;
 import simple.parser.RequestCharacterParser;
 import simple.context.ApplicationContext;
@@ -19,8 +21,8 @@ import java.util.HashMap;
 
 public class SimpleRestServer implements Server {
 
-    private final HashMap<String, ResponseHandler> getMap = new HashMap<>();
-    private final HashMap<String, ResponseHandler> postMap = new HashMap<>();
+    private final Mapper getMap = GetMapper.getInstance();
+//    private final HashMap<String, ResponseHandler> postMap = new HashMap<>();
     private final ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
     private final ApplicationContext applicationContext = ApplicationContext.getInstance();
 //    private final ServerConfig serverConfig = ServerConfig.getInstance();
@@ -49,7 +51,7 @@ public class SimpleRestServer implements Server {
 
     @Override
     public void get(String URL, ResponseHandler responseSuccessHandler) {
-        getMap.put(URL, responseSuccessHandler);
+        getMap.addUrl(URL, responseSuccessHandler);
     }
 
     @Override
