@@ -48,8 +48,8 @@ public class SingleThreadServer implements Server {
     }
 
     @Override
-    public void use(ApplicationSetting applicationSetting, boolean bool){
-        applicationContext.setContext(applicationSetting, bool);
+    public void use(ApplicationSetting applicationSetting){
+        applicationContext.setContext(applicationSetting);
     }
 
     @Override

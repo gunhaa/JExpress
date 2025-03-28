@@ -15,10 +15,10 @@ public class RequestHandlerFactory {
     private static final RequestHandlerFactory INSTANCE = new RequestHandlerFactory();
 
     private RequestHandlerFactory() {
-        requestHandlers.put(HttpMethod.GET, new RequestGetHandler());
-        requestHandlers.put(HttpMethod.POST, new RequestPostHandler());
-        requestHandlers.put(HttpMethod.PUT, new RequestPutHandler());
-        requestHandlers.put(HttpMethod.DELETE, new RequestDeleteHandler());
+        requestHandlers.put(HttpMethod.GET, RequestGetHandler.getInstance());
+        requestHandlers.put(HttpMethod.POST, RequestPostHandler.getInstance());
+        requestHandlers.put(HttpMethod.PUT, RequestPutHandler.getInstance());
+        requestHandlers.put(HttpMethod.DELETE, RequestDeleteHandler.getInstance());
     }
 
     public RequestHandler getHandler(SimpleHttpRequest simpleHttpRequest){

@@ -10,7 +10,7 @@ public interface Server {
 
     void run(int port) throws IOException;
 
-    void use(ApplicationSetting applicationSetting, boolean bool);
+    void use(ApplicationSetting applicationSetting);
 
     void get(String URL, ResponseHandler responseSuccessHandler);
 

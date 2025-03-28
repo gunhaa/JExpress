@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) throws IOException{
         Server app = new SingleThreadServer();
 
-        app.use(API_DOCS , true);
+        app.use(API_DOCS);
 
         app.get("/member" , (req, res) -> {
             // url = "/member?id=3"

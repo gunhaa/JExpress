@@ -4,7 +4,7 @@ import simple.constant.ApplicationSetting;
 
 import java.util.HashMap;
 
-public class ApplicationContext {
+public class ApplicationContext{
 
     private static final ApplicationContext instance = new ApplicationContext();
     private final HashMap<ApplicationSetting, Boolean> applicationContext = new HashMap<>();
@@ -19,7 +19,7 @@ public class ApplicationContext {
         return instance;
     }
 
-    public void setContext(ApplicationSetting applicationSetting, boolean bool){
-        applicationContext.put(applicationSetting, bool);
+    public void setContext(ApplicationSetting applicationSetting){
+        applicationContext.put(applicationSetting, true);
     }
 }

@@ -2,5 +2,7 @@ package simple.constant;
 
 public enum ApplicationSetting {
     API_DOCS,
-    ResponseTime
+    RESPONSE_TIME,
+    GET_CACHE
 }
+

@@ -10,8 +10,13 @@ import java.io.PrintWriter;
 
 public class RequestGetHandler implements RequestHandler{
 
-    public RequestGetHandler() {
+    private static final RequestHandler INSTANCE = new RequestGetHandler();
+
+    public static RequestHandler getInstance(){
+        return INSTANCE;
     }
+
+    private RequestGetHandler() {}
 
     @Override
     public void sendResponse(OutputStream outputStream, ResponseHandler responseHandler, SimpleHttpRequest simpleHttpRequest) {
