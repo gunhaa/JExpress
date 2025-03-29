@@ -3,7 +3,6 @@ package simple.response;
 import com.google.gson.Gson;
 import simple.constant.HttpMethod;
 import simple.constant.HttpStatus;
-import simple.config.ApplicationConfig;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.middleware.Cors;
@@ -116,7 +115,9 @@ public class ResponseBuilder {
             sb.append(entityJson);
             return this;
         } else {
-            sb.append(errorStatus.getMessage());
+            System.out.println("here status" + errorStatus.getHttpStatus());
+            System.out.println("here message" +errorStatus.getMessage());
+            sb.append(gson.toJson((Object) errorStatus));
             return this;
         }
 
@@ -136,4 +137,10 @@ public class ResponseBuilder {
                 .server()
                 .connection();
     }
+
+//    public ResponseBuilder getErrorResponse(){
+//        return this.protocol()
+//                .httpStatus()
+//                .date()
+//    }
 }

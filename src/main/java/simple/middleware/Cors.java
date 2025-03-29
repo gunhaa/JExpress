@@ -46,6 +46,6 @@ public class Cors implements Middleware{
 
     @Override
     public void run() {
-        System.out.println("Cors 미들웨어 실행.. 메소드 작성");
+        System.out.println("Cors 미들웨어 실행..");
     }
 }
