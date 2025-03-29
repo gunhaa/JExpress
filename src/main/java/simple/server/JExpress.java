@@ -3,7 +3,7 @@ package simple.server;
 import simple.constant.ApplicationSetting;
 import simple.config.ApplicationConfig;
 import simple.httpRequest.SimpleHttpRequest;
-import simple.logger.RuntimeLogger;
+import simple.logger.RequestLogger;
 import simple.logger.Logger;
 import simple.mapper.GetMapper;
 import simple.mapper.Mapper;
@@ -73,7 +73,7 @@ public class JExpress implements Server {
                     InputStream clientInputStream = clientSocket.getInputStream();
                     BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))){
 
-                    Logger logger = new RuntimeLogger();
+                    Logger logger = new RequestLogger();
                     Parser requestParser = new RequestCharacterParser(logger);
 
                     SimpleHttpRequest simpleHttpRequest = requestParser.parsing(request);

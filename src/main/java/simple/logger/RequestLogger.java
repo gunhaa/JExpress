@@ -1,7 +1,7 @@
 package simple.logger;
 
 
-public class RuntimeLogger implements Logger{
+public class RequestLogger implements Logger{
 
     private final StringBuilder log = new StringBuilder();
 

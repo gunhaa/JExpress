@@ -23,7 +23,7 @@ public enum ApplicationSetting {
         return (bitMask & CORS.bitMask) != 0;
     }
 
-    public boolean isEnabled(int config){
+    public boolean isSettingEnabled(int config){
         return (bitMask & config) != 0;
     }
 

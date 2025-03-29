@@ -2,6 +2,7 @@ package simple.middleware;
 
 import simple.config.ApplicationConfig;
 import simple.constant.ApplicationSetting;
+import simple.constant.ServerSettingChecker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,18 +33,11 @@ public class Cors implements Middleware{
     }
 
     public void registerCorsValue(ApplicationSetting applicationSetting, String option){
-        ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
-        int config = applicationConfig.getConfig();
-
-        if(validConfig(config, applicationSetting)){
+        if(ServerSettingChecker.isServerEnabled(applicationSetting)){
             corsMap.put(applicationSetting.getBit(), option);
         } else {
             System.err.println("cors 관련 오류 발생");
         }
-    }
-
-    private boolean validConfig(int config, ApplicationSetting applicationSetting) {
-        return applicationSetting.isEnabled(config);
     }
 
     public String getCors(){

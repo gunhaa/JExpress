@@ -24,12 +24,12 @@ public class LambdaHttpResponse {
         ResponseBuilder responseBuilding = responseBuilder.getDefaultResponse();
 
         int config = ApplicationConfig.getInstance().getConfig();
-        if(API_DOCS.isEnabled(config)) {
+        if(API_DOCS.isSettingEnabled(config)) {
             //API_DOCS 로직, 추가 위치
 //            responseBuilding.cors();
         }
 
-        if(CORS.isEnabled(config)){
+        if(CORS.isSettingEnabled(config)){
             System.out.println("이곳 잘 실행됨.. enabled 통과됨");
             responseBuilding.cors();
         }
