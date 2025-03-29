@@ -7,6 +7,7 @@ import simple.logger.RuntimeLogger;
 import simple.logger.Logger;
 import simple.mapper.GetMapper;
 import simple.mapper.Mapper;
+import simple.middleware.Cors;
 import simple.parser.Parser;
 import simple.parser.RequestCharacterParser;
 import simple.context.ApplicationContext;
@@ -18,18 +19,19 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class SimpleRestServer implements Server {
+public class JExpress implements Server {
 
     private final Mapper getMap = GetMapper.getInstance();
 //    private final HashMap<String, ResponseHandler> postMap = new HashMap<>();
     private final ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
+    private final Cors cors = Cors.getInstance();
     private final int threadPool;
 
-    public SimpleRestServer() {
+    public JExpress() {
         this.threadPool = 0;
     }
 
-    public SimpleRestServer(int threadPool) {
+    public JExpress(int threadPool) {
         if(threadPool<2){
             this.threadPool = 0;
         } else {
@@ -44,7 +46,7 @@ public class SimpleRestServer implements Server {
 
     @Override
     public void use(ApplicationSetting applicationSetting, String option){
-        applicationConfig.registerConfig(applicationSetting, option);
+        cors.registerCorsValue(applicationSetting, option);
     }
 
     @Override

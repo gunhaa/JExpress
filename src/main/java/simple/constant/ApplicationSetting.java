@@ -20,7 +20,7 @@ public enum ApplicationSetting {
     }
 
     public boolean isEnabled(int config){
-        return (bitMask & config) == 1;
+        return (bitMask & config) != 0;
     }
 }
 

@@ -1,7 +1,7 @@
 package simple;
 
 import simple.server.Server;
-import simple.server.SimpleRestServer;
+import simple.server.JExpress;
 import simple.tempEntity.Member;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import static simple.constant.ApplicationSetting.*;
 
 public class Main {
     public static void main(String[] args) throws IOException{
-        Server app = new SimpleRestServer();
+        Server app = new JExpress();
         // threadPool을 이용한 서버 생성방법
         // Server app = new SimpleRestServer(15);
 

@@ -25,7 +25,12 @@ public class LambdaHttpResponse {
 
         int config = ApplicationConfig.getInstance().getConfig();
         if(API_DOCS.isEnabled(config)) {
-            System.out.println("config : "+config);
+            //API_DOCS 로직, 추가 위치
+//            responseBuilding.cors();
+        }
+
+        if(CORS.isEnabled(config)){
+            System.out.println("이곳 잘 실행됨.. enabled 통과됨");
             responseBuilding.cors();
         }
 

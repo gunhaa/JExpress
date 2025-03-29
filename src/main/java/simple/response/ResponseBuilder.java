@@ -6,6 +6,7 @@ import simple.constant.HttpStatus;
 import simple.config.ApplicationConfig;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
+import simple.middleware.Cors;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,8 +48,9 @@ public class ResponseBuilder {
     }
 
     public ResponseBuilder cors(){
-        String cors = ApplicationConfig.getInstance().getCors();
-        sb.append(cors).append(" ");
+        String corsValue = Cors.getInstance().getCors();
+        sb.append(FIELD_CORS).append(corsValue).append(CRLF);
+        System.out.println("cors추가.. : " + corsValue);
         return this;
     }
 
@@ -121,6 +123,7 @@ public class ResponseBuilder {
     }
 
     public StringBuilder getResponse() {
+        this.crlf().jsonBody();
         return sb;
     }
 
@@ -131,8 +134,6 @@ public class ResponseBuilder {
                 .contentType()
                 .contentLength()
                 .server()
-                .connection()
-                .crlf()
-                .jsonBody();
+                .connection();
     }
 }
