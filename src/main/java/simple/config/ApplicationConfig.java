@@ -1,4 +1,4 @@
-package simple.context;
+package simple.config;
 
 import simple.constant.ApplicationSetting;
 
@@ -20,7 +20,7 @@ public class ApplicationConfig {
         return INSTANCE;
     }
 
-    public static int getConfig(){
+    public int getConfig(){
         return INSTANCE.getApplicationConfig();
     }
 

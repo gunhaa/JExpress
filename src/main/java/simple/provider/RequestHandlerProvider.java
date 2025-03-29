@@ -1,7 +1,7 @@
 package simple.provider;
 
 import simple.constant.HttpMethod;
-import simple.context.ApplicationConfig;
+import simple.config.ApplicationConfig;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.requestHandler.*;
 
@@ -29,7 +29,7 @@ public class RequestHandlerProvider {
             return new RequestErrorHandler();
         }
 
-        int config = ApplicationConfig.getConfig();
+        int config = ApplicationConfig.getInstance().getConfig();
 
 //        if(ApplicationSetting.API_DOCS.isEnabled(config.getApplicationConfig())) && URL이 api-docs 라면){
 //            System.out.println("설정이 켜진체 요청이 왔음");

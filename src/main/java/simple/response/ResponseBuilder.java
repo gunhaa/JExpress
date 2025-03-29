@@ -3,6 +3,7 @@ package simple.response;
 import com.google.gson.Gson;
 import simple.constant.HttpMethod;
 import simple.constant.HttpStatus;
+import simple.config.ApplicationConfig;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
 
@@ -46,8 +47,8 @@ public class ResponseBuilder {
     }
 
     public ResponseBuilder cors(){
-//        String cors = simpleHttpRequest.getProtocol();
-//        sb.append(cors).append(" ");
+        String cors = ApplicationConfig.getInstance().getCors();
+        sb.append(cors).append(" ");
         return this;
     }
 
@@ -123,7 +124,7 @@ public class ResponseBuilder {
         return sb;
     }
 
-    public StringBuilder getDefaultResponse(){
+    public ResponseBuilder getDefaultResponse(){
         return this.protocol()
                 .httpStatus()
                 .date()
@@ -132,7 +133,6 @@ public class ResponseBuilder {
                 .server()
                 .connection()
                 .crlf()
-                .jsonBody()
-                .getResponse();
+                .jsonBody();
     }
 }

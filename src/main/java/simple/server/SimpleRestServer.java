@@ -1,7 +1,7 @@
 package simple.server;
 
 import simple.constant.ApplicationSetting;
-import simple.context.ApplicationConfig;
+import simple.config.ApplicationConfig;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.logger.RuntimeLogger;
 import simple.logger.Logger;

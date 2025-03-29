@@ -1,6 +1,7 @@
 package simple.context;
 
 
+import simple.config.ApplicationConfig;
 import simple.constant.ApplicationSetting;
 import simple.middleware.MiddlewareProvider;
 
@@ -18,7 +19,7 @@ public class ApplicationContext {
     public static void initializeApplicationContext(){
         MiddlewareProvider middlewareProvider = MiddlewareProvider.getInstance();
 
-        int config = ApplicationConfig.getConfig();
+        int config = ApplicationConfig.getInstance().getConfig();
 
         for (ApplicationSetting setting : ApplicationSetting.values()) {
             if ((config & setting.getBit()) == setting.getBit()) {
