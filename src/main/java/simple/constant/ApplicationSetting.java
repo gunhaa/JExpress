@@ -19,8 +19,17 @@ public enum ApplicationSetting {
         return bitMask;
     }
 
+    public boolean isCors(){
+        return (bitMask & CORS.bitMask) != 0;
+    }
+
     public boolean isEnabled(int config){
         return (bitMask & config) != 0;
+    }
+
+    public static void main(String[] args) {
+        ApplicationSetting temp = CORS;
+        System.out.println(temp.isCors());
     }
 }
 

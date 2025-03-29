@@ -33,20 +33,12 @@ public class Cors implements Middleware{
 
     public void registerCorsValue(ApplicationSetting applicationSetting, String option){
         ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
-
-        applicationConfig.registerConfig(applicationSetting);
         int config = applicationConfig.getConfig();
 
         if(validConfig(config, applicationSetting)){
             corsMap.put(applicationSetting.getBit(), option);
-//            System.out.println("config는 : " + config);
-//            System.out.println("cors 잘 추가됨, 비트는 " + applicationSetting.getBit() );
-//            System.out.println("cors 잘 추가됨, option은 " + option );
         } else {
             System.err.println("cors 관련 오류 발생");
-//            System.err.println("config는 : " + config);
-//            System.err.println("cors 오류, 비트는 " + applicationSetting.getBit() );
-//            System.err.println("cors 오류, option은 " + option );
         }
     }
 

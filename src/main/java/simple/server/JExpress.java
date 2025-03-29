@@ -46,6 +46,7 @@ public class JExpress implements Server {
 
     @Override
     public void use(ApplicationSetting applicationSetting, String option){
+        applicationConfig.registerConfig(applicationSetting);
         cors.registerCorsValue(applicationSetting, option);
     }
 
@@ -64,7 +65,7 @@ public class JExpress implements Server {
 
         ApplicationContext.initializeApplicationContext();
 
-        System.out.println("single thread server run on port : " + port);
+        System.out.println("server port : " + port);
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
 

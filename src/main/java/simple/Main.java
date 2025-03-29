@@ -14,10 +14,11 @@ public class Main {
     public static void main(String[] args) throws IOException{
         Server app = new JExpress();
         // threadPool을 이용한 서버 생성방법
-        // Server app = new SimpleRestServer(15);
+        // Server app = new JExpress(15);
 
         app.use(API_DOCS);
-        app.use(CORS, "https://bitlibrary.com");
+        app.use(CORS);
+//        app.use(CORS, "https://bitlibrary.com");
 //        app.use(RESPONSE_TIME);
 //        app.use(GET_CACHE);
 
