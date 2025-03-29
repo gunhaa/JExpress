@@ -12,7 +12,7 @@ public interface Server {
 
     void use(ApplicationSetting applicationSetting);
 
-//    void use(ApplicationSetting applicationSetting, int connectionPool);
+    void use(ApplicationSetting applicationSetting, String option);
 
     void get(String URL, ResponseHandler responseSuccessHandler);
 

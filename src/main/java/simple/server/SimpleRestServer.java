@@ -17,15 +17,12 @@ import simple.response.ResponseHandler;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 
 public class SimpleRestServer implements Server {
 
     private final Mapper getMap = GetMapper.getInstance();
 //    private final HashMap<String, ResponseHandler> postMap = new HashMap<>();
     private final ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
-    private final ApplicationContext applicationContext = ApplicationContext.getInstance();
-//    private final ServerConfig serverConfig = ServerConfig.getInstance();
     private final int threadPool;
 
     public SimpleRestServer() {
@@ -42,12 +39,13 @@ public class SimpleRestServer implements Server {
 
     @Override
     public void use(ApplicationSetting applicationSetting){
-        applicationConfig.setConfig(applicationSetting);
+        applicationConfig.registerConfig(applicationSetting);
     }
 
-//    @Override
-//    public void use(ApplicationSetting applicationSetting, int connectionPool){
-//    }
+    @Override
+    public void use(ApplicationSetting applicationSetting, String option){
+        applicationConfig.registerConfig(applicationSetting, option);
+    }
 
     @Override
     public void get(String URL, ResponseHandler responseSuccessHandler) {

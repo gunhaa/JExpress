@@ -7,7 +7,7 @@ public class ServerConfig {
 
     private boolean isSingleThread;
     private int threadPool;
-    private static final ServerConfig INSTANCE = new ServerConfig(ApplicationConfig.getInstance());
+    private static final ServerConfig INSTANCE = new ServerConfig(ApplicationConfig.getConfig());
 
     private ServerConfig(ApplicationConfig applicationConfig) {
         loadConfig(applicationConfig);

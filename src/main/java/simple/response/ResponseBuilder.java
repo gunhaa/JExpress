@@ -16,7 +16,6 @@ public class ResponseBuilder {
     private final SimpleHttpRequest simpleHttpRequest;
     private final ErrorStatus errorStatus;
     private final Gson gson = new Gson();
-    private final Object entity;
     private final String entityJson;
 
 
@@ -27,6 +26,7 @@ public class ResponseBuilder {
     private static final String FIELD_CONTENT_TYPE = "Content-Type: ";
     private static final String FIELD_CONTENT_LENGTH = "Content-Length: ";
     private static final String FIELD_CONNECTION = "Connection: ";
+    private static final String FIELD_CORS = "Access-Control-Allow-Origin: ";
 
     private static final String VALUE_CONTENT_TYPE = "text/html; charset=UTF-8";
     private static final String VALUE_CONNECTION_CLOSED = "close";
@@ -35,7 +35,6 @@ public class ResponseBuilder {
 
     public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, Object entity) {
         this.simpleHttpRequest = simpleHttpRequest;
-        this.entity = entity;
         this.entityJson = gson.toJson(entity);
         this.errorStatus = null;
     }
@@ -43,8 +42,13 @@ public class ResponseBuilder {
     public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, Object entity, ErrorStatus errorStatus) {
         this.simpleHttpRequest = simpleHttpRequest;
         this.errorStatus = errorStatus;
-        this.entity = entity;
         this.entityJson = gson.toJson(entity);
+    }
+
+    public ResponseBuilder cors(){
+//        String cors = simpleHttpRequest.getProtocol();
+//        sb.append(cors).append(" ");
+        return this;
     }
 
     public ResponseBuilder protocol(){

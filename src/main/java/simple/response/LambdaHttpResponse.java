@@ -1,7 +1,6 @@
 package simple.response;
 
 import simple.constant.ApplicationSetting;
-import simple.constant.HttpStatus;
 import simple.context.ApplicationConfig;
 import simple.httpRequest.SimpleHttpRequest;
 
@@ -21,11 +20,11 @@ public class LambdaHttpResponse {
         ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, responseBody);
         // config의 상태에 따라 사용 메서드 변경(cors, api-docs)
 
-        ApplicationConfig config = ApplicationConfig.getInstance();
+        int config = ApplicationConfig.getConfig();
 
-        if(ApplicationSetting.API_DOCS.isEnabled(config.getApplicationConfig())) {
+        if(ApplicationSetting.API_DOCS.isEnabled(config)) {
             System.out.println("Config 상태에 따른 메서드 선택 예정");
-            System.out.println("config : "+config.getApplicationConfig());
+            System.out.println("config : "+config);
         }
 
         StringBuilder response = responseBuilder.getDefaultResponse();
