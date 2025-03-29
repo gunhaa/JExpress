@@ -1,6 +1,6 @@
-# SimpREST
+# JExpress
 
-- 간단하게 REST API를 만들고 명세가 나오는 웹 프레임워크
+- RESTful API를 만들수 있는 웹 프레임워크
 
 ## 사용예제
 
@@ -8,9 +8,14 @@
 
 public class Main {
   public static void main(String[] args) throws IOException{
-    Server app = new SingleThreadServer();
+    Server app = new SimpleRestServer();
+    // threadPool을 이용한 서버 생성방법
+    // Server app = new SimpleRestServer(15);
 
-    app.use(API_DOCS , true);
+    app.use(API_DOCS);
+    app.use(CORS);
+//        app.use(RESPONSE_TIME);
+//        app.use(GET_CACHE);
 
     app.get("/member" , (req, res) -> {
       // url = "/member?id=3"

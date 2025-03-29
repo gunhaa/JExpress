@@ -1,6 +1,5 @@
 package simple;
 
-import simple.constant.ApplicationSetting;
 import simple.server.Server;
 import simple.server.SimpleRestServer;
 import simple.tempEntity.Member;
@@ -18,7 +17,7 @@ public class Main {
         // Server app = new SimpleRestServer(15);
 
         app.use(API_DOCS);
-        app.use(CORS);
+        app.use(CORS, "https://bitlibrary.com");
 //        app.use(RESPONSE_TIME);
 //        app.use(GET_CACHE);
 

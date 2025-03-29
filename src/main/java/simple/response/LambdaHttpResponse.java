@@ -21,14 +21,15 @@ public class LambdaHttpResponse {
         ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, responseBody);
         // config의 상태에 따라 사용 메서드 변경(cors, api-docs)
 
-        int config = ApplicationConfig.getInstance().getConfig();
+        ResponseBuilder responseBuilding = responseBuilder.getDefaultResponse();
 
+        int config = ApplicationConfig.getInstance().getConfig();
         if(API_DOCS.isEnabled(config)) {
-            System.out.println("Config 상태에 따른 메서드 선택 예정");
             System.out.println("config : "+config);
+            responseBuilding.cors();
         }
 
-        ResponseBuilder response = responseBuilder.getDefaultResponse();
+        StringBuilder response = responseBuilding.getResponse();
         pw.print(response);
     };
 }

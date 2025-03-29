@@ -32,6 +32,7 @@ public class MiddlewareProvider {
         Middleware middleware = null;
         switch (applicationSetting){
             case API_DOCS -> middleware = ApiDocs.getInstance();
+            case CORS -> middleware = Cors.getInstance();
 //            case GET_CACHE ->
         }
 
