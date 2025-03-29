@@ -1,10 +1,22 @@
 package simple.logger;
 
 
+import simple.constant.ApplicationSetting;
+import simple.constant.ServerSettingChecker;
+
+import static simple.constant.ApplicationSetting.*;
+
 public class RequestLogger implements Logger{
 
-    private final StringBuilder log = new StringBuilder();
+    private final StringBuilder log;
+    private Long startTime;
 
+    public RequestLogger() {
+        this.log = new StringBuilder();
+        if(ServerSettingChecker.isServerEnabled(RESPONSE_TIME)){
+            this.startTime = System.currentTimeMillis();
+        }
+    }
 
     @Override
     public void add(String message) {
@@ -19,6 +31,10 @@ public class RequestLogger implements Logger{
     @Override
     public void print() {
         System.out.println("log : " + log);
+        if(startTime != null){
+            Long responseTime = System.currentTimeMillis();
+            System.out.println("response time : " + (responseTime- this.startTime) + "ms");
+        }
     }
 
 }

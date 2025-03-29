@@ -24,7 +24,6 @@ public class ApplicationContext {
         for (ApplicationSetting setting : ApplicationSetting.values()) {
             if ((config & setting.getBit()) == setting.getBit()) {
                 middlewareProvider.execute(setting);
-                System.out.println("설정된 applicationSetting : " + setting);
             }
         }
 

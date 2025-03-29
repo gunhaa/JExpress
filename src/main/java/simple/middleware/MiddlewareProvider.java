@@ -33,7 +33,7 @@ public class MiddlewareProvider {
         switch (applicationSetting){
             case API_DOCS -> middleware = ApiDocs.getInstance();
             case CORS -> middleware = Cors.getInstance();
-//            case GET_CACHE ->
+            case RESPONSE_TIME -> middleware = ResponseTime.getInstance();
         }
 
         return middleware;

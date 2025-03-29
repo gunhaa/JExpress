@@ -49,7 +49,6 @@ public class ResponseBuilder {
     public ResponseBuilder cors(){
         String corsValue = Cors.getInstance().getCors();
         sb.append(FIELD_CORS).append(corsValue).append(CRLF);
-        System.out.println("cors추가.. : " + corsValue);
         return this;
     }
 
@@ -115,9 +114,7 @@ public class ResponseBuilder {
             sb.append(entityJson);
             return this;
         } else {
-            System.out.println("here status" + errorStatus.getHttpStatus());
-            System.out.println("here message" +errorStatus.getMessage());
-            sb.append(gson.toJson((Object) errorStatus));
+            sb.append(gson.toJson(errorStatus));
             return this;
         }
 
@@ -138,9 +135,4 @@ public class ResponseBuilder {
                 .connection();
     }
 
-//    public ResponseBuilder getErrorResponse(){
-//        return this.protocol()
-//                .httpStatus()
-//                .date()
-//    }
 }

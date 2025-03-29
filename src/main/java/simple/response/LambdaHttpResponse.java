@@ -22,13 +22,13 @@ public class LambdaHttpResponse {
         ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, responseBody);
         // config의 상태에 따라 사용 메서드 변경(cors, api-docs)
 
-        ResponseBuilder responseBuilding = responseBuilder.getDefaultResponse();
+        responseBuilder = responseBuilder.getDefaultResponse();
 
         if(ServerSettingChecker.isServerEnabled(CORS)){
-            responseBuilding.cors();
+            responseBuilder.cors();
         }
 
-        StringBuilder response = responseBuilding.getResponse();
+        StringBuilder response = responseBuilder.getResponse();
         pw.print(response);
     };
 }

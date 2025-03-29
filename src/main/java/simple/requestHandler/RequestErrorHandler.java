@@ -22,19 +22,15 @@ public class RequestErrorHandler implements RequestHandler {
             Optional<ErrorStatus> optionalErrorStatus = Optional.ofNullable(simpleHttpRequest.getErrorQueue().peek());
             ErrorStatus errorStatus = optionalErrorStatus.orElse(ErrorStatus.getDefaultErrorStatus());
 
-//            ResponseBuilder hb = new ResponseBuilder(simpleHttpRequest, simpleHttpRequest.getErrorQueue(), errorStatus);
-//            StringBuilder res = hb.protocol().httpStatus().date().contentType().contentLength().server().connection().crlf().jsonBody().getResponse();
-//            pw.print(res);
-
             ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, errorStatus, errorStatus);
 
-            ResponseBuilder responseBuilding = responseBuilder.getDefaultResponse();
+            responseBuilder = responseBuilder.getDefaultResponse();
 
             if(ServerSettingChecker.isServerEnabled(CORS)){
-                responseBuilding.cors();
+                responseBuilder.cors();
             }
 
-            StringBuilder response = responseBuilding.getResponse();
+            StringBuilder response = responseBuilder.getResponse();
             pw.print(response);
 
         }
