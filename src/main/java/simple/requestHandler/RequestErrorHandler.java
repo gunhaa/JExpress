@@ -3,6 +3,7 @@ package simple.requestHandler;
 import simple.constant.ServerSettingChecker;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
+import simple.response.HttpResponse;
 import simple.response.ResponseBuilder;
 import simple.response.ResponseHandler;
 
@@ -25,19 +26,9 @@ public class RequestErrorHandler implements RequestHandler {
 
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
-            Optional<ErrorStatus> optionalErrorStatus = Optional.ofNullable(simpleHttpRequest.getErrorQueue().peek());
-            ErrorStatus errorStatus = optionalErrorStatus.orElse(ErrorStatus.getDefaultErrorStatus());
+            HttpResponse httpResponse = new HttpResponse(simpleHttpRequest, pw);
 
-            ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, errorStatus, errorStatus);
-
-            responseBuilder = responseBuilder.getDefaultHeader();
-
-            if(ServerSettingChecker.isServerEnabled(CORS)){
-                responseBuilder.cors();
-            }
-
-            StringBuilder response = responseBuilder.getResponse();
-            pw.print(response);
+            httpResponse.sendError();
 
         }
     }

@@ -1,10 +1,13 @@
 package simple.response;
 
+import simple.constant.HttpStatus;
 import simple.constant.ServerSettingChecker;
+import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import static simple.constant.ApplicationSetting.*;
 
@@ -50,8 +53,6 @@ public class HttpResponse {
         }
 
         String htmlContent = new String(fileContent, StandardCharsets.UTF_8);
-//        System.out.println(htmlContent);
-//        String parsingHtml = parsingEscape(htmlContent);
 
         ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, htmlContent);
 
@@ -65,9 +66,21 @@ public class HttpResponse {
         pw.print(response);
     }
 
-//    private String parsingEscape(String htmlContent) {
-//        return htmlContent.replaceAll("\\u003c", "<")
-//                .replaceAll("\\u003e", ">");
-//    }
+    public void sendError(){
 
+        Optional<ErrorStatus> optionalErrorStatus = Optional.ofNullable(simpleHttpRequest.getErrorQueue().peek());
+        ErrorStatus errorStatus = optionalErrorStatus.orElse(ErrorStatus.getDefaultErrorStatus());
+
+        ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, errorStatus);
+
+        responseBuilder = responseBuilder.getDefaultHeader();
+
+        if(ServerSettingChecker.isServerEnabled(CORS)){
+            responseBuilder.cors();
+        }
+
+        StringBuilder response = responseBuilder.getResponse();
+        pw.print(response);
+
+    }
 }

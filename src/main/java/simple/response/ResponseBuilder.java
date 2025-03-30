@@ -38,14 +38,18 @@ public class ResponseBuilder {
     public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, Object entity) {
         this.simpleHttpRequest = simpleHttpRequest;
         this.entityJson = gson.toJson(entity);
-        this.errorStatus = null;
+        if (entity instanceof ErrorStatus) {
+            this.errorStatus = (ErrorStatus) entity;
+        } else {
+            this.errorStatus = null;
+        }
     }
 
-    public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, Object entity, ErrorStatus errorStatus) {
-        this.simpleHttpRequest = simpleHttpRequest;
-        this.errorStatus = errorStatus;
-        this.entityJson = gson.toJson(entity);
-    }
+//    public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, Object entity, ErrorStatus errorStatus) {
+//        this.simpleHttpRequest = simpleHttpRequest;
+//        this.entityJson = gson.toJson(entity);
+//        this.errorStatus = errorStatus;
+//    }
 
     public ResponseBuilder cors(){
         String corsValue = Cors.getInstance().getCors();
@@ -127,6 +131,11 @@ public class ResponseBuilder {
 
     }
 
+    public ResponseBuilder exceptErrorBody(HttpStatus error){
+        sb.append(gson.toJson(error));
+        return this;
+    }
+
     public ResponseBuilder body(){
         sb.append(this.entity);
         return this;
@@ -159,6 +168,20 @@ public class ResponseBuilder {
 
     public StringBuilder getStaticResponse(){
         this.crlf().body();
+        return sb;
+    }
+
+    @Deprecated
+    public StringBuilder getErrorResponse(HttpStatus error){
+         this.protocol()
+                .httpStatus()
+                .date()
+                .contentType()
+                .contentLength()
+                .server()
+                .connection()
+                .crlf()
+                .exceptErrorBody(error);
         return sb;
     }
 
