@@ -2,7 +2,7 @@ package simple.server;
 
 
 import simple.constant.ApplicationSetting;
-import simple.response.ResponseHandler;
+import simple.response.LambdaHandler;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ public interface Server {
 
     void use(ApplicationSetting applicationSetting, String option);
 
-    void get(String URL, ResponseHandler responseSuccessHandler);
+    void get(String URL, LambdaHandler responseSuccessHandler);
 
     void post();
 }

@@ -3,6 +3,6 @@ package simple.response;
 import simple.httpRequest.HttpRequest;
 
 @FunctionalInterface
-public interface ResponseHandler {
+public interface LambdaHandler {
     void execute(HttpRequest lambdaHttpRequest, LambdaHttpResponse lambdaHttpResponse);
 }

@@ -4,7 +4,7 @@ import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.response.HttpResponse;
-import simple.response.ResponseHandler;
+import simple.response.LambdaHandler;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -25,7 +25,7 @@ public class RequestStaticHandler implements RequestHandler{
     private RequestStaticHandler() {}
 
     @Override
-    public void sendResponse(OutputStream outputStream, ResponseHandler responseHandler, SimpleHttpRequest simpleHttpRequest) {
+    public void sendResponse(OutputStream outputStream, LambdaHandler lambdaHandler, SimpleHttpRequest simpleHttpRequest) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
 //            HttpRequest httpRequest = new HttpRequest(simpleHttpRequest);

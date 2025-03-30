@@ -13,7 +13,7 @@ import simple.parser.RequestCharacterParser;
 import simple.context.ApplicationContext;
 import simple.requestHandler.RequestHandler;
 import simple.provider.RequestHandlerProvider;
-import simple.response.ResponseHandler;
+import simple.response.LambdaHandler;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -51,7 +51,7 @@ public class JExpress implements Server {
     }
 
     @Override
-    public void get(String URL, ResponseHandler responseSuccessHandler) {
+    public void get(String URL, LambdaHandler responseSuccessHandler) {
         getMap.addUrl(URL, responseSuccessHandler);
     }
 

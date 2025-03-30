@@ -1,7 +1,7 @@
 package simple.requestHandler;
 
 import simple.httpRequest.SimpleHttpRequest;
-import simple.response.ResponseHandler;
+import simple.response.LambdaHandler;
 
 import java.io.OutputStream;
 
@@ -17,7 +17,7 @@ public class RequestDeleteHandler implements RequestHandler{
     }
 
     @Override
-    public void sendResponse(OutputStream outputStream, ResponseHandler responseHandler, SimpleHttpRequest simpleHttpRequest) {
+    public void sendResponse(OutputStream outputStream, LambdaHandler lambdaHandler, SimpleHttpRequest simpleHttpRequest) {
 
     }
 }

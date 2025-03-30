@@ -1,14 +1,14 @@
 package simple.mapper;
 
 import simple.constant.HttpMethod;
-import simple.response.ResponseHandler;
+import simple.response.LambdaHandler;
 
 import java.util.HashMap;
 
 public class GetMapper implements Mapper{
 
     private static final Mapper getMapper = new GetMapper();
-    private final HashMap<String, ResponseHandler> getMap;
+    private final HashMap<String, LambdaHandler> getMap;
     private final HttpMethod httpMethod;
 
     private GetMapper() {
@@ -21,7 +21,7 @@ public class GetMapper implements Mapper{
     }
 
     @Override
-    public void addUrl(String url, ResponseHandler responseSuccessHandler) {
+    public void addUrl(String url, LambdaHandler responseSuccessHandler) {
         getMap.put(url, responseSuccessHandler);
     }
 
@@ -32,13 +32,13 @@ public class GetMapper implements Mapper{
 
     @Override
     @Deprecated
-    public ResponseHandler getUrl(String url) {
+    public LambdaHandler getUrl(String url) {
         // 메소드 수정 필요
         return getMap.get(url);
     }
 
     @Override
-    public ResponseHandler getHandler(String url) {
+    public LambdaHandler getHandler(String url) {
         return getMap.get(url);
     }
 
