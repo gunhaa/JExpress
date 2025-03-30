@@ -1,5 +1,6 @@
 package simple.response;
 
+import simple.apiDocs.LastSentObjectHolder;
 import simple.constant.HttpStatus;
 import simple.constant.ServerSettingChecker;
 import simple.httpRequest.ErrorStatus;
@@ -25,6 +26,12 @@ public class LambdaHttpResponse {
      * send default response
      */
     public void send(Object responseBody){
+
+        // API DOCS Reflection check
+        if(ServerSettingChecker.isServerEnabled(API_DOCS)){
+            LastSentObjectHolder.setLastSentType(responseBody.getClass());
+        }
+
         ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, responseBody);
 
         responseBuilder = responseBuilder.getDefaultHeader();

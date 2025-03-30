@@ -1,7 +1,14 @@
 package simple.middleware;
 
+import simple.apiDocs.ApiDetails;
+import simple.apiDocs.ApiDocsDto;
 import simple.mapper.GetMapper;
 import simple.mapper.Mapper;
+import simple.response.LambdaHandler;
+
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 public class ApiDocs implements Middleware{
 
@@ -27,10 +34,15 @@ public class ApiDocs implements Middleware{
     @Override
     public void run() {
         Mapper getMap = GetMapper.getInstance();
+        Map<String, LambdaHandler> apiHandlers = getMap.getHandlers();
+
+        ApiDocsDto apiDocsDto = new ApiDocsDto();
+        apiDocsDto.createProxy(apiHandlers);
+        List<ApiDetails> apiList = apiDocsDto.getApiList();
+
+
         getMap.addUrl("/api-docs/v1", (req, res) -> {
-            // getMap의 정보를 전부 읽어와서 내보내야함
-            // 메소드(GET), 리턴값(클래스명, 필드[리스트]), url 합쳐서 send()에 obj 로 전송
-//            res.send();
+            res.send(apiList);
         });
         System.out.println("ApiDocs 미들웨어 실행.. 메소드 작성");
     }

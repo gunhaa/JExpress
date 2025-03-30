@@ -6,6 +6,7 @@ import lombok.Getter;
 import simple.constant.HttpMethod;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Queue;
 
 @Builder
@@ -22,5 +23,17 @@ public class SimpleHttpRequest {
     @Deprecated
     public boolean isHandshake(){
         return this.url == null && this.method == null && this.protocol == null;
+    }
+
+    public static SimpleHttpRequest createMock(){
+        return builder()
+                .method(HttpMethod.GET)
+                .url("url")
+                .protocol("protocol")
+                .queryString(new HashMap<>())
+                .header(new HashMap<>())
+                .bodyMap(new LinkedTreeMap<>())
+                .errorQueue(new LinkedList<>())
+                .build();
     }
 }

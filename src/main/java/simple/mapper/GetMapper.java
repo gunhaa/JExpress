@@ -4,6 +4,7 @@ import simple.constant.HttpMethod;
 import simple.response.LambdaHandler;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class GetMapper implements Mapper{
 
@@ -27,7 +28,7 @@ public class GetMapper implements Mapper{
 
     @Override
     public HttpMethod getMethod() {
-        return null;
+        return this.httpMethod;
     }
 
     @Override
@@ -42,5 +43,9 @@ public class GetMapper implements Mapper{
         return getMap.get(url);
     }
 
+    @Override
+    public Map<String, LambdaHandler> getHandlers(){
+        return getMap;
+    }
 
 }
