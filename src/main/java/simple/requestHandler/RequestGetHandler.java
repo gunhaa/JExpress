@@ -2,7 +2,7 @@ package simple.requestHandler;
 
 import simple.httpRequest.HttpRequest;
 import simple.httpRequest.SimpleHttpRequest;
-import simple.response.HttpResponse;
+import simple.response.LambdaHttpResponse;
 import simple.response.ResponseHandler;
 
 import java.io.OutputStream;
@@ -23,9 +23,9 @@ public class RequestGetHandler implements RequestHandler{
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
             HttpRequest httpRequest = new HttpRequest(simpleHttpRequest);
-            HttpResponse httpResponse = new HttpResponse(simpleHttpRequest, pw);
+            LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(simpleHttpRequest, pw);
 
-            responseHandler.execute(httpRequest, httpResponse);
+            responseHandler.execute(httpRequest, lambdaHttpResponse);
 
         }
     }

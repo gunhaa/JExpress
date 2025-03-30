@@ -37,6 +37,7 @@ public class RequestHandlerProvider {
             return RequestErrorHandler.getInstance();
         }
 
+        System.out.println(simpleHttpRequest.getUrl());
         if(ServerSettingChecker.isServerEnabled(API_DOCS) && simpleHttpRequest.getUrl() != null &&simpleHttpRequest.getUrl().endsWith(URL_JAVASCRIPT)){
             return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
         }
@@ -46,7 +47,7 @@ public class RequestHandlerProvider {
         }
 
         if(ServerSettingChecker.isServerEnabled(API_DOCS) && simpleHttpRequest.getUrl() != null  && simpleHttpRequest.getUrl().equals(URL_FAVICON)){
-            return requestHandlers.get(HttpMethod.ERROR);
+            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
         }
 
         return requestHandlers.getOrDefault(simpleHttpRequest.getMethod(), RequestErrorHandler.getInstance());

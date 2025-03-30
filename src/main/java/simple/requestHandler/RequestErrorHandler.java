@@ -1,17 +1,12 @@
 package simple.requestHandler;
 
-import simple.constant.ServerSettingChecker;
-import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.response.HttpResponse;
-import simple.response.ResponseBuilder;
+import simple.response.LambdaHttpResponse;
 import simple.response.ResponseHandler;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Optional;
-
-import static simple.constant.ApplicationSetting.CORS;
 
 public class RequestErrorHandler implements RequestHandler {
 

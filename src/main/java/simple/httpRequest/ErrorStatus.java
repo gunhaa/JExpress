@@ -16,4 +16,5 @@ public class ErrorStatus {
     public static ErrorStatus getDefaultErrorStatus(){
         return new ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid request - unknown error");
     }
+
 }

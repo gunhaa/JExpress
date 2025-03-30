@@ -5,13 +5,17 @@ import simple.constant.ServerSettingChecker;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-import static simple.constant.ApplicationSetting.*;
+import static simple.constant.ApplicationSetting.CORS;
 
 public class HttpResponse {
+
 
     private final SimpleHttpRequest simpleHttpRequest;
     private final PrintWriter pw;
@@ -19,22 +23,6 @@ public class HttpResponse {
     public HttpResponse(SimpleHttpRequest simpleHttpRequest, PrintWriter pw) {
         this.simpleHttpRequest = simpleHttpRequest;
         this.pw = pw;
-    }
-
-    /**
-     * send default response
-     */
-    public void send(Object responseBody){
-        ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, responseBody);
-
-        responseBuilder = responseBuilder.getDefaultHeader();
-
-        if(ServerSettingChecker.isServerEnabled(CORS)){
-            responseBuilder.cors();
-        }
-
-        StringBuilder response = responseBuilder.getResponse();
-        pw.print(response);
     }
 
     /**
@@ -82,5 +70,19 @@ public class HttpResponse {
         StringBuilder response = responseBuilder.getResponse();
         pw.print(response);
 
+    }
+
+    public void sendError(ErrorStatus error){
+
+        ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, error);
+
+        responseBuilder = responseBuilder.getDefaultHeader();
+
+        if(ServerSettingChecker.isServerEnabled(CORS)){
+            responseBuilder.cors();
+        }
+
+        StringBuilder response = responseBuilder.getResponse();
+        pw.print(response);
     }
 }
