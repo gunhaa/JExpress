@@ -17,8 +17,9 @@ public class RequestHandlerProvider {
 
     private final Map<HttpMethod, RequestHandler> requestHandlers;
     private static final RequestHandlerProvider INSTANCE = new RequestHandlerProvider();
-    private static final String URL_API_DOCS = "/api-docs";
     private static final String URL_FAVICON = "/favicon.ico";
+    public static final String URL_HTML = ".html";
+    public static final String URL_JAVASCRIPT = ".js";
 
     private RequestHandlerProvider() {
         this.requestHandlers = new HashMap<>();
@@ -39,7 +40,15 @@ public class RequestHandlerProvider {
         System.out.println("이곳이 실행되는 설정 : " + ServerSettingChecker.isServerEnabled(API_DOCS));
         System.out.println("얻은 URL " + simpleHttpRequest.getUrl());
 
-        if(ServerSettingChecker.isServerEnabled(API_DOCS) && simpleHttpRequest.getUrl().equals(URL_API_DOCS)){
+//        if(ServerSettingChecker.isServerEnabled(API_DOCS) && simpleHttpRequest.getUrl().equals(URL_API_DOCS)){
+//            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+//        }
+
+        if(ServerSettingChecker.isServerEnabled(API_DOCS) && simpleHttpRequest.getUrl().endsWith(URL_JAVASCRIPT)){
+            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+        }
+
+        if(ServerSettingChecker.isServerEnabled(API_DOCS) && simpleHttpRequest.getUrl().endsWith(URL_HTML)){
             return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
         }
 

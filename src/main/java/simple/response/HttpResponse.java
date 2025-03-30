@@ -37,7 +37,7 @@ public class HttpResponse {
     /**
      * send static api-docs response
      */
-    public void sendApiDocs(String path){
+    public void sendStatic(String path){
 
         File apiDocs = new File(path);
 
