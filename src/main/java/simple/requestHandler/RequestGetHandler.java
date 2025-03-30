@@ -1,12 +1,16 @@
 package simple.requestHandler;
 
+import simple.constant.HttpStatus;
+import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.HttpRequest;
 import simple.httpRequest.SimpleHttpRequest;
+import simple.response.HttpResponse;
 import simple.response.LambdaHttpResponse;
 import simple.response.ResponseHandler;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 public class RequestGetHandler implements RequestHandler{
 
@@ -24,6 +28,14 @@ public class RequestGetHandler implements RequestHandler{
 
             HttpRequest httpRequest = new HttpRequest(simpleHttpRequest);
             LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(simpleHttpRequest, pw);
+
+            // 등록되지 않은 요청
+            if(responseHandler == null){
+                HttpResponse httpResponse = new HttpResponse(simpleHttpRequest, pw);
+                ErrorStatus errorStatus = new ErrorStatus(HttpStatus.NOT_FOUND_404, "Not valid URL");
+                httpResponse.sendError(errorStatus);
+                return;
+            }
 
             responseHandler.execute(httpRequest, lambdaHttpResponse);
 
