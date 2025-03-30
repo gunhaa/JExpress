@@ -5,7 +5,8 @@ public enum HttpMethod {
     POST,
     PUT,
     DELETE,
-    EXCEPTION_STATIC;
+    EXCEPTION_STATIC,
+    ERROR;
 
     public HttpStatus getHttpStatus(){
         if(GET == this){

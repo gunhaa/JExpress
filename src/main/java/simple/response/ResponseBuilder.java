@@ -18,6 +18,7 @@ public class ResponseBuilder {
     private final ErrorStatus errorStatus;
     private final Gson gson = new Gson();
     private final String entityJson;
+    private String entity;
 
 
     // 불변 필드
@@ -98,6 +99,12 @@ public class ResponseBuilder {
         return this;
     }
 
+    public ResponseBuilder contentStaticLength(){
+        this.entity = gson.fromJson(this.entityJson, String.class);
+        sb.append(FIELD_CONTENT_LENGTH).append(this.entity.length()).append(CRLF);
+        return this;
+    }
+
     public ResponseBuilder connection(){
         sb.append(FIELD_CONNECTION).append(VALUE_CONNECTION_CLOSED).append(CRLF);
         return this;
@@ -120,12 +127,12 @@ public class ResponseBuilder {
 
     }
 
-    public StringBuilder getResponse() {
-        this.crlf().jsonBody();
-        return sb;
+    public ResponseBuilder body(){
+        sb.append(this.entity);
+        return this;
     }
 
-    public ResponseBuilder getDefaultResponse(){
+    public ResponseBuilder getDefaultHeader(){
         return this.protocol()
                 .httpStatus()
                 .date()
@@ -134,5 +141,26 @@ public class ResponseBuilder {
                 .server()
                 .connection();
     }
+
+    public StringBuilder getResponse() {
+        this.crlf().jsonBody();
+        return sb;
+    }
+
+    public ResponseBuilder getStaticHeader(){
+        return this.protocol()
+                .httpStatus()
+                .date()
+                .contentType()
+                .contentStaticLength()
+                .server()
+                .connection();
+    }
+
+    public StringBuilder getStaticResponse(){
+        this.crlf().body();
+        return sb;
+    }
+
 
 }

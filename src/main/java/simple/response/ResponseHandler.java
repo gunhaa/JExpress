@@ -1,8 +1,8 @@
 package simple.response;
 
-import simple.httpRequest.LambdaHttpRequest;
+import simple.httpRequest.HttpRequest;
 
 @FunctionalInterface
 public interface ResponseHandler {
-    void execute(LambdaHttpRequest lambdaHttpRequest, LambdaHttpResponse lambdaHttpResponse);
+    void execute(HttpRequest lambdaHttpRequest, HttpResponse lambdaHttpResponse);
 }

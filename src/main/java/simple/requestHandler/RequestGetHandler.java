@@ -1,8 +1,8 @@
 package simple.requestHandler;
 
-import simple.httpRequest.LambdaHttpRequest;
+import simple.httpRequest.HttpRequest;
 import simple.httpRequest.SimpleHttpRequest;
-import simple.response.LambdaHttpResponse;
+import simple.response.HttpResponse;
 import simple.response.ResponseHandler;
 
 import java.io.OutputStream;
@@ -22,10 +22,10 @@ public class RequestGetHandler implements RequestHandler{
     public void sendResponse(OutputStream outputStream, ResponseHandler responseHandler, SimpleHttpRequest simpleHttpRequest) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
-            LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(simpleHttpRequest);
-            LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(simpleHttpRequest, pw);
+            HttpRequest httpRequest = new HttpRequest(simpleHttpRequest);
+            HttpResponse httpResponse = new HttpResponse(simpleHttpRequest, pw);
 
-            responseHandler.execute(lambdaHttpRequest, lambdaHttpResponse);
+            responseHandler.execute(httpRequest, httpResponse);
 
         }
     }

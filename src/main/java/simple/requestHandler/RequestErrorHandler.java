@@ -13,7 +13,13 @@ import java.util.Optional;
 import static simple.constant.ApplicationSetting.CORS;
 
 public class RequestErrorHandler implements RequestHandler {
-    
+
+    private static final RequestHandler INSTANCE = new RequestErrorHandler();
+
+    public static RequestHandler getInstance(){
+        return INSTANCE;
+    }
+
     @Override
     public void sendResponse(OutputStream outputStream, ResponseHandler responseHandler, SimpleHttpRequest simpleHttpRequest) {
 
@@ -24,7 +30,7 @@ public class RequestErrorHandler implements RequestHandler {
 
             ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, errorStatus, errorStatus);
 
-            responseBuilder = responseBuilder.getDefaultResponse();
+            responseBuilder = responseBuilder.getDefaultHeader();
 
             if(ServerSettingChecker.isServerEnabled(CORS)){
                 responseBuilder.cors();
