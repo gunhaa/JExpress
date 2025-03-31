@@ -1,20 +1,20 @@
 # JExpress
 
-- RESTful API를 만들수 있는 웹 프레임워크
+- 빠르게 json을 반환하는 API를 만들수 있는 웹 프레임워크
 
 ## 사용예제
 
 ```java
-
 public class Main {
   public static void main(String[] args) throws IOException{
-    Server app = new SimpleRestServer();
+    Server app = new JExpress();
     // threadPool을 이용한 서버 생성방법
-    // Server app = new SimpleRestServer(15);
+    // Server app = new JExpress(15);
 
     app.use(API_DOCS);
-    app.use(CORS);
-//        app.use(RESPONSE_TIME);
+//        app.use(CORS);
+    app.use(CORS, "https://bitlibrary.com");
+    app.use(RESPONSE_TIME);
 //        app.use(GET_CACHE);
 
     app.get("/member" , (req, res) -> {
@@ -46,19 +46,11 @@ public class Main {
 }
 ```
 
-## Todo
+## 기능
+- Cors on/off
+- API Docs 자동 생성
+- 서버 ResponseTime 측정 on/off
 
-- ~~readme~~
-- Dockerfile 
-- ~~dependency~~
-- orm
-- ~~singleThread~~
-- multiThread
-- 미들웨어
-- config
-- ~~람다식을 이용한 req,res handling~~
-- ~~lambdaHttpRequest~~
-- ~~httpResponse~~
 
 ## ISSUE
 
