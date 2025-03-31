@@ -7,6 +7,7 @@ import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.SimpleHttpRequest;
 import simple.middleware.Cors;
 
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -99,13 +100,13 @@ public class ResponseBuilder {
     }
 
     public ResponseBuilder contentLength(){
-        sb.append(FIELD_CONTENT_LENGTH).append(entityJson.length()).append(CRLF);
+        sb.append(FIELD_CONTENT_LENGTH).append(entityJson.getBytes(StandardCharsets.UTF_8).length).append(CRLF);
         return this;
     }
 
     public ResponseBuilder contentStaticLength(){
         this.entity = gson.fromJson(this.entityJson, String.class);
-        sb.append(FIELD_CONTENT_LENGTH).append(this.entity.length()).append(CRLF);
+        sb.append(FIELD_CONTENT_LENGTH).append(this.entity.getBytes(StandardCharsets.UTF_8).length).append(CRLF);
         return this;
     }
 
@@ -185,5 +186,7 @@ public class ResponseBuilder {
         return sb;
     }
 
-
+    public void printTestSb(){
+        System.out.println("this sb : " + this.sb);
+    }
 }

@@ -40,10 +40,10 @@ public class ApiDocs implements Middleware{
         apiDocsDto.createProxy(apiHandlers);
         List<ApiDetails> apiList = apiDocsDto.getApiList();
 
-
         getMap.addUrl("/api-docs/v1", (req, res) -> {
             res.send(apiList);
         });
+
         System.out.println("ApiDocs 미들웨어 실행.. 메소드 작성");
     }
 
