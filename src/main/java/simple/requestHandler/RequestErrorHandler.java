@@ -1,6 +1,6 @@
 package simple.requestHandler;
 
-import simple.httpRequest.SimpleHttpRequest;
+import simple.httpRequest.HttpRequest;
 import simple.response.HttpResponse;
 import simple.response.LambdaHandler;
 
@@ -16,11 +16,11 @@ public class RequestErrorHandler implements RequestHandler {
     }
 
     @Override
-    public void sendResponse(OutputStream outputStream, LambdaHandler lambdaHandler, SimpleHttpRequest simpleHttpRequest) {
+    public void sendResponse(OutputStream outputStream, LambdaHandler lambdaHandler, HttpRequest httpRequest) {
 
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
-            HttpResponse httpResponse = new HttpResponse(simpleHttpRequest, pw);
+            HttpResponse httpResponse = new HttpResponse(httpRequest, pw);
 
             httpResponse.sendError();
 

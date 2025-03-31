@@ -16,7 +16,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class SimpleCharHttpRequestDTO {
+public class CharHttpRequestDTO {
     private HttpMethod method;
     private String url;
     private String protocol;
@@ -30,7 +30,7 @@ public class SimpleCharHttpRequestDTO {
     private int contentLength;
     private Queue<ErrorStatus> errorQueue;
 
-    public SimpleCharHttpRequestDTO() {
+    public CharHttpRequestDTO() {
         this.requestLineParsed = true;
         this.parsingHeaders = false;
         this.parsingBody = false;

@@ -17,8 +17,8 @@ public class Main {
         // Server app = new JExpress(15);
 
         app.use(API_DOCS);
-        app.use(CORS);
-//        app.use(CORS, "https://bitlibrary.com");
+//        app.use(CORS);
+        app.use(CORS, "https://bitlibrary.com");
         app.use(RESPONSE_TIME);
 //        app.use(GET_CACHE);
 

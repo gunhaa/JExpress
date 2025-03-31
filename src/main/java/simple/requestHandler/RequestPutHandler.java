@@ -1,6 +1,6 @@
 package simple.requestHandler;
 
-import simple.httpRequest.SimpleHttpRequest;
+import simple.httpRequest.HttpRequest;
 import simple.response.LambdaHandler;
 
 import java.io.OutputStream;
@@ -17,7 +17,7 @@ public class RequestPutHandler implements RequestHandler{
     }
 
     @Override
-    public void sendResponse(OutputStream outputStream, LambdaHandler lambdaHandler, SimpleHttpRequest simpleHttpRequest) {
+    public void sendResponse(OutputStream outputStream, LambdaHandler lambdaHandler, HttpRequest httpRequest) {
 
     }
 }

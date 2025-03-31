@@ -2,7 +2,7 @@ package simple.server;
 
 import simple.constant.ApplicationSetting;
 import simple.config.ApplicationConfig;
-import simple.httpRequest.SimpleHttpRequest;
+import simple.httpRequest.HttpRequest;
 import simple.logger.RequestLogger;
 import simple.logger.Logger;
 import simple.mapper.GetMapper;
@@ -77,12 +77,12 @@ public class JExpress implements Server {
                     Logger logger = new RequestLogger();
                     Parser requestParser = new RequestCharacterParser(logger);
 
-                    SimpleHttpRequest simpleHttpRequest = requestParser.parsing(request);
+                    HttpRequest httpRequest = requestParser.parsing(request);
 
                     RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
-                    RequestHandler handler = requestHandlerProvider.getHandler(simpleHttpRequest);
+                    RequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
 
-                    handler.sendResponse(clientSocket.getOutputStream() , getMap.getHandler(simpleHttpRequest.getUrl()), simpleHttpRequest);
+                    handler.sendResponse(clientSocket.getOutputStream() , getMap.getHandler(httpRequest.getUrl()), httpRequest);
 
                     logger.print();
                 }

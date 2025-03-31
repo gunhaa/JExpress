@@ -1,13 +1,28 @@
-const createApiDocs = () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-    fetch("/api-docs/v1")
-        .then(res => res.json())
-        .then(res => {
+    const table = document.querySelector("#MAIN-API-DOCS table");
 
-            if(res.success){
-                alert("성공 출력")
-            }
-        });
-}
+    const createApiDocs = () => {
+        fetch("/api-docs/v1")
+            .then(res => res.json())
+            .then(res => {
 
-createApiDocs();
+                res.forEach(v => {
+
+                    const fieldsStr = Object.entries(v.fields)
+                        .map(([key, value]) => `${key}: ${value}`)
+                        .join("<br>");
+
+                    table.insertAdjacentHTML("beforeend", `
+                        <tr>
+                            <td>${v.url}</td>
+                            <td>${v.returnType}</td>
+                            <td>${fieldsStr}</td>
+                        </tr>
+                    `);
+                });
+            });
+    };
+
+    createApiDocs();
+});

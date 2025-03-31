@@ -2,8 +2,8 @@ package simple.requestHandler;
 
 import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
+import simple.httpRequest.LambdaHttpRequest;
 import simple.httpRequest.HttpRequest;
-import simple.httpRequest.SimpleHttpRequest;
 import simple.response.HttpResponse;
 import simple.response.LambdaHttpResponse;
 import simple.response.LambdaHandler;
@@ -22,20 +22,20 @@ public class RequestGetHandler implements RequestHandler{
     private RequestGetHandler() {}
 
     @Override
-    public void sendResponse(OutputStream outputStream, LambdaHandler lambdaHandler, SimpleHttpRequest simpleHttpRequest) {
+    public void sendResponse(OutputStream outputStream, LambdaHandler lambdaHandler, HttpRequest httpRequest) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
             // 등록되지 않은 요청
             if(lambdaHandler == null){
-                HttpResponse httpResponse = new HttpResponse(simpleHttpRequest, pw);
+                HttpResponse httpResponse = new HttpResponse(httpRequest, pw);
                 ErrorStatus errorStatus = new ErrorStatus(HttpStatus.NOT_FOUND_404, "Not valid URL");
                 httpResponse.sendError(errorStatus);
                 return;
             }
 
-            HttpRequest httpRequest = new HttpRequest(simpleHttpRequest);
-            LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(simpleHttpRequest, pw);
-            lambdaHandler.execute(httpRequest, lambdaHttpResponse);
+            LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(httpRequest);
+            LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(httpRequest, pw);
+            lambdaHandler.execute(lambdaHttpRequest, lambdaHttpResponse);
 
         }
     }

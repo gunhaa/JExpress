@@ -1,24 +1,20 @@
 package simple.response;
 
 import simple.apiDocs.LastSentObjectHolder;
-import simple.constant.HttpStatus;
 import simple.constant.ServerSettingChecker;
-import simple.httpRequest.ErrorStatus;
-import simple.httpRequest.SimpleHttpRequest;
+import simple.httpRequest.HttpRequest;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 import static simple.constant.ApplicationSetting.*;
 
 public class LambdaHttpResponse {
 
-    private final SimpleHttpRequest simpleHttpRequest;
+    private final HttpRequest httpRequest;
     private final PrintWriter pw;
 
-    public LambdaHttpResponse(SimpleHttpRequest simpleHttpRequest, PrintWriter pw) {
-        this.simpleHttpRequest = simpleHttpRequest;
+    public LambdaHttpResponse(HttpRequest httpRequest, PrintWriter pw) {
+        this.httpRequest = httpRequest;
         this.pw = pw;
     }
 
@@ -32,7 +28,7 @@ public class LambdaHttpResponse {
             LastSentObjectHolder.setLastSentType(responseBody.getClass());
         }
 
-        ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, responseBody);
+        ResponseBuilder responseBuilder = new ResponseBuilder(httpRequest, responseBody);
 
         responseBuilder = responseBuilder.getDefaultHeader();
 

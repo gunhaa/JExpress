@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import simple.constant.HttpMethod;
 import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
-import simple.httpRequest.SimpleHttpRequest;
+import simple.httpRequest.HttpRequest;
 import simple.middleware.Cors;
 
 import java.nio.charset.StandardCharsets;
@@ -15,7 +15,7 @@ import java.util.TimeZone;
 
 public class ResponseBuilder {
     private final StringBuilder sb = new StringBuilder();
-    private final SimpleHttpRequest simpleHttpRequest;
+    private final HttpRequest httpRequest;
     private final ErrorStatus errorStatus;
     private final Gson gson = new Gson();
     private final String entityJson;
@@ -36,8 +36,8 @@ public class ResponseBuilder {
 
     private static final String DEFAULT_SERVER_NAME = "SimpREST/1.0";
 
-    public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, Object entity) {
-        this.simpleHttpRequest = simpleHttpRequest;
+    public ResponseBuilder(HttpRequest httpRequest, Object entity) {
+        this.httpRequest = httpRequest;
         this.entityJson = gson.toJson(entity);
         if (entity instanceof ErrorStatus) {
             this.errorStatus = (ErrorStatus) entity;
@@ -59,7 +59,7 @@ public class ResponseBuilder {
     }
 
     public ResponseBuilder protocol(){
-        String protocol = simpleHttpRequest.getProtocol();
+        String protocol = httpRequest.getProtocol();
         sb.append(protocol).append(" ");
         return this;
     }
@@ -67,7 +67,7 @@ public class ResponseBuilder {
     public ResponseBuilder httpStatus(){
 
         if(errorStatus == null){
-            HttpMethod method = simpleHttpRequest.getMethod();
+            HttpMethod method = httpRequest.getMethod();
             HttpStatus httpStatus = method.getHttpStatus();
             sb.append(httpStatus.getStatusCode()).append(" ").append(httpStatus.getMessage()).append(CRLF);
             return this;

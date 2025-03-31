@@ -2,10 +2,6 @@ package simple.response;
 
 import lombok.Getter;
 import simple.constant.HttpStatus;
-import simple.httpRequest.SimpleHttpRequest;
-
-import java.io.OutputStream;
-import java.io.PrintWriter;
 
 @Getter
 public class ResponseSuccess {

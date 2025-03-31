@@ -1,9 +1,8 @@
 package simple.response;
 
-import simple.constant.HttpStatus;
 import simple.constant.ServerSettingChecker;
 import simple.httpRequest.ErrorStatus;
-import simple.httpRequest.SimpleHttpRequest;
+import simple.httpRequest.HttpRequest;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,11 +16,11 @@ import static simple.constant.ApplicationSetting.CORS;
 public class HttpResponse {
 
 
-    private final SimpleHttpRequest simpleHttpRequest;
+    private final HttpRequest httpRequest;
     private final PrintWriter pw;
 
-    public HttpResponse(SimpleHttpRequest simpleHttpRequest, PrintWriter pw) {
-        this.simpleHttpRequest = simpleHttpRequest;
+    public HttpResponse(HttpRequest httpRequest, PrintWriter pw) {
+        this.httpRequest = httpRequest;
         this.pw = pw;
     }
 
@@ -42,7 +41,7 @@ public class HttpResponse {
 
         String htmlContent = new String(fileContent, StandardCharsets.UTF_8);
 
-        ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, htmlContent);
+        ResponseBuilder responseBuilder = new ResponseBuilder(httpRequest, htmlContent);
 
         responseBuilder = responseBuilder.getStaticHeader();
 
@@ -58,10 +57,10 @@ public class HttpResponse {
 
     public void sendError(){
 
-        Optional<ErrorStatus> optionalErrorStatus = Optional.ofNullable(simpleHttpRequest.getErrorQueue().peek());
+        Optional<ErrorStatus> optionalErrorStatus = Optional.ofNullable(httpRequest.getErrorQueue().peek());
         ErrorStatus errorStatus = optionalErrorStatus.orElse(ErrorStatus.getDefaultErrorStatus());
 
-        ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, errorStatus);
+        ResponseBuilder responseBuilder = new ResponseBuilder(httpRequest, errorStatus);
 
         responseBuilder = responseBuilder.getDefaultHeader();
 
@@ -76,7 +75,7 @@ public class HttpResponse {
 
     public void sendError(ErrorStatus error){
 
-        ResponseBuilder responseBuilder = new ResponseBuilder(simpleHttpRequest, error);
+        ResponseBuilder responseBuilder = new ResponseBuilder(httpRequest, error);
 
         responseBuilder = responseBuilder.getDefaultHeader();
 

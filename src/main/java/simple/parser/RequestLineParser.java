@@ -1,6 +1,6 @@
 package simple.parser;
 
-import simple.httpRequest.SimpleHttpRequest;
+import simple.httpRequest.HttpRequest;
 import simple.httpRequest.SimpleLineHttpRequestDTO;
 import simple.logger.Logger;
 
@@ -17,7 +17,7 @@ public class RequestLineParser implements Parser{
     }
 
     @Override
-    public SimpleHttpRequest parsing(BufferedReader request) throws IOException {
+    public HttpRequest parsing(BufferedReader request) throws IOException {
 
         String line;
         while((line = request.readLine())!=null){
@@ -31,7 +31,7 @@ public class RequestLineParser implements Parser{
 
         }
 
-        return SimpleHttpRequest.builder()
+        return HttpRequest.builder()
                 .method(simpleLineHttpRequestDTO.getMethod())
                 .url(simpleLineHttpRequestDTO.getUrl())
                 .protocol(simpleLineHttpRequestDTO.getProtocol())

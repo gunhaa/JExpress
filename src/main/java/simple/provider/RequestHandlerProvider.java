@@ -1,10 +1,8 @@
 package simple.provider;
 
-import simple.constant.ApplicationSetting;
 import simple.constant.HttpMethod;
-import simple.config.ApplicationConfig;
 import simple.constant.ServerSettingChecker;
-import simple.httpRequest.SimpleHttpRequest;
+import simple.httpRequest.HttpRequest;
 import simple.requestHandler.*;
 
 import java.util.HashMap;
@@ -31,29 +29,42 @@ public class RequestHandlerProvider {
         requestHandlers.put(HttpMethod.ERROR, RequestErrorHandler.getInstance());
     }
 
-    public RequestHandler getHandler(SimpleHttpRequest simpleHttpRequest){
+    public RequestHandler getHandler(HttpRequest httpRequest) {
 
-        if(!simpleHttpRequest.getErrorQueue().isEmpty()){
+        if (!httpRequest.getErrorQueue().isEmpty()) {
             return RequestErrorHandler.getInstance();
         }
 
-        System.out.println(simpleHttpRequest.getUrl());
-        if(ServerSettingChecker.isServerEnabled(API_DOCS) && simpleHttpRequest.getUrl() != null &&simpleHttpRequest.getUrl().endsWith(URL_JAVASCRIPT)){
-            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+        if (ServerSettingChecker.isServerEnabled(API_DOCS) && httpRequest.getUrl() != null) {
+            if (httpRequest.getUrl().endsWith(URL_JAVASCRIPT)) {
+                return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+            }
+
+            if (httpRequest.getUrl().endsWith(URL_HTML)) {
+                return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+            }
+
+            if (httpRequest.getUrl().equals(URL_FAVICON)) {
+                return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+            }
         }
 
-        if(ServerSettingChecker.isServerEnabled(API_DOCS) && simpleHttpRequest.getUrl() != null  && simpleHttpRequest.getUrl().endsWith(URL_HTML)){
-            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
-        }
+//        if(ServerSettingChecker.isServerEnabled(API_DOCS) && httpRequest.getUrl() != null && httpRequest.getUrl().endsWith(URL_JAVASCRIPT)){
+//            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+//        }
+//
+//        if(ServerSettingChecker.isServerEnabled(API_DOCS) && httpRequest.getUrl() != null  && httpRequest.getUrl().endsWith(URL_HTML)){
+//            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+//        }
+//
+//        if(ServerSettingChecker.isServerEnabled(API_DOCS) && httpRequest.getUrl() != null  && httpRequest.getUrl().equals(URL_FAVICON)){
+//            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+//        }
 
-        if(ServerSettingChecker.isServerEnabled(API_DOCS) && simpleHttpRequest.getUrl() != null  && simpleHttpRequest.getUrl().equals(URL_FAVICON)){
-            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
-        }
-
-        return requestHandlers.getOrDefault(simpleHttpRequest.getMethod(), RequestErrorHandler.getInstance());
+        return requestHandlers.getOrDefault(httpRequest.getMethod(), RequestErrorHandler.getInstance());
     }
 
-    public static RequestHandlerProvider getInstance(){
+    public static RequestHandlerProvider getInstance() {
         return INSTANCE;
     }
 }
