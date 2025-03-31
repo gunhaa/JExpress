@@ -1,7 +1,7 @@
 package simple.response;
 
 import com.google.gson.Gson;
-import simple.constant.HttpMethod;
+import simple.constant.CustomHttpMethod;
 import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.HttpRequest;
@@ -67,8 +67,8 @@ public class ResponseBuilder {
     public ResponseBuilder httpStatus(){
 
         if(errorStatus == null){
-            HttpMethod method = httpRequest.getMethod();
-            HttpStatus httpStatus = method.getHttpStatus();
+            CustomHttpMethod method = httpRequest.getMethod();
+            HttpStatus httpStatus = method.getDefaultHttpStatus();
             sb.append(httpStatus.getStatusCode()).append(" ").append(httpStatus.getMessage()).append(CRLF);
             return this;
         } else {

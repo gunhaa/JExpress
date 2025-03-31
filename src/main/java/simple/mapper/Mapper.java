@@ -1,12 +1,12 @@
 package simple.mapper;
 
-import simple.constant.HttpMethod;
+import simple.constant.CustomHttpMethod;
 import simple.response.LambdaHandler;
 
 import java.util.Map;
 
 public interface Mapper {
-    HttpMethod getMethod();
+    CustomHttpMethod getMethod();
     LambdaHandler getUrl(String url);
     LambdaHandler getHandler(String url);
     Map<String, LambdaHandler> getHandlers();

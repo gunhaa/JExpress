@@ -7,7 +7,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
-import simple.constant.HttpMethod;
+import simple.constant.CustomHttpMethod;
 import simple.constant.HttpStatus;
 
 import java.lang.reflect.Type;
@@ -17,7 +17,7 @@ import java.util.*;
 @Getter
 @Setter
 public class CharHttpRequestDTO {
-    private HttpMethod method;
+    private CustomHttpMethod method;
     private String url;
     private String protocol;
     private final HashMap<String, String> queryString = new HashMap<>();
@@ -46,7 +46,7 @@ public class CharHttpRequestDTO {
     public void addRequestLine(String line) {
         String[] request = line.split(" ");
         try {
-            this.method = HttpMethod.valueOf(request[0]);
+            this.method = CustomHttpMethod.valueOf(request[0]);
         } catch (IllegalArgumentException e) {
             System.err.println("Invalid Method Error");
             errorQueue.add(new simple.httpRequest.ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid Method Error"));

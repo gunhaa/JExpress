@@ -1,6 +1,6 @@
 package simple.provider;
 
-import simple.constant.HttpMethod;
+import simple.constant.CustomHttpMethod;
 import simple.constant.ServerSettingChecker;
 import simple.httpRequest.HttpRequest;
 import simple.requestHandler.*;
@@ -13,7 +13,7 @@ import static simple.constant.ApplicationSetting.*;
 
 public class RequestHandlerProvider {
 
-    private final Map<HttpMethod, RequestHandler> requestHandlers;
+    private final Map<CustomHttpMethod, RequestHandler> requestHandlers;
     private static final RequestHandlerProvider INSTANCE = new RequestHandlerProvider();
     public static final String URL_FAVICON = "/favicon.ico";
     public static final String URL_HTML = ".html";
@@ -21,12 +21,12 @@ public class RequestHandlerProvider {
 
     private RequestHandlerProvider() {
         this.requestHandlers = new HashMap<>();
-        requestHandlers.put(HttpMethod.GET, RequestGetHandler.getInstance());
-        requestHandlers.put(HttpMethod.POST, RequestPostHandler.getInstance());
-        requestHandlers.put(HttpMethod.PUT, RequestPutHandler.getInstance());
-        requestHandlers.put(HttpMethod.DELETE, RequestDeleteHandler.getInstance());
-        requestHandlers.put(HttpMethod.EXCEPTION_STATIC, RequestStaticHandler.getInstance());
-        requestHandlers.put(HttpMethod.ERROR, RequestErrorHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.GET, RequestGetHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.POST, RequestPostHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.PUT, RequestPutHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.DELETE, RequestDeleteHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.EXCEPTION_STATIC, RequestStaticHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.ERROR, RequestErrorHandler.getInstance());
     }
 
     public RequestHandler getHandler(HttpRequest httpRequest) {
@@ -37,15 +37,15 @@ public class RequestHandlerProvider {
 
         if (ServerSettingChecker.isServerEnabled(API_DOCS) && httpRequest.getUrl() != null) {
             if (httpRequest.getUrl().endsWith(URL_JAVASCRIPT)) {
-                return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+                return requestHandlers.get(CustomHttpMethod.EXCEPTION_STATIC);
             }
 
             if (httpRequest.getUrl().endsWith(URL_HTML)) {
-                return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+                return requestHandlers.get(CustomHttpMethod.EXCEPTION_STATIC);
             }
 
             if (httpRequest.getUrl().equals(URL_FAVICON)) {
-                return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
+                return requestHandlers.get(CustomHttpMethod.EXCEPTION_STATIC);
             }
         }
 

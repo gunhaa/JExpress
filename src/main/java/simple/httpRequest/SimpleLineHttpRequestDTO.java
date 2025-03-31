@@ -5,7 +5,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
-import simple.constant.HttpMethod;
+import simple.constant.CustomHttpMethod;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class SimpleLineHttpRequestDTO {
-    private HttpMethod method;
+    private CustomHttpMethod method;
     private String url;
     private String protocol;
     private final HashMap<String, String> queryString = new HashMap<>();
@@ -56,7 +56,7 @@ public class SimpleLineHttpRequestDTO {
     public void parsingRequestLine(String line) {
         String[] request = line.split(" ");
         try {
-            this.method = HttpMethod.valueOf(request[0]);
+            this.method = CustomHttpMethod.valueOf(request[0]);
         } catch (Exception e) {
             throw new IllegalArgumentException("잘못된 요청입니다");
         }

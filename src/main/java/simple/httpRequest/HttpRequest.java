@@ -3,7 +3,7 @@ package simple.httpRequest;
 import com.google.gson.internal.LinkedTreeMap;
 import lombok.Builder;
 import lombok.Getter;
-import simple.constant.HttpMethod;
+import simple.constant.CustomHttpMethod;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,7 +12,7 @@ import java.util.Queue;
 @Builder
 @Getter
 public class HttpRequest {
-    private final HttpMethod method;
+    private final CustomHttpMethod method;
     private final String url;
     private final String protocol;
     private final HashMap<String, String> queryString;
@@ -27,7 +27,7 @@ public class HttpRequest {
 
     public static HttpRequest createMock(){
         return builder()
-                .method(HttpMethod.GET)
+                .method(CustomHttpMethod.GET)
                 .url("url")
                 .protocol("protocol")
                 .queryString(new HashMap<>())

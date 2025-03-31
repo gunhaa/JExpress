@@ -1,6 +1,6 @@
 package simple.constant;
 
-public enum HttpMethod {
+public enum CustomHttpMethod {
     GET,
     POST,
     PUT,
@@ -8,7 +8,7 @@ public enum HttpMethod {
     EXCEPTION_STATIC,
     ERROR;
 
-    public HttpStatus getHttpStatus(){
+    public HttpStatus getDefaultHttpStatus(){
         if(GET == this){
             return HttpStatus.OK_200;
         }

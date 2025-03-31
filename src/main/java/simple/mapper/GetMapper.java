@@ -1,6 +1,6 @@
 package simple.mapper;
 
-import simple.constant.HttpMethod;
+import simple.constant.CustomHttpMethod;
 import simple.response.LambdaHandler;
 
 import java.util.HashMap;
@@ -10,10 +10,10 @@ public class GetMapper implements Mapper{
 
     private static final Mapper getMapper = new GetMapper();
     private final HashMap<String, LambdaHandler> getMap;
-    private final HttpMethod httpMethod;
+    private final CustomHttpMethod customHttpMethod;
 
     private GetMapper() {
-        this.httpMethod = HttpMethod.GET;
+        this.customHttpMethod = CustomHttpMethod.GET;
         this.getMap = new HashMap<>();
     }
 
@@ -27,8 +27,8 @@ public class GetMapper implements Mapper{
     }
 
     @Override
-    public HttpMethod getMethod() {
-        return this.httpMethod;
+    public CustomHttpMethod getMethod() {
+        return this.customHttpMethod;
     }
 
     @Override
