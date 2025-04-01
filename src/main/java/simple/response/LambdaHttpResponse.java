@@ -22,7 +22,7 @@ public class LambdaHttpResponse {
     /**
      * send default response
      */
-    public void send(Object responseBody, Class<?> clazz){
+    public void send(Object responseBody){
 
         // API DOCS Reflection check
         if(ServerSettingChecker.isServerEnabled(API_DOCS)){

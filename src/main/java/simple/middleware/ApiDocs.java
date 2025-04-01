@@ -41,7 +41,7 @@ public class ApiDocs implements Middleware{
         List<ApiDetails> apiList = apiDocsDto.getApiList();
 
         getMap.addUrl("/api-docs/v1", (req, res) -> {
-            res.send(apiList, Object.class);
+            res.send(apiList);
         });
 
         System.out.println("ApiDocs 미들웨어 실행.. 메소드 작성");

@@ -24,7 +24,7 @@ public class Main {
 //        app.use(DB_MYSQL);
 //        app.use(GET_CACHE);
 
-        app.get("/member" , (req, res) -> {
+//        app.get("/member" , (req, res) -> {
             // url = "/member?id=3"
             //String qs = req.getQueryString().get("id");
             //res.send(req.findMemberById(qs))
@@ -32,9 +32,9 @@ public class Main {
             // 1. reflection으로 getQueryString에서 결과값의 필드를 얻어와서 필드가 맞는지 검사해야함(안해도 npe나게 하면될듯? 사용자 잘못)
             // 2. 그 정보를 이용해서 JPA를 이용해, 객체를 얻을 수 있는 클래스 필요함
             // 3. 결과를 send에 전송
-            String value = req.getQueryString("name");
-            res.send(new Member("gunha", 10), Member.class);
-        });
+//            String value = req.getQueryString("name");
+//            res.send(new Member("gunha", 10), Member.class);
+//        });
 
 //        app.get("/user", (req, res) -> {
 //            res.send(new Member("jihwan", 47));
@@ -49,9 +49,11 @@ public class Main {
 //        list.add(member2);
 //        list.add(member3);
 //
-//        app.get("/members", (req, res) -> {
-//            res.send(list);
-//        });
+
+        app.get("/members", (req, res) -> {
+            List<?> List = req.findAll(Member.class);
+            res.send(List);
+        });
 
         app.run(8020);
     }
