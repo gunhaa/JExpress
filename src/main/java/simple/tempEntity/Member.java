@@ -15,16 +15,18 @@ public class Member {
     @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name = "USERNAME")
     private String name;
 
     private int age;
 
+    private String engName;
+
     public Member(){}
 
-    public Member(String name, int age) {
+    public Member(String name, int age, String engName) {
         this.name = name;
         this.age = age;
+        this.engName = engName;
     }
 
 }

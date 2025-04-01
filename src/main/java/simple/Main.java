@@ -1,12 +1,12 @@
 package simple;
 
 import simple.repository.JExpressCRUDRepository;
+import simple.repository.JExpressQueryString;
 import simple.server.Server;
 import simple.server.JExpress;
 import simple.tempEntity.Member;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static simple.constant.ApplicationSetting.*;
@@ -25,17 +25,21 @@ public class Main {
 //        app.use(DB_MYSQL);
 //        app.use(GET_CACHE);
 
-//        app.get("/member" , (req, res) -> {
-            // url = "/member?id=3"
-            //String qs = req.getQueryString().get("id");
-            //res.send(req.findMemberById(qs))
-            // 필요한 것
-            // 1. reflection으로 getQueryString에서 결과값의 필드를 얻어와서 필드가 맞는지 검사해야함(안해도 npe나게 하면될듯? 사용자 잘못)
-            // 2. 그 정보를 이용해서 JPA를 이용해, 객체를 얻을 수 있는 클래스 필요함
-            // 3. 결과를 send에 전송
-//            String value = req.getQueryString("name");
-//            res.send(new Member("gunha", 10), Member.class);
-//        });
+        app.get("/member" , (req, res) -> {
+            // url = "/member?name=gunha"
+            String key1 = "name";
+            String value1 = req.getQueryString(key1);
+            JExpressQueryString jqs1 = new JExpressQueryString(key1, value1);
+
+            String key2 = "age";
+            String value2 = req.getQueryString(key2);
+            JExpressQueryString jqs2 = new JExpressQueryString(key2, value2);
+
+            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            Member findMember = jcr.findEntity(Member.class, jqs1, jqs2);
+
+            res.send(findMember);
+        });
 
 //        app.get("/user", (req, res) -> {
 //            res.send(new Member("jihwan", 47));

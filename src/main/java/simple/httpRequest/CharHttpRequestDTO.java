@@ -52,15 +52,20 @@ public class CharHttpRequestDTO {
             errorQueue.add(new ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid Method Error"));
         }
 
-        String[] url = request[1].split("\\?");
-        if (url.length == 1) {
-            this.url = url[0];
-        } else {
-            this.url = url[0];
-            for (int i = 1; i < url.length; i++) {
-                String[] splitQueryString = url[i].split("=");
-                this.queryString.put(splitQueryString[0], splitQueryString[1]);
+        String[] urlSegment = request[1].split("\\?");
+        this.url = urlSegment[0];
+
+        if (urlSegment.length > 1) {
+            String[] queryParams = urlSegment[1].split("&");
+
+            for (String param : queryParams) {
+                String[] keyValue = param.split("=");
+                if (keyValue.length == 2) {
+                    this.queryString.put(keyValue[0], keyValue[1]);
+                }
             }
+
+
         }
 
         this.protocol = request[2];
@@ -68,7 +73,7 @@ public class CharHttpRequestDTO {
         this.parsingHeaders = true;
     }
 
-    public void updateRemainingBodyLength(){
+    public void updateRemainingBodyLength() {
         this.parsingHeaders = false;
         this.parsingBody = true;
 
@@ -104,7 +109,7 @@ public class CharHttpRequestDTO {
         Gson gson = new Gson();
         Type type = new TypeToken<Map<String, Object>>() {
         }.getType();
-        if(isValidJson(json)){
+        if (isValidJson(json)) {
             this.bodyMap = gson.fromJson(json.toString(), type);
         } else {
             System.err.println("Invalid json body Error");

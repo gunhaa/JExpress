@@ -1,13 +1,9 @@
 package simple.repository;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import simple.constant.HttpStatus;
+import jakarta.persistence.TypedQuery;
 import simple.constant.ServerSettingChecker;
 import simple.database.DBConnection;
-import simple.database.H2Connection;
-import simple.httpRequest.ErrorStatus;
 
 import java.util.List;
 
@@ -35,25 +31,50 @@ public class JExpressCRUDRepository implements JExpressRepository {
     public <T> List<T> findAll(Class<T> clazz) {
         DBConnection dbConnection = selectDb();
         EntityManager em = dbConnection.getEntityManager();
-
         String clazzName = clazz.getName();
-        String jpql = "SELECT m FROM "+ clazzName +" m";
-        List<T> resultList = em.createQuery(jpql, clazz)
+
+        StringBuilder jpql = new StringBuilder("SELECT m FROM "+ clazzName +" m");
+        List<T> resultList = em.createQuery(jpql.toString(), clazz)
                 .getResultList();
 
         return resultList;
     }
 
-//    public void findEntity(Class<?> clazz, String... conditions){
-//        DBConnection dbConnection = selectDb();
-//        if(dbConnection == null){
-//            httpRequest.getErrorQueue().add(new ErrorStatus(HttpStatus.INTERNAL_SERVER_ERROR_500, "plz setting db"));
-//        }
-//
-//        EntityManager em = dbConnection.getEntityManager();
-//
-//        String clazzName = clazz.getName();
-//    }
+    /**
+     * JExpressQueryString이 전달되지 않으면 entity의 첫 결과를 반환하며, 결과가 여러개라면 첫 번째 결과를 반환함
+     */
+    public <T> T findEntity(Class<T> clazz, JExpressQueryString... conditions){
+        DBConnection dbConnection = selectDb();
+        EntityManager em = dbConnection.getEntityManager();
+        String clazzName = clazz.getName();
+        StringBuilder jpql = new StringBuilder("SELECT m FROM "+ clazzName +" m  WHERE 1=1");
+        TypedQuery<T> query = em.createQuery(jpql.toString(), clazz);
+
+        if(conditions == null){
+            List<T> resultList = query
+                    .getResultList();
+            return resultList.get(0);
+        } else {
+            for (JExpressQueryString condition : conditions) {
+                String key = condition.getKey();
+                String value = condition.getValue();
+                jpql.append(" AND m.").append(key).append("=:").append(key);
+            }
+
+            query = em.createQuery(jpql.toString(), clazz);
+
+            for (JExpressQueryString condition : conditions) {
+                String key = condition.getKey();
+                String value = condition.getValue();
+                query.setParameter(key, value);
+                System.out.println("세팅되는 kv.... " + key + " ||| " + value);
+            }
+
+            List<T> resultList = query
+                    .getResultList();
+            return resultList.get(0);
+        }
+    }
 
     private DBConnection selectDb() {
         DBConnection db;
