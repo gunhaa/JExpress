@@ -35,6 +35,10 @@ public class MySQLConnection implements DBConnection{
         return null;
     }
 
+    public static DBConnection getInstance(){
+        return null;
+    }
+
     @Override
     public EntityManager getEntityManager() {
         return null;

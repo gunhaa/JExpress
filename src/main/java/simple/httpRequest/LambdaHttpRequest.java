@@ -1,9 +1,9 @@
 package simple.httpRequest;
 
 import simple.constant.HttpStatus;
+import simple.database.DBConnection;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 public class LambdaHttpRequest {
 
@@ -17,10 +17,21 @@ public class LambdaHttpRequest {
         HashMap<String, String> qs = httpRequest.getQueryString();
         String value = qs.get(target);
         if(value == null){
-            httpRequest.getErrorQueue().add(new ErrorStatus(HttpStatus.BAD_REQUEST_400, "this url must need field"));
+            httpRequest.getErrorQueue().add(new ErrorStatus(HttpStatus.NOT_FOUND_404, "QueryString not found"));
         }
         return value;
     }
+
+    public void findEntity(Class<?> clazz, String... conditions){
+//        DBConnection db = DBConnection.get
+        String clazzName = clazz.getName();
+
+    }
+
+    public void findAll(Class<?> clazz){
+
+    }
+
 
     public HttpRequest getHttpRequest() {
         return httpRequest;
