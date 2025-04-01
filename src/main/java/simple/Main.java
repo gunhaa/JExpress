@@ -20,6 +20,8 @@ public class Main {
 //        app.use(CORS);
         app.use(CORS, "https://bitlibrary.com");
         app.use(RESPONSE_TIME);
+        app.use(DB_H2);
+//        app.use(DB_MYSQL);
 //        app.use(GET_CACHE);
 
         app.get("/member" , (req, res) -> {

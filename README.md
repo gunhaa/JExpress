@@ -54,6 +54,11 @@ public class Main {
 
 - 서버 ResponseTime 측정 on/off
 
+## 개발 우선 순위
+1. 기능 추가(DB연동 기능까지 빠르게 기능 추가)
+   - 테스트는 curl과 postman을 통해서 진행
+2. 테스트 추가
+3. 리팩토링
 
 ## ISSUE
 

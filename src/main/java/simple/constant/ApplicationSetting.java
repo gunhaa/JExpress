@@ -5,8 +5,8 @@ public enum ApplicationSetting {
     RESPONSE_TIME(1 << 1),
     GET_CACHE(1 << 2),
     CORS(1 << 3),
-    TEMP_SETTING1(1 << 4),
-    TEMP_SETTING2(1 << 5),
+    DB_H2(1 << 4),
+    DB_MYSQL(1 << 5),
     TEMP_SETTING3(1 << 6);
 
     private final int bitMask;
