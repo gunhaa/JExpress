@@ -49,7 +49,7 @@ public class CharHttpRequestDTO {
             this.method = CustomHttpMethod.valueOf(request[0]);
         } catch (IllegalArgumentException e) {
             System.err.println("Invalid Method Error");
-            errorQueue.add(new simple.httpRequest.ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid Method Error"));
+            errorQueue.add(new ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid Method Error"));
         }
 
         String[] url = request[1].split("\\?");

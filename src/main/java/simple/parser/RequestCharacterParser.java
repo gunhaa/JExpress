@@ -28,7 +28,6 @@ public class RequestCharacterParser implements Parser{
             logger.add((char) ch);
 
             if(charHttpRequestDTO.isParsingBody()){
-//                processHttpBody((char)ch);
                 charHttpRequestDTO.addRequestBody((char)ch);
                 continue;
             }
