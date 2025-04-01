@@ -1,5 +1,6 @@
 package simple;
 
+import simple.repository.JExpressCRUDRepository;
 import simple.server.Server;
 import simple.server.JExpress;
 import simple.tempEntity.Member;
@@ -39,19 +40,10 @@ public class Main {
 //        app.get("/user", (req, res) -> {
 //            res.send(new Member("jihwan", 47));
 //        });
-//
-//        Member member1 = new Member("gunha", 1);
-//        Member member2 = new Member("jaewon", 2);
-//        Member member3 = new Member("insoo", 3);
-//
-//        List<Member> list = new ArrayList<>();
-//        list.add(member1);
-//        list.add(member2);
-//        list.add(member3);
-//
 
         app.get("/members", (req, res) -> {
-            List<?> List = req.findAll(Member.class);
+            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            List<?> List = jcr.findAll(Member.class);
             res.send(List);
         });
 
