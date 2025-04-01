@@ -2,26 +2,19 @@ package simple.database;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
-import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.dialect.H2Dialect;
-import org.hibernate.jpa.HibernatePersistenceProvider;
-import simple.middleware.ApiDocs;
 import simple.tempEntity.Member;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class H2Connection implements DBConnection{
 
     private static volatile H2Connection INSTANCE;
+    private final EntityManagerFactory emf;
 
     private H2Connection() {
+        this.emf = Persistence.createEntityManagerFactory("h2");
     }
 
-    /**
-     * lazy Loading, Double-Checked Locking
-     */
     public static H2Connection getInstance() {
         if (INSTANCE == null) {
             synchronized (H2Connection.class) {
@@ -33,37 +26,44 @@ public class H2Connection implements DBConnection{
         return INSTANCE;
     }
 
-
     @Override
-    public void getConnection(){
-        // EntityManagerFactory 생성
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("h2");
-        EntityManager em = emf.createEntityManager();
+    public EntityManagerFactory getEntityManagerFactory(){
+        return emf;
+    }
 
-        try {
-            // 트랜잭션 시작
-            em.getTransaction().begin();
+    public void setTestData() {
 
-            // 새로운 Member 저장
-            Member member = new Member();
-            member.setName("gg");
-            member.setAge(11);
-            em.persist(member);
+        try (EntityManager em = emf.createEntityManager()) {
+            EntityTransaction tx = em.getTransaction();
+            tx.begin();
 
-            // 트랜잭션 커밋
-            em.getTransaction().commit();
+            Member member1 = new Member();
+            member1.setName("gunha");
+            member1.setAge(10);
+            em.persist(member1);
 
-            // Member 조회
-            Member foundMember = em.find(Member.class, member.getId());
-            System.out.println("조회된 Member: " + foundMember);
+            Member member2 = new Member();
+            member2.setName("insoo");
+            member2.setAge(20);
+            em.persist(member2);
 
-        } finally {
-            em.close(); // EntityManager 닫기
-            emf.close(); // EntityManagerFactory 닫기
+            Member member3 = new Member();
+            member3.setName("jaewon");
+            member3.setAge(30);
+            em.persist(member3);
+
+            Member member4 = new Member();
+            member4.setName("jihwan");
+            member4.setAge(40);
+            em.persist(member4);
+
+            tx.commit();
         }
     }
 
-    public void getTestDataset() {
-
+    // 쓰레드마다 한개씩 생성해 로직 실행
+    @Override
+    public EntityManager getEntityManager(){
+        return emf.createEntityManager();
     }
 }

@@ -26,7 +26,6 @@ public class H2Database implements Middleware{
     @Override
     public void run() {
         H2Connection h2 = H2Connection.getInstance();
-        h2.getConnection();
-        h2.getTestDataset();
+        h2.setTestData();
     }
 }

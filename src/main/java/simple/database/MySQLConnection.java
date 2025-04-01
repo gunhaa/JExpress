@@ -1,11 +1,13 @@
 package simple.database;
 
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 // Todo
 public class MySQLConnection implements DBConnection{
     @Override
-    public void getConnection() {
+    public EntityManagerFactory getEntityManagerFactory() {
 //        Configuration configuration = new Configuration();
 //        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
 //        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/testdb");
@@ -30,5 +32,11 @@ public class MySQLConnection implements DBConnection{
 //            session.close();
 //            sessionFactory.close();
 //        }
+        return null;
+    }
+
+    @Override
+    public EntityManager getEntityManager() {
+        return null;
     }
 }

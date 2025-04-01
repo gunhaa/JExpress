@@ -1,5 +1,9 @@
 package simple.database;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+
 public interface DBConnection {
-    void getConnection();
+    EntityManagerFactory getEntityManagerFactory();
+    EntityManager getEntityManager();
 }

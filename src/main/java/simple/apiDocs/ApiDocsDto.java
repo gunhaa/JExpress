@@ -1,6 +1,7 @@
 package simple.apiDocs;
 
 import simple.httpRequest.HttpRequest;
+import simple.httpRequest.LambdaHttpRequest;
 import simple.response.LambdaHandler;
 import simple.response.LambdaHttpResponse;
 
@@ -20,7 +21,10 @@ public class ApiDocsDto {
             String url = entry.getKey();
             LambdaHandler handler = entry.getValue();
 
-            LambdaHttpResponse response = new LambdaHttpResponse(HttpRequest.createMock(), new PrintWriter(System.out, true));
+            HttpRequest mock = HttpRequest.createMock();
+            LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(mock);
+
+            LambdaHttpResponse response = new LambdaHttpResponse(lambdaHttpRequest, new PrintWriter(System.out, true));
 
             handler.execute(null, response);
 

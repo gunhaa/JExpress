@@ -34,7 +34,7 @@ public class RequestGetHandler implements RequestHandler{
             }
 
             LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(httpRequest);
-            LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(httpRequest, pw);
+            LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(lambdaHttpRequest, pw);
             lambdaHandler.execute(lambdaHttpRequest, lambdaHttpResponse);
 
         }
