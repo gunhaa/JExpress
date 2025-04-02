@@ -21,6 +21,10 @@ public class Member {
 
     private String engName;
 
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
+
     public Member(){}
 
     public Member(String name, int age, String engName) {

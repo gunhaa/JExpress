@@ -43,7 +43,7 @@ public class JExpressCRUDRepository implements JExpressRepository {
     /**
      * JExpressQueryString이 전달되지 않으면 entity의 첫 결과를 반환하며, 결과가 여러개라면 첫 번째 결과를 반환함
      */
-    public <T> T findSingleTableEntity(Class<T> clazz, JExpressQueryString... conditions){
+    public <T> T findEntity(Class<T> clazz, JExpressQueryString... conditions){
         DBConnection dbConnection = selectDb();
         EntityManager em = dbConnection.getEntityManager();
         String clazzName = clazz.getName();
@@ -51,12 +51,12 @@ public class JExpressCRUDRepository implements JExpressRepository {
 
         TypedQuery<T> query = em.createQuery(jpql.toString(), clazz);
 
+        // todo : refactoring
         if(conditions == null){
             List<T> resultList = query
                     .getResultList();
             return resultList.get(0);
         } else {
-
 
             for (JExpressQueryString condition : conditions) {
                 String key = condition.getKey();
@@ -80,6 +80,14 @@ public class JExpressCRUDRepository implements JExpressRepository {
 
             return resultList.get(0);
         }
+    }
+
+    /**
+     * 파라미터
+     * 반환형,
+     */
+    public <T> T findEntityWithNativeQuery(Class<T> clazz, String query){
+        return null;
     }
 
     private DBConnection selectDb() {

@@ -5,6 +5,7 @@
 
     <persistence-unit name="h2">
         <class>simple.tempEntity.Member</class>
+        <class>simple.tempEntity.Team</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>

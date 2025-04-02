@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import simple.tempEntity.Member;
+import simple.tempEntity.Team;
 
 public class H2Connection implements DBConnection{
 
@@ -66,6 +67,22 @@ public class H2Connection implements DBConnection{
             member5.setAge(50);
             member5.setEngName("Roopy");
             em.persist(member5);
+
+            Team team1 = new Team();
+            Team team2 = new Team();
+            team1.setTeamName("일팀");
+            team1.setTeamEngName("1team");
+            em.persist(team1);
+
+            team2.setTeamName("이팀");
+            team2.setTeamEngName("2team");
+            em.persist(team2);
+
+            member1.setTeam(team1);
+            member2.setTeam(team1);
+            member3.setTeam(team1);
+            member4.setTeam(team2);
+            member5.setTeam(team2);
 
             tx.commit();
         }
