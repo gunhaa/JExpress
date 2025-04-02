@@ -35,7 +35,7 @@ public class LambdaHttpResponse {
         HttpRequest httpRequest = lambdaHttpRequest.getHttpRequest();
 
         if(responseBody == null){
-            responseBody = new ErrorStatus(HttpStatus.NOT_FOUND_404, "can't find entity");
+            responseBody = new ErrorStatus(HttpStatus.NOT_FOUND_404, "cant find entity");
         }
 
         ResponseBuilder responseBuilder = new ResponseBuilder(httpRequest, responseBody);

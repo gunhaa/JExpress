@@ -4,13 +4,10 @@ import simple.apiDocs.ApiDetails;
 import simple.apiDocs.ApiDocsDto;
 import simple.mapper.GetMapper;
 import simple.mapper.Mapper;
-import simple.response.LambdaHandler;
-import simple.response.LambdaHandlerWrapper;
 
 import java.util.List;
-import java.util.Map;
 
-public class ApiDocs implements Middleware{
+public class ApiDocs implements JExpressExtension {
 
     private static volatile ApiDocs INSTANCE;
 

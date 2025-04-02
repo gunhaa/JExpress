@@ -18,9 +18,7 @@ public class ResponseBuilder {
     private final StringBuilder sb = new StringBuilder();
     private final HttpRequest httpRequest;
     private final ErrorStatus errorStatus;
-    private final Gson gson = new GsonBuilder()
-                                .disableHtmlEscaping()
-                                .create();
+    private final Gson gson = new Gson();
     private final String entityJson;
     private String entity;
 

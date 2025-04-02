@@ -1,10 +1,12 @@
 package simple.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import simple.constant.ServerSettingChecker;
 import simple.database.DBConnection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static simple.constant.ApplicationSetting.DB_H2;
@@ -84,10 +86,20 @@ public class JExpressCRUDRepository implements JExpressRepository {
 
     /**
      * 파라미터
-     * 반환형,
+     * 반환형
      */
-    public <T> T findEntityWithNativeQuery(Class<T> clazz, String query){
-        return null;
+    public <T> List<T> findListWithNativeQuery(Class<T> clazz, String query){
+        DBConnection dbConnection = selectDb();
+        EntityManager em = dbConnection.getEntityManager();
+
+        try {
+            List resultList = em.createNativeQuery(query, clazz)
+                    .getResultList();
+            System.out.println(resultList.toString());
+            return resultList;
+        } catch (NoResultException e) {
+            return new ArrayList<>();
+        }
     }
 
     private DBConnection selectDb() {

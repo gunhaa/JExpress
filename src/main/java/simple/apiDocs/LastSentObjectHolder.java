@@ -9,7 +9,7 @@ public class LastSentObjectHolder {
         lastSentType = type;
     }
 
-    public static Class<?> getLastSentType() {
+    public static Class<?> getLastSentmType() {
         return lastSentType;
     }
 }

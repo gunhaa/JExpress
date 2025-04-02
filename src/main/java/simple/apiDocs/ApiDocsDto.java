@@ -156,12 +156,12 @@ public class ApiDocsDto {
             } else {
                 Field[] fields = returnClazz.getDeclaredFields();
                 for (Field field : fields) {
-                    if (field.isAnnotationPresent(ManyToOne.class) ||
-                            field.isAnnotationPresent(OneToMany.class) ||
-                            field.isAnnotationPresent(OneToOne.class) ||
-                            field.isAnnotationPresent(ManyToMany.class)) {
-                        continue;
-                    }
+//                    if (field.isAnnotationPresent(ManyToOne.class) ||
+//                            field.isAnnotationPresent(OneToMany.class) ||
+//                            field.isAnnotationPresent(OneToOne.class) ||
+//                            field.isAnnotationPresent(ManyToMany.class)) {
+//                        continue;
+//                    }
                     apiDetails.addField(field.getName(), field.getType().getSimpleName());
                 }
             }

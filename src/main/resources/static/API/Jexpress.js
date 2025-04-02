@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     table.insertAdjacentHTML("beforeend", `
                         <tr>
+                            <td>${v.customHttpMethod}</td>
                             <td>${v.url}</td>
                             <td>${v.returnType}</td>
                             <td>${fieldsStr}</td>

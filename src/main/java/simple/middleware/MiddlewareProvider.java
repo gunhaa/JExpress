@@ -24,19 +24,19 @@ public class MiddlewareProvider {
     }
 
     public void execute(ApplicationSetting applicationSetting){
-        Middleware middleware = getMiddleware(applicationSetting);
-        middleware.run();
+        JExpressExtension JExpressExtension = getMiddleware(applicationSetting);
+        JExpressExtension.run();
     }
 
-    private Middleware getMiddleware(ApplicationSetting applicationSetting){
-        Middleware middleware = null;
+    private JExpressExtension getMiddleware(ApplicationSetting applicationSetting){
+        JExpressExtension JExpressExtension = null;
         switch (applicationSetting){
-            case API_DOCS -> middleware = ApiDocs.getInstance();
-            case CORS -> middleware = Cors.getInstance();
-            case RESPONSE_TIME -> middleware = ResponseTime.getInstance();
-            case DB_H2 -> middleware =H2Database.getInstance();
+            case API_DOCS -> JExpressExtension = ApiDocs.getInstance();
+            case CORS -> JExpressExtension = Cors.getInstance();
+            case RESPONSE_TIME -> JExpressExtension = ResponseTime.getInstance();
+            case DB_H2 -> JExpressExtension =H2Database.getInstance();
         }
 
-        return middleware;
+        return JExpressExtension;
     }
 }

@@ -5,44 +5,43 @@
     <script src="Jexpress.js"></script>
     <title>SIMPLE_REST_API_DOCS</title>
     <style>
-        /* 테이블 전체 스타일 */
         table {
             width: 600px;
-            border-collapse: collapse; /* 테두리 겹침 제거 */
+            border-collapse: collapse;
             text-align: left;
         }
 
-        /* 테이블 헤더 (th) 스타일 */
         th {
             background-color: #f4f4f4;
             border: 1px solid #ddd;
             padding: 8px;
         }
 
-        /* 테이블 바디 (td) 스타일 */
         td {
-            border: 1px solid #ddd; /* 각 셀 경계선 */
+            border: 1px solid #ddd;
             padding: 8px;
         }
 
-        /* 줄무늬 스타일 (가독성 향상) */
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
 
         th:nth-child(1) {
-            width: 25%; /* 첫 번째 열 너비 */
+            width: 20%;
         }
 
         th:nth-child(2) {
-            width: 25%; /* 두 번째 열 너비 */
+            width: 20%;
         }
 
         th:nth-child(3) {
-            width: 50%; /* 세 번째 열 너비 */
+            width: 20%;
         }
 
-        /* 마우스 오버 시 강조 */
+        th:nth-child(4) {
+            width: 40%;
+        }
+
         tr:hover {
             background-color: #f1f1f1;
         }
@@ -53,6 +52,7 @@
 <div id="MAIN-API-DOCS">
     <table>
         <tr>
+            <th>method</th>
             <th>url</th>
             <th>returnType</th>
             <th>field</th>

@@ -1,9 +1,6 @@
 package simple.middleware;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class ResponseTime implements Middleware{
+public class ResponseTime implements JExpressExtension {
 
     private static volatile ResponseTime INSTANCE;
 

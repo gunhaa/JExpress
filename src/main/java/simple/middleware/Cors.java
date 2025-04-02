@@ -1,6 +1,5 @@
 package simple.middleware;
 
-import simple.config.ApplicationConfig;
 import simple.constant.ApplicationSetting;
 import simple.constant.ServerSettingChecker;
 
@@ -9,7 +8,7 @@ import java.util.Map;
 
 import static simple.constant.ApplicationSetting.CORS;
 
-public class Cors implements Middleware{
+public class Cors implements JExpressExtension {
 
     private static volatile Cors INSTANCE;
     private final Map<Integer, String> corsMap;

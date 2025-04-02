@@ -70,6 +70,24 @@ public class Main {
 //            res.send(List, List.class);
         }, ArrayList.class);
 
+        // test url = localhost:8020/member/team?teamName=일팀
+        app.get("/member/team", (req, res) -> {
+
+            String key1 = "teamName";
+            String value1 = req.getQueryString(key1);
+
+            StringBuilder query = new StringBuilder("SELECT m.* FROM MEMBER m JOIN TEAM t ON t.TEAM_ID=m.TEAM_ID WHERE ");
+            query.append(key1).append("=").append("'").append(value1).append("'");
+            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+
+            List<?> List = jcr.findListWithNativeQuery(Member.class, query.toString());
+
+            res.send(List);
+//            res.send(List, List.class);
+        }, List.class);
+
+
+
         app.run(8020);
     }
 }
