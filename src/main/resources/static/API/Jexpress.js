@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(res => res.json())
             .then(res => {
 
+                console.log(res);
+
                 res.forEach(v => {
 
                     const fieldsStr = Object.entries(v.fields)

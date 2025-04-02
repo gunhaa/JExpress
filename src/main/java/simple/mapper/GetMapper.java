@@ -40,8 +40,9 @@ public class GetMapper implements Mapper{
     }
 
     @Override
-    public LambdaHandlerWrapper getHandler(String url) {
-        return getMap.get(url);
+    public LambdaHandler getLambdaHandler(String url) {
+        LambdaHandlerWrapper wrapper = getMap.get(url);
+        return (wrapper != null) ? wrapper.unwrap() : null;
     }
 
     @Override

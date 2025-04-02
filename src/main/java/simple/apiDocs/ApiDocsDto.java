@@ -1,9 +1,12 @@
 package simple.apiDocs;
 
 import org.objectweb.asm.*;
+import simple.constant.CustomHttpMethod;
 import simple.mapper.Mapper;
 import simple.response.LambdaHandler;
+import simple.response.LambdaHandlerWrapper;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -132,33 +135,29 @@ public class ApiDocsDto {
         Collections.reverse(this.lambdaParam);
     }
 
-    public void createApiDocs(Map<String, LambdaHandler> apiHandlers) {
+    public void createApiDocs(Mapper mapper) {
 
-        for (Map.Entry<String, LambdaHandler> entry : apiHandlers.entrySet()) {
+        Map<String, LambdaHandlerWrapper> apiHandlers = mapper.getHandlers();
+        CustomHttpMethod method = mapper.getMethod();
+
+        for (Map.Entry<String, LambdaHandlerWrapper> entry : apiHandlers.entrySet()) {
             String url = entry.getKey();
-            LambdaHandler handler = entry.getValue();
+            Class<?> returnClazz = entry.getValue().getClazz();
 
-            HttpRequest mock = HttpRequest.createMock();
-            LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(mock);
+            System.out.println("returnClazz.getName() : " + returnClazz.getSimpleName());
 
-            LambdaHttpResponse response = new LambdaHttpResponse(lambdaHttpRequest, new PrintWriter(System.out, true));
+            ApiDetails apiDetails = new ApiDetails(method, url, returnClazz.getSimpleName());
 
-            handler.execute(null, response);
-
-            Class<?> returnType = LastSentObjectHolder.getLastSentType();
-            if (returnType != null) {
-                ApiDetails apiDetails = new ApiDetails(url, returnType.getSimpleName());
-
-                if (returnType.getPackage().getName().startsWith("java.util")) {
-                    apiDetails.addField("collection", returnType.getSimpleName());
-                } else {
-                    Field[] fields = returnType.getDeclaredFields();
-                    for (Field field : fields) {
-                        apiDetails.addField(field.getName(), field.getType().getSimpleName());
-                    }
+            if (returnClazz.getPackage().getName().startsWith("java.util")) {
+                apiDetails.addField("collection", returnClazz.getSimpleName());
+            } else {
+                Field[] fields = returnClazz.getDeclaredFields();
+                for (Field field : fields) {
+                    apiDetails.addField(field.getName(), field.getType().getSimpleName());
                 }
-                apiList.add(apiDetails);
             }
+            apiList.add(apiDetails);
+
         }
     }
 

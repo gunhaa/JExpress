@@ -17,4 +17,8 @@ public class LambdaHandlerWrapper {
     public LambdaHandler unwrap(){
         return lambdaHandler;
     }
+
+    public Class<?> getClazz() {
+        return clazz;
+    }
 }

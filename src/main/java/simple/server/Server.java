@@ -15,6 +15,7 @@ public interface Server {
     void use(ApplicationSetting applicationSetting, String option);
 
     void get(String URL, LambdaHandler responseSuccessHandler);
+
     void get(String URL, LambdaHandler responseSuccessHandler, Class<?> clazz);
 
     void post(String URL, LambdaHandler responseSuccessHandler);

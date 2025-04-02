@@ -14,7 +14,6 @@ import simple.context.ApplicationContext;
 import simple.requestHandler.RequestHandler;
 import simple.provider.RequestHandlerProvider;
 import simple.response.LambdaHandler;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -85,8 +84,7 @@ public class JExpress implements Server {
 
                     RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
                     RequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
-
-                    LambdaHandler lambdaHandler = getMap.getHandler(httpRequest.getUrl()).unwrap();
+                    LambdaHandler lambdaHandler = getMap.getLambdaHandler(httpRequest.getUrl());
 
                     handler.sendResponse(clientSocket.getOutputStream(), lambdaHandler, httpRequest);
 

@@ -10,7 +10,7 @@ public interface Mapper {
 
     CustomHttpMethod getMethod();
 
-    LambdaHandlerWrapper getHandler(String url);
+    LambdaHandler getLambdaHandler(String url);
 
     Map<String, LambdaHandlerWrapper> getHandlers();
 
