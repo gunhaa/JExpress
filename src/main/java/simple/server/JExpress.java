@@ -56,7 +56,7 @@ public class JExpress implements Server {
 
     @Override
     public void get(String URL, LambdaHandler responseSuccessHandler, Class<?> clazz) {
-        getMap.addUrl(URL, responseSuccessHandler);
+        getMap.addUrl(URL, responseSuccessHandler, clazz);
     }
 
     @Override
@@ -86,7 +86,9 @@ public class JExpress implements Server {
                     RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
                     RequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
 
-                    handler.sendResponse(clientSocket.getOutputStream() , getMap.getHandler(httpRequest.getUrl()), httpRequest);
+                    LambdaHandler lambdaHandler = getMap.getHandler(httpRequest.getUrl()).unwrap();
+
+                    handler.sendResponse(clientSocket.getOutputStream(), lambdaHandler, httpRequest);
 
                     logger.print();
                 }

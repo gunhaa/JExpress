@@ -2,13 +2,20 @@ package simple.mapper;
 
 import simple.constant.CustomHttpMethod;
 import simple.response.LambdaHandler;
+import simple.response.LambdaHandlerWrapper;
 
 import java.util.Map;
 
 public interface Mapper {
+
     CustomHttpMethod getMethod();
-    LambdaHandler getUrl(String url);
-    LambdaHandler getHandler(String url);
-    Map<String, LambdaHandler> getHandlers();
-    void addUrl(String URL, LambdaHandler responseSuccessHandler);
+
+    LambdaHandlerWrapper getHandler(String url);
+
+    Map<String, LambdaHandlerWrapper> getHandlers();
+
+    void addUrl(String URL, LambdaHandler lambdaHandlerWrapper);
+
+    void addUrl(String URL, LambdaHandler lambdaHandlerWrapper, Class<?> clazz);
+
 }

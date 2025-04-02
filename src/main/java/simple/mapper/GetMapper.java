@@ -2,6 +2,7 @@ package simple.mapper;
 
 import simple.constant.CustomHttpMethod;
 import simple.response.LambdaHandler;
+import simple.response.LambdaHandlerWrapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
 public class GetMapper implements Mapper{
 
     private static final Mapper getMapper = new GetMapper();
-    private final HashMap<String, LambdaHandler> getMap;
+    private final HashMap<String, LambdaHandlerWrapper> getMap;
     private final CustomHttpMethod customHttpMethod;
 
     private GetMapper() {
@@ -23,7 +24,14 @@ public class GetMapper implements Mapper{
 
     @Override
     public void addUrl(String url, LambdaHandler responseSuccessHandler) {
-        getMap.put(url, responseSuccessHandler);
+        LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler);
+        getMap.put(url, lambdaHandlerWrapper);
+    }
+
+    @Override
+    public void addUrl(String url, LambdaHandler responseSuccessHandler, Class<?> clazz) {
+        LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler, clazz);
+        getMap.put(url, lambdaHandlerWrapper);
     }
 
     @Override
@@ -32,19 +40,12 @@ public class GetMapper implements Mapper{
     }
 
     @Override
-    @Deprecated
-    public LambdaHandler getUrl(String url) {
-        // 메소드 수정 필요
+    public LambdaHandlerWrapper getHandler(String url) {
         return getMap.get(url);
     }
 
     @Override
-    public LambdaHandler getHandler(String url) {
-        return getMap.get(url);
-    }
-
-    @Override
-    public Map<String, LambdaHandler> getHandlers(){
+    public Map<String, LambdaHandlerWrapper> getHandlers(){
         return getMap;
     }
 

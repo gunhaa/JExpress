@@ -5,6 +5,7 @@ import simple.apiDocs.ApiDocsDto;
 import simple.mapper.GetMapper;
 import simple.mapper.Mapper;
 import simple.response.LambdaHandler;
+import simple.response.LambdaHandlerWrapper;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class ApiDocs implements Middleware{
     public void run() {
         Mapper getMap = GetMapper.getInstance();
 
-        Map<String, LambdaHandler> getHandlers = getMap.getHandlers();
+        Map<String, LambdaHandlerWrapper> getHandlers = getMap.getHandlers();
         ApiDocsDto apiDocsDto = new ApiDocsDto();
 //            apiDocsDto.createProxy(getHandlers);
 //        apiDocsDto.createApiDocsByteCode(getMap);
