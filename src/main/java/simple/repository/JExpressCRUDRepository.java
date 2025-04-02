@@ -43,11 +43,12 @@ public class JExpressCRUDRepository implements JExpressRepository {
     /**
      * JExpressQueryString이 전달되지 않으면 entity의 첫 결과를 반환하며, 결과가 여러개라면 첫 번째 결과를 반환함
      */
-    public <T> T findEntity(Class<T> clazz, JExpressQueryString... conditions){
+    public <T> T findSingleTableEntity(Class<T> clazz, JExpressQueryString... conditions){
         DBConnection dbConnection = selectDb();
         EntityManager em = dbConnection.getEntityManager();
         String clazzName = clazz.getName();
         StringBuilder jpql = new StringBuilder("SELECT m FROM "+ clazzName +" m  WHERE 1=1");
+
         TypedQuery<T> query = em.createQuery(jpql.toString(), clazz);
 
         if(conditions == null){
@@ -55,9 +56,10 @@ public class JExpressCRUDRepository implements JExpressRepository {
                     .getResultList();
             return resultList.get(0);
         } else {
+
+
             for (JExpressQueryString condition : conditions) {
                 String key = condition.getKey();
-                String value = condition.getValue();
                 jpql.append(" AND m.").append(key).append("=:").append(key);
             }
 
@@ -67,11 +69,15 @@ public class JExpressCRUDRepository implements JExpressRepository {
                 String key = condition.getKey();
                 String value = condition.getValue();
                 query.setParameter(key, value);
-                System.out.println("세팅되는 kv.... " + key + " ||| " + value);
             }
 
             List<T> resultList = query
                     .getResultList();
+
+            if(resultList.isEmpty()){
+                return null;
+            }
+
             return resultList.get(0);
         }
     }

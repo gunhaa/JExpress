@@ -36,14 +36,11 @@ public class Main {
             JExpressQueryString jqs2 = new JExpressQueryString(key2, value2);
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-            Member findMember = jcr.findEntity(Member.class, jqs1, jqs2);
+            Member findMember = jcr.findSingleTableEntity(Member.class, jqs1, jqs2);
 
             res.send(findMember);
         });
 
-//        app.get("/user", (req, res) -> {
-//            res.send(new Member("jihwan", 47));
-//        });
 
         app.get("/members", (req, res) -> {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();

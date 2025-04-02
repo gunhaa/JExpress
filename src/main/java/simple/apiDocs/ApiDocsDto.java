@@ -29,7 +29,6 @@ public class ApiDocsDto {
             handler.execute(null, response);
 
             Class<?> returnType = LastSentObjectHolder.getLastSentType();
-
             if (returnType != null) {
                 ApiDetails apiDetails = new ApiDetails(url, returnType.getSimpleName());
 

@@ -1,6 +1,7 @@
 package simple.response;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import simple.constant.CustomHttpMethod;
 import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
@@ -17,7 +18,9 @@ public class ResponseBuilder {
     private final StringBuilder sb = new StringBuilder();
     private final HttpRequest httpRequest;
     private final ErrorStatus errorStatus;
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder()
+                                .disableHtmlEscaping()
+                                .create();
     private final String entityJson;
     private String entity;
 
@@ -45,12 +48,6 @@ public class ResponseBuilder {
             this.errorStatus = null;
         }
     }
-
-//    public ResponseBuilder(SimpleHttpRequest simpleHttpRequest, Object entity, ErrorStatus errorStatus) {
-//        this.simpleHttpRequest = simpleHttpRequest;
-//        this.entityJson = gson.toJson(entity);
-//        this.errorStatus = errorStatus;
-//    }
 
     public ResponseBuilder cors(){
         String corsValue = Cors.getInstance().getCors();
