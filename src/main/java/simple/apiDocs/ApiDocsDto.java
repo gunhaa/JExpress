@@ -1,53 +1,111 @@
 package simple.apiDocs;
 
-import simple.httpRequest.HttpRequest;
-import simple.httpRequest.LambdaHttpRequest;
-import simple.response.LambdaHandler;
-import simple.response.LambdaHttpResponse;
+import org.objectweb.asm.*;
+import simple.mapper.Mapper;
 
-import java.io.PrintWriter;
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ApiDocsDto {
 
     private List<ApiDetails> apiList = new ArrayList<>();
+    private List<String> rawParam = new ArrayList<>();
 
-    public void createProxy(Map<String, LambdaHandler> apiHandlers) {
+//    @Deprecated
+//    public void createProxy(Map<String, LambdaHandler> apiHandlers) {
+//
+//        for (Map.Entry<String, LambdaHandler> entry : apiHandlers.entrySet()) {
+//            String url = entry.getKey();
+//            LambdaHandler handler = entry.getValue();
+//
+//            HttpRequest mock = HttpRequest.createMock();
+//            LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(mock);
+//
+//            LambdaHttpResponse response = new LambdaHttpResponse(lambdaHttpRequest, new PrintWriter(System.out, true));
+//
+//            handler.execute(null, response);
+//
+//            Class<?> returnType = LastSentObjectHolder.getLastSentType();
+//            if (returnType != null) {
+//                ApiDetails apiDetails = new ApiDetails(url, returnType.getSimpleName());
+//
+//                if(returnType.getPackage().getName().startsWith("java.util")){
+//                    apiDetails.addField("collection", returnType.getSimpleName());
+//                } else {
+//                    Field[] fields = returnType.getDeclaredFields();
+//                    for (Field field : fields) {
+//                        apiDetails.addField(field.getName(), field.getType().getSimpleName());
+//                    }
+//                }
+//                apiList.add(apiDetails);
+//            }
+//        }
+//    }
 
-        for (Map.Entry<String, LambdaHandler> entry : apiHandlers.entrySet()) {
-            String url = entry.getKey();
-            LambdaHandler handler = entry.getValue();
+    public void createApiDocs(Mapper getMap) {
 
-            HttpRequest mock = HttpRequest.createMock();
-            LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(mock);
+        System.out.println("create apidocs 실행..");
 
-            LambdaHttpResponse response = new LambdaHttpResponse(lambdaHttpRequest, new PrintWriter(System.out, true));
+        try {
+            // todo : 빌드되는 클래스를 env로 가져와야 한다
+            byte[] classBytes = Files.readAllBytes(Paths.get("build/classes/java/main/simple/Main.class"));
+            ClassReader reader = new ClassReader(classBytes);
 
-            handler.execute(null, response);
+            reader.accept(new ClassVisitor(Opcodes.ASM9) {
+                @Override
+                public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+                    return new MethodVisitor(Opcodes.ASM9) {
+                        private boolean isSendMethod = false;
+                        private String secondParamType = null;
 
-            Class<?> returnType = LastSentObjectHolder.getLastSentType();
-            if (returnType != null) {
-                ApiDetails apiDetails = new ApiDetails(url, returnType.getSimpleName());
+                        // LDC 스택에 적재되는 값 추적
+                        @Override
+                        public void visitLdcInsn(Object value) {
+                            if (value instanceof Type) {
+                                secondParamType = ((Type) value).getTypeName();
+                            } else if (value instanceof Class) {
+                                secondParamType = ((Class<?>) value).getName();
+                            } else {
+                                secondParamType = String.valueOf(value);
+                            }
+                            // System.out.println("LDC 로드된 값: " + secondParamType);
+                        }
 
-                if(returnType.getPackage().getName().startsWith("java.util")){
-                    apiDetails.addField("collection", returnType.getSimpleName());
-                } else {
-                    Field[] fields = returnType.getDeclaredFields();
-                    for (Field field : fields) {
-                        apiDetails.addField(field.getName(), field.getType().getSimpleName());
-                    }
+                        // 이전 LDC에서 적재된 값을 활용하여 두 번째 파라미터 확인
+                        @Override
+                        public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+                            if (name.equals("send")) {
+                                isSendMethod = true;
+                                // System.out.println("send() 호출: " + descriptor);
+                                if (secondParamType != null) {
+                                    System.out.println("send()의 두 번째 파라미터: " + secondParamType);
+                                    rawParam.add(secondParamType);
+                                }
+                                secondParamType = null;
+                            }
+                        }
+                    };
                 }
-                apiList.add(apiDetails);
-            }
+            }, 0);
 
-
+        } catch (Exception e) {
+            System.err.println("asm library error");
         }
+
+        parsingSecondParameter();
     }
 
-    public List<ApiDetails> getApiList(){
+    private String parsingSecondParameter(){
+        for (String s : this.rawParam){
+
+        }
+        return
+    }
+
+    public List<ApiDetails> getApiList() {
         return this.apiList;
     }
 

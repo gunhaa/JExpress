@@ -27,8 +27,9 @@ public class LambdaHttpResponse {
     public void send(Object responseBody){
 
         // API DOCS Reflection check
-        if(ServerSettingChecker.isServerEnabled(API_DOCS)){
+        if(ServerSettingChecker.isServerEnabled(API_DOCS) && responseBody instanceof LastSentObjectHolder){
             LastSentObjectHolder.setLastSentType(responseBody.getClass());
+            return;
         }
 
         HttpRequest httpRequest = lambdaHttpRequest.getHttpRequest();
@@ -49,16 +50,16 @@ public class LambdaHttpResponse {
         pw.print(response);
     }
 
-
     /**
-     * api-docs need this method
+     * use Api docs
      */
     public void send(Object responseBody, Class<?> clazz){
 
         // API DOCS Reflection check
-//        if(ServerSettingChecker.isServerEnabled(API_DOCS)){
-//            LastSentObjectHolder.setLastSentType(responseBody.getClass());
-//        }
+        if(ServerSettingChecker.isServerEnabled(API_DOCS) && responseBody instanceof LastSentObjectHolder){
+            LastSentObjectHolder.setLastSentType(responseBody.getClass());
+            return;
+        }
 
         HttpRequest httpRequest = lambdaHttpRequest.getHttpRequest();
 

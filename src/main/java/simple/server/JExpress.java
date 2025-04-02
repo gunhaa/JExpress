@@ -22,7 +22,6 @@ import java.net.Socket;
 public class JExpress implements Server {
 
     private final Mapper getMap = GetMapper.getInstance();
-//    private final HashMap<String, ResponseHandler> postMap = new HashMap<>();
     private final ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
     private final Cors cors = Cors.getInstance();
     private final int threadPool;

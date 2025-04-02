@@ -17,7 +17,7 @@ public class Main {
         // threadPool을 이용한 서버 생성방법
         // Server app = new JExpress(15);
 
-//        app.use(API_DOCS);
+        app.use(API_DOCS);
 //        app.use(CORS);
         app.use(CORS, "https://bitlibrary.com");
         app.use(RESPONSE_TIME);
@@ -35,6 +35,7 @@ public class Main {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
             Member findMember = jcr.findEntity(Member.class, jqs1);
 
+//            res.send(findMember.getName());
             res.send(findMember.getName(), String.class);
         });
 
@@ -51,6 +52,7 @@ public class Main {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
             Member findMember = jcr.findEntity(Member.class, jqs1, jqs2);
 
+//            res.send(findMember);
             res.send(findMember, Member.class);
         });
 
@@ -59,6 +61,7 @@ public class Main {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
             List<?> List = jcr.findAll(Member.class);
 
+//            res.send(List);
             res.send(List, List.class);
         });
 

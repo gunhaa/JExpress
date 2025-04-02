@@ -34,12 +34,12 @@ public class ApiDocs implements Middleware{
     @Override
     public void run() {
         Mapper getMap = GetMapper.getInstance();
-        Map<String, LambdaHandler> apiHandlers = getMap.getHandlers();
 
+        Map<String, LambdaHandler> getHandlers = getMap.getHandlers();
         ApiDocsDto apiDocsDto = new ApiDocsDto();
-        apiDocsDto.createProxy(apiHandlers);
+//            apiDocsDto.createProxy(getHandlers);
+        apiDocsDto.createApiDocs(getMap);
         List<ApiDetails> apiList = apiDocsDto.getApiList();
-
         getMap.addUrl("/api-docs/v1", (req, res) -> {
             res.send(apiList);
         });
