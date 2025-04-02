@@ -55,7 +55,12 @@ public class JExpress implements Server {
     }
 
     @Override
-    public void post() {
+    public void get(String URL, LambdaHandler responseSuccessHandler, Class<?> clazz) {
+        getMap.addUrl(URL, responseSuccessHandler);
+    }
+
+    @Override
+    public void post(String URL, LambdaHandler responseSuccessHandler) {
 //        getMap.put(URL, new Response(responseSuccess, responseError));
     }
 

@@ -53,6 +53,7 @@ public class LambdaHttpResponse {
     /**
      * use Api docs
      */
+    @Deprecated
     public void send(Object responseBody, Class<?> clazz){
 
         // API DOCS Reflection check

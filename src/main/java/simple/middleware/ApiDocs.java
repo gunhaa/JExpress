@@ -6,7 +6,6 @@ import simple.mapper.GetMapper;
 import simple.mapper.Mapper;
 import simple.response.LambdaHandler;
 
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +37,9 @@ public class ApiDocs implements Middleware{
         Map<String, LambdaHandler> getHandlers = getMap.getHandlers();
         ApiDocsDto apiDocsDto = new ApiDocsDto();
 //            apiDocsDto.createProxy(getHandlers);
-        apiDocsDto.createApiDocs(getMap);
+//        apiDocsDto.createApiDocsByteCode(getMap);
         List<ApiDetails> apiList = apiDocsDto.getApiList();
+
         getMap.addUrl("/api-docs/v1", (req, res) -> {
             res.send(apiList);
         });

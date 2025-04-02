@@ -7,6 +7,7 @@ import simple.server.JExpress;
 import simple.tempEntity.Member;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static simple.constant.ApplicationSetting.*;
@@ -35,8 +36,12 @@ public class Main {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
             Member findMember = jcr.findEntity(Member.class, jqs1);
 
-//            res.send(findMember.getName());
-            res.send(findMember.getName(), String.class);
+            res.send(findMember.getName());
+//            res.send(findMember.getName(), String.class);
+        }, String.class);
+
+        app.post("/member", (req,res) -> {
+
         });
 
         // test url = localhost:8020/member?name=gunha&age=50
@@ -52,18 +57,18 @@ public class Main {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
             Member findMember = jcr.findEntity(Member.class, jqs1, jqs2);
 
-//            res.send(findMember);
-            res.send(findMember, Member.class);
-        });
+            res.send(findMember);
+//            res.send(findMember, Member.class);
+        }, Member.class);
 
         // test url = localhost:8020/members
         app.get("/members", (req, res) -> {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
             List<?> List = jcr.findAll(Member.class);
 
-//            res.send(List);
-            res.send(List, List.class);
-        });
+            res.send(List);
+//            res.send(List, List.class);
+        }, ArrayList.class);
 
         app.run(8020);
     }
