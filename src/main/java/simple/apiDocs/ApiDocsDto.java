@@ -1,5 +1,9 @@
 package simple.apiDocs;
 
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import org.objectweb.asm.*;
 import simple.constant.CustomHttpMethod;
 import simple.mapper.Mapper;
@@ -144,15 +148,20 @@ public class ApiDocsDto {
             String url = entry.getKey();
             Class<?> returnClazz = entry.getValue().getClazz();
 
-            System.out.println("returnClazz.getName() : " + returnClazz.getSimpleName());
-
             ApiDetails apiDetails = new ApiDetails(method, url, returnClazz.getSimpleName());
 
-            if (returnClazz.getPackage().getName().startsWith("java.util")) {
-                apiDetails.addField("collection", returnClazz.getSimpleName());
+            if (returnClazz.isPrimitive() || returnClazz.isArray() ||
+                    (returnClazz.getPackage() != null && returnClazz.getPackage().getName().startsWith("java"))) {
+                apiDetails.addField(returnClazz);
             } else {
                 Field[] fields = returnClazz.getDeclaredFields();
                 for (Field field : fields) {
+                    if (field.isAnnotationPresent(ManyToOne.class) ||
+                            field.isAnnotationPresent(OneToMany.class) ||
+                            field.isAnnotationPresent(OneToOne.class) ||
+                            field.isAnnotationPresent(ManyToMany.class)) {
+                        continue;
+                    }
                     apiDetails.addField(field.getName(), field.getType().getSimpleName());
                 }
             }
