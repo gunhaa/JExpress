@@ -29,7 +29,7 @@ public class Main {
 //        app.use(GET_CACHE);
 
 
-        // todo 순환 참조 문제 해결
+        // todo 순환 참조 문제 있음
         // test url = localhost:8020/member/name?age=40
         app.get("/member/name", (req, res)-> {
             String key1 = "age";
@@ -47,7 +47,7 @@ public class Main {
 
         });
 
-        // todo 순환 참조 문제 해결
+        // todo 순환 참조 문제 있음
         // test url = localhost:8020/member?name=gunha&age=50
         app.get("/member" , (req, res) -> {
             String key1 = "name";
@@ -65,7 +65,7 @@ public class Main {
 //            res.send(findMember, Member.class);
         }, Member.class);
 
-        // todo 순환 참조 문제 해결
+        // todo 순환 참조 문제 있음
         // test url = localhost:8020/members
         app.get("/members", (req, res) -> {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
@@ -94,6 +94,12 @@ public class Main {
         }, List.class);
 
 
+        // 해당 url 해결 해야한다
+        app.get("/member/:id", (req, res) -> {
+            // 해당 코드가 해결 되어야 한다
+//            Long id = req.getParams.id();
+//            res.send(id);
+        });
 
         app.run(8020);
     }
