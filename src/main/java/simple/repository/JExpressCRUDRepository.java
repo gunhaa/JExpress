@@ -31,8 +31,8 @@ public class JExpressCRUDRepository implements JExpressRepository {
 
     @Override
     public <T> List<T> findAll(Class<T> clazz) {
-        DBConnection dbConnection = selectDb();
-        EntityManager em = dbConnection.getEntityManager();
+        DBConnection db = selectDb();
+        EntityManager em = db.getEntityManager();
         String clazzName = clazz.getName();
 
         StringBuilder jpql = new StringBuilder("SELECT m FROM "+ clazzName +" m");
@@ -44,12 +44,13 @@ public class JExpressCRUDRepository implements JExpressRepository {
 
     /**
      * JExpressQueryString이 전달되지 않으면 entity의 첫 결과를 반환하며, 결과가 여러개라면 첫 번째 결과를 반환함
+     * 연관 객체가 있을 시 순환 참조 문제 있음
      */
     public <T> T findEntity(Class<T> clazz, JExpressQueryString... conditions){
-        DBConnection dbConnection = selectDb();
-        EntityManager em = dbConnection.getEntityManager();
+        DBConnection db = selectDb();
+        EntityManager em = db.getEntityManager();
         String clazzName = clazz.getName();
-        StringBuilder jpql = new StringBuilder("SELECT m FROM "+ clazzName +" m  WHERE 1=1");
+        StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberDTO1(m.name, m.engName, m.team, m.age) FROM "+ clazzName +" m  WHERE 1=1");
 
         TypedQuery<T> query = em.createQuery(jpql.toString(), clazz);
 
@@ -89,13 +90,12 @@ public class JExpressCRUDRepository implements JExpressRepository {
      * 반환형
      */
     public <T> List<T> findListWithNativeQuery(Class<T> clazz, String query){
-        DBConnection dbConnection = selectDb();
-        EntityManager em = dbConnection.getEntityManager();
+        DBConnection db = selectDb();
+        EntityManager em = db.getEntityManager();
 
         try {
             List resultList = em.createNativeQuery(query, clazz)
                     .getResultList();
-            System.out.println(resultList.toString());
             return resultList;
         } catch (NoResultException e) {
             return new ArrayList<>();

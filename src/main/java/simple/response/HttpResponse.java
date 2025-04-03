@@ -50,7 +50,7 @@ public class HttpResponse {
         }
 
         StringBuilder response = responseBuilder.getStaticResponse();
-        responseBuilder.printTestSb();
+//        responseBuilder.printTestSb();
 
         pw.print(response);
     }

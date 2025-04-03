@@ -30,7 +30,9 @@ public class RequestLogger implements Logger{
 
     @Override
     public void print() {
-        System.out.println("log : " + log);
+        System.out.println("===============log===============");
+        System.out.println();
+        System.out.println(log);
         if(startTime != null){
             Long responseTime = System.currentTimeMillis();
             System.out.println("response time : " + (responseTime- this.startTime) + "ms");

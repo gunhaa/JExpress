@@ -5,6 +5,8 @@ import simple.repository.JExpressQueryString;
 import simple.server.Server;
 import simple.server.JExpress;
 import simple.tempEntity.Member;
+import simple.tempEntity.MemberDTO1;
+import simple.tempEntity.MemberDTO3;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,14 +21,15 @@ public class Main {
         // Server app = new JExpress(15);
 
         app.use(API_DOCS);
-//        app.use(CORS);
-        app.use(CORS, "https://bitlibrary.com");
+        app.use(CORS);
+//        app.use(CORS, "https://bitlibrary.com");
         app.use(RESPONSE_TIME);
         app.use(DB_H2);
 //        app.use(DB_MYSQL);
 //        app.use(GET_CACHE);
 
 
+        // todo 순환 참조 문제 해결
         // test url = localhost:8020/member/name?age=40
         app.get("/member/name", (req, res)-> {
             String key1 = "age";
@@ -44,6 +47,7 @@ public class Main {
 
         });
 
+        // todo 순환 참조 문제 해결
         // test url = localhost:8020/member?name=gunha&age=50
         app.get("/member" , (req, res) -> {
             String key1 = "name";
@@ -55,12 +59,13 @@ public class Main {
             JExpressQueryString jqs2 = new JExpressQueryString(key2, value2);
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-            Member findMember = jcr.findEntity(Member.class, jqs1, jqs2);
+            MemberDTO1 findMember = jcr.findEntity(MemberDTO1.class, jqs1, jqs2);
 
             res.send(findMember);
 //            res.send(findMember, Member.class);
         }, Member.class);
 
+        // todo 순환 참조 문제 해결
         // test url = localhost:8020/members
         app.get("/members", (req, res) -> {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
@@ -76,11 +81,13 @@ public class Main {
             String key1 = "teamName";
             String value1 = req.getQueryString(key1);
 
-            StringBuilder query = new StringBuilder("SELECT m.* FROM MEMBER m JOIN TEAM t ON t.TEAM_ID=m.TEAM_ID WHERE ");
+            StringBuilder query = new StringBuilder("SELECT m.name, m.engName, t.teamName FROM MEMBER m JOIN TEAM t ON t.TEAM_ID=m.TEAM_ID WHERE 1=1 AND ");
+            // ' 를 구분하는 validation 함수 필요
+
             query.append(key1).append("=").append("'").append(value1).append("'");
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
 
-            List<?> List = jcr.findListWithNativeQuery(Member.class, query.toString());
+            List<MemberDTO3> List = jcr.findListWithNativeQuery(MemberDTO3.class, query.toString());
 
             res.send(List);
 //            res.send(List, List.class);

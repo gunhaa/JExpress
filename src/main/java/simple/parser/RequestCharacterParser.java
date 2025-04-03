@@ -70,7 +70,6 @@ public class RequestCharacterParser implements Parser{
     }
 
     private void processHttpRequest(StringBuilder line) {
-        System.out.println("parser" + line);
         if (charHttpRequestDTO.isRequestLineParsed()) {
             charHttpRequestDTO.addRequestLine(line.toString());
             return;
