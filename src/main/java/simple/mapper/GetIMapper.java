@@ -1,7 +1,6 @@
 package simple.mapper;
 
 import simple.constant.CustomHttpMethod;
-import simple.httpRequest.URL;
 import simple.httpResponse.ILambdaHandler;
 import simple.httpResponse.LambdaHandlerWrapper;
 

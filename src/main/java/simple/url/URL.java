@@ -1,4 +1,4 @@
-package simple.httpRequest;
+package simple.url;
 
 import java.util.HashMap;
 
