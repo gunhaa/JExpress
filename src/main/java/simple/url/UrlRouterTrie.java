@@ -25,7 +25,10 @@ public class UrlRouterTrie implements ITrie{
     }
 
     public ILambdaHandler getLambdaHandlerOrNull(String url){
-        String[] parts = Arrays.stream(url.split("/"))
+
+        String realPath = url.split("\\?")[0];
+
+        String[] parts = Arrays.stream(realPath.split("/"))
                 .filter(s -> !s.isEmpty())
                 .toArray(String[]::new);
         return searchLambdaHandlerRecursive(root, parts, 0);

@@ -33,24 +33,24 @@ class UrlRouterTrieTest {
 
         for (String depth1 : current.keySet()) {
             UrlRouterNode nodeDepth1 = current.get(depth1);
-            assertEquals(depth1, "member");
+            assertEquals("member", depth1);
             current = nodeDepth1.getChild();
 
             for (String depth2 : current.keySet()) {
                 UrlRouterNode nodeDepth2 = current.get(depth2);
-                assertEquals(depth2, ":memberId");
+                assertEquals(":memberId", depth2);
                 Assertions.assertTrue(nodeDepth2.isDynamic());
                 current = nodeDepth2.getChild();
 
                 for (String depth3 : current.keySet()) {
                     UrlRouterNode nodeDepth3 = current.get(depth3);
-                    assertEquals(depth3, "team");
+                    assertEquals("team", depth3);
                     Assertions.assertFalse(nodeDepth3.isDynamic());
                     current = nodeDepth3.getChild();
 
                     for (String depth4 : current.keySet()) {
                         UrlRouterNode nodeDepth4 = current.get(depth4);
-                        assertEquals(depth4, ":teamId");
+                        assertEquals(":teamId", depth4);
                         Assertions.assertTrue(nodeDepth4.isEndPoint());
                     }
                 }
@@ -85,7 +85,6 @@ class UrlRouterTrieTest {
         urlRouterTrie.insert("/member/:memberId", mock2);
 
         ILambdaHandler lambda1 = urlRouterTrie.getLambdaHandlerOrNull("/member");
-//        ILambdaHandler lambda1 = urlRouterTrie.getLambdaHandlerOrNull("/member?name=asd");
         ILambdaHandler lambda2 = urlRouterTrie.getLambdaHandlerOrNull("/member/3");
 
         LambdaHttpRequest dummyRequest = Mockito.mock(LambdaHttpRequest.class);
@@ -94,7 +93,14 @@ class UrlRouterTrieTest {
         lambda1.execute(dummyRequest, dummyResponse);
         lambda2.execute(dummyRequest, dummyResponse);
 
-        Assertions.assertEquals(testHolder1.getPath(), "/member");
-        Assertions.assertEquals(testHolder2.getPath(), "/member/:memberId");
+        Assertions.assertEquals( "/member", testHolder1.getPath());
+        Assertions.assertEquals("/member/:memberId", testHolder2.getPath());
+
+        // 쿼리 스트링이 url에 있을 경우
+        ILambdaHandler lambda3 = urlRouterTrie.getLambdaHandlerOrNull("/member?name=asd");
+        lambda3.execute(dummyRequest, dummyResponse);
+
+        Assertions.assertEquals( "/member", testHolder1.getPath());
+        
     }
 }
