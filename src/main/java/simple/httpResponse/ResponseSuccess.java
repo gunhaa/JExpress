@@ -1,4 +1,4 @@
-package simple.response;
+package simple.httpResponse;
 
 import lombok.Getter;
 import simple.constant.HttpStatus;

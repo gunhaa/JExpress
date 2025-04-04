@@ -1,5 +1,5 @@
 package simple.middleware;
 
-public interface JExpressExtension {
+public interface IMiddleWare {
     void run();
 }

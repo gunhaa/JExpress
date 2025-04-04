@@ -13,7 +13,7 @@ import static simple.constant.ApplicationSetting.*;
 
 public class RequestHandlerProvider {
 
-    private final Map<CustomHttpMethod, RequestHandler> requestHandlers;
+    private final Map<CustomHttpMethod, IRequestHandler> requestHandlers;
     private static final RequestHandlerProvider INSTANCE = new RequestHandlerProvider();
     public static final String URL_FAVICON = "/favicon.ico";
     public static final String URL_HTML = ".html";
@@ -21,18 +21,18 @@ public class RequestHandlerProvider {
 
     private RequestHandlerProvider() {
         this.requestHandlers = new HashMap<>();
-        requestHandlers.put(CustomHttpMethod.GET, RequestGetHandler.getInstance());
-        requestHandlers.put(CustomHttpMethod.POST, RequestPostHandler.getInstance());
-        requestHandlers.put(CustomHttpMethod.PUT, RequestPutHandler.getInstance());
-        requestHandlers.put(CustomHttpMethod.DELETE, RequestDeleteHandler.getInstance());
-        requestHandlers.put(CustomHttpMethod.EXCEPTION_STATIC, RequestStaticHandler.getInstance());
-        requestHandlers.put(CustomHttpMethod.ERROR, RequestErrorHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.GET, IRequestGetHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.POST, IRequestPostHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.PUT, IRequestPutHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.DELETE, IRequestDeleteHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.EXCEPTION_STATIC, IRequestStaticHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.ERROR, IRequestErrorHandler.getInstance());
     }
 
-    public RequestHandler getHandler(HttpRequest httpRequest) {
+    public IRequestHandler getHandler(HttpRequest httpRequest) {
 
         if (!httpRequest.getErrorQueue().isEmpty()) {
-            return RequestErrorHandler.getInstance();
+            return IRequestErrorHandler.getInstance();
         }
 
         if (ServerSettingChecker.isServerEnabled(API_DOCS) && httpRequest.getUrl() != null) {
@@ -61,7 +61,7 @@ public class RequestHandlerProvider {
 //            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
 //        }
 
-        return requestHandlers.getOrDefault(httpRequest.getMethod(), RequestErrorHandler.getInstance());
+        return requestHandlers.getOrDefault(httpRequest.getMethod(), IRequestErrorHandler.getInstance());
     }
 
     public static RequestHandlerProvider getInstance() {

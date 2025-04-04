@@ -1,14 +1,8 @@
 package simple.httpRequest;
 
-import jakarta.persistence.EntityManager;
 import simple.constant.HttpStatus;
-import simple.constant.ServerSettingChecker;
-import simple.database.DBConnection;
 
 import java.util.HashMap;
-import java.util.List;
-
-import static simple.constant.ApplicationSetting.*;
 
 public class LambdaHttpRequest {
 

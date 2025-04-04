@@ -1,17 +1,16 @@
 package simple.logger;
 
 
-import simple.constant.ApplicationSetting;
 import simple.constant.ServerSettingChecker;
 
 import static simple.constant.ApplicationSetting.*;
 
-public class RequestLogger implements Logger{
+public class RequestILogger implements ILogger {
 
     private final StringBuilder log;
     private Long startTime;
 
-    public RequestLogger() {
+    public RequestILogger() {
         this.log = new StringBuilder();
         if(ServerSettingChecker.isServerEnabled(RESPONSE_TIME)){
             this.startTime = System.currentTimeMillis();

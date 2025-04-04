@@ -2,18 +2,18 @@ package simple.parser;
 
 import simple.httpRequest.HttpRequest;
 import simple.httpRequest.SimpleLineHttpRequestDTO;
-import simple.logger.Logger;
+import simple.logger.ILogger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class RequestLineParser implements Parser{
+public class RequestLineIHttpRequestParser implements IHttpRequestParser {
     private final SimpleLineHttpRequestDTO simpleLineHttpRequestDTO;
-    private final Logger logger;
+    private final ILogger ILogger;
 
-    public RequestLineParser(Logger logger) {
+    public RequestLineIHttpRequestParser(ILogger ILogger) {
         this.simpleLineHttpRequestDTO = new SimpleLineHttpRequestDTO();
-        this.logger = logger;
+        this.ILogger = ILogger;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class RequestLineParser implements Parser{
 
         String line;
         while((line = request.readLine())!=null){
-            logger.add(line);
+            ILogger.add(line);
             processRequestLine(line);
             if(simpleLineHttpRequestDTO.isParsingBody() && simpleLineHttpRequestDTO.isFinishBodyParsing()){
                 StringBuilder requestBody = simpleLineHttpRequestDTO.getBody();

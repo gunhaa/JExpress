@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import simple.constant.ServerSettingChecker;
-import simple.database.DBConnection;
+import simple.database.IDBConnection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 import static simple.constant.ApplicationSetting.DB_H2;
 import static simple.constant.ApplicationSetting.DB_MYSQL;
 
-public class JExpressCRUDRepository implements JExpressRepository {
+public class JExpressCRUDRepository implements IJExpressRepository {
 
     private static volatile JExpressCRUDRepository INSTANCE;
 
@@ -31,7 +31,7 @@ public class JExpressCRUDRepository implements JExpressRepository {
 
     @Override
     public <T> List<T> findAll(Class<T> clazz) {
-        DBConnection db = selectDb();
+        IDBConnection db = selectDb();
         EntityManager em = db.getEntityManager();
         String clazzName = clazz.getName();
 
@@ -47,7 +47,7 @@ public class JExpressCRUDRepository implements JExpressRepository {
      * 연관 객체가 있을 시 순환 참조 문제 있음
      */
     public <T> T findEntity(Class<T> clazz, JExpressQueryString... conditions){
-        DBConnection db = selectDb();
+        IDBConnection db = selectDb();
         EntityManager em = db.getEntityManager();
         String clazzName = clazz.getName();
         StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberDTO1(m.name, m.engName, m.team, m.age) FROM "+ clazzName +" m  WHERE 1=1");
@@ -90,7 +90,7 @@ public class JExpressCRUDRepository implements JExpressRepository {
      * 반환형
      */
     public <T> List<T> findListWithNativeQuery(Class<T> clazz, String query){
-        DBConnection db = selectDb();
+        IDBConnection db = selectDb();
         EntityManager em = db.getEntityManager();
 
         try {
@@ -102,20 +102,20 @@ public class JExpressCRUDRepository implements JExpressRepository {
         }
     }
 
-    private DBConnection selectDb() {
-        DBConnection db;
+    private IDBConnection selectDb() {
+        IDBConnection db;
 
         if(ServerSettingChecker.isServerEnabled(DB_MYSQL)){
-            db = DBConnection.getMySQLConnectionInstance();
+            db = IDBConnection.getMySQLConnectionInstance();
             return db;
         }
 
         if(ServerSettingChecker.isServerEnabled(DB_H2)){
-            db = DBConnection.getH2ConnectionInstance();
+            db = IDBConnection.getH2ConnectionInstance();
             return db;
         }
 
         // default used h2 db
-        return DBConnection.getH2ConnectionInstance();
+        return IDBConnection.getH2ConnectionInstance();
     }
 }

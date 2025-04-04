@@ -45,6 +45,9 @@ public class Main {
   }
 }
 ```
+## 코딩 표준
+
+- [POCU아카데미의 코딩 표준을 따른다.](https://docs.popekim.com/ko/coding-standards/pocu-java)
 
 ## 기능
 - Cors on/off

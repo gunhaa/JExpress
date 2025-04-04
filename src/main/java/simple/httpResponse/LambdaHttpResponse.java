@@ -1,4 +1,4 @@
-package simple.response;
+package simple.httpResponse;
 
 import simple.apiDocs.LastSentObjectHolder;
 import simple.constant.HttpStatus;

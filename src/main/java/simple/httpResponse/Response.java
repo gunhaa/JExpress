@@ -1,4 +1,4 @@
-package simple.response;
+package simple.httpResponse;
 
 public class Response {
 

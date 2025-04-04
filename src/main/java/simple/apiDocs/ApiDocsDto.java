@@ -1,14 +1,9 @@
 package simple.apiDocs;
 
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import org.objectweb.asm.*;
 import simple.constant.CustomHttpMethod;
-import simple.mapper.Mapper;
-import simple.response.LambdaHandler;
-import simple.response.LambdaHandlerWrapper;
+import simple.mapper.IMapper;
+import simple.httpResponse.LambdaHandlerWrapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -54,7 +49,7 @@ public class ApiDocsDto {
 
 
     @Deprecated
-    public void createApiDocsByteCode(Mapper getMap) {
+    public void createApiDocsByteCode(IMapper getMap) {
 
         try {
             // 빌드되는 클래스를 env로 가져와야 한다
@@ -139,10 +134,10 @@ public class ApiDocsDto {
         Collections.reverse(this.lambdaParam);
     }
 
-    public void createApiDocs(Mapper mapper) {
+    public void createApiDocs(IMapper IMapper) {
 
-        Map<String, LambdaHandlerWrapper> apiHandlers = mapper.getHandlers();
-        CustomHttpMethod method = mapper.getMethod();
+        Map<String, LambdaHandlerWrapper> apiHandlers = IMapper.getHandlers();
+        CustomHttpMethod method = IMapper.getMethod();
 
         for (Map.Entry<String, LambdaHandlerWrapper> entry : apiHandlers.entrySet()) {
             String url = entry.getKey();

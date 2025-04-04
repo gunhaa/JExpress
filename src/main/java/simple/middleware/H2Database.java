@@ -2,7 +2,7 @@ package simple.middleware;
 
 import simple.database.H2Connection;
 
-public class H2Database implements JExpressExtension {
+public class H2Database implements IMiddleWare {
 
     private static volatile H2Database INSTANCE;
 

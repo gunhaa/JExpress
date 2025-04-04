@@ -16,7 +16,7 @@ import java.util.*;
 
 @Getter
 @Setter
-public class CharHttpRequestDTO {
+public class CharHttpRequestBuilder {
     private CustomHttpMethod method;
     private String url;
     private String protocol;
@@ -30,7 +30,7 @@ public class CharHttpRequestDTO {
     private int contentLength;
     private Queue<ErrorStatus> errorQueue;
 
-    public CharHttpRequestDTO() {
+    public CharHttpRequestBuilder() {
         this.requestLineParsed = true;
         this.parsingHeaders = false;
         this.parsingBody = false;
@@ -52,6 +52,7 @@ public class CharHttpRequestDTO {
             errorQueue.add(new ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid Method Error"));
         }
 
+        // request[1] = url
         String[] urlSegment = request[1].split("\\?");
         this.url = urlSegment[0];
 

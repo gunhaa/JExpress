@@ -2,7 +2,7 @@ package simple;
 
 import simple.repository.JExpressCRUDRepository;
 import simple.repository.JExpressQueryString;
-import simple.server.Server;
+import simple.server.IServer;
 import simple.server.JExpress;
 import simple.tempEntity.Member;
 import simple.tempEntity.MemberDTO1;
@@ -16,7 +16,7 @@ import static simple.constant.ApplicationSetting.*;
 
 public class Main {
     public static void main(String[] args) throws IOException{
-        Server app = new JExpress();
+        IServer app = new JExpress();
         // threadPool을 이용한 서버 생성방법
         // Server app = new JExpress(15);
 
@@ -94,10 +94,11 @@ public class Main {
         }, List.class);
 
 
-        // 해당 url 해결 해야한다
-        app.get("/member/:id", (req, res) -> {
-            // 해당 코드가 해결 되어야 한다
-//            Long id = req.getParams.id();
+        // 해당 url이 해결 되야한다
+        // 일치하는 값을 최우선으로 탐색한다
+        app.get("/member/:memberId/team/:teamId", (req, res) -> {
+//            Long id = req.getParams.memberId();
+//            Long id = req.getParams.teamId();
 //            res.send(id);
         });
 

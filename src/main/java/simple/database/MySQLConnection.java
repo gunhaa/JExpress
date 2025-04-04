@@ -5,7 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
 // Todo
-public class MySQLConnection implements DBConnection{
+public class MySQLConnection implements IDBConnection {
     @Override
     public EntityManagerFactory getEntityManagerFactory() {
 //        Configuration configuration = new Configuration();
@@ -35,7 +35,7 @@ public class MySQLConnection implements DBConnection{
         return null;
     }
 
-    public static DBConnection getInstance(){
+    public static IDBConnection getInstance(){
         return null;
     }
 

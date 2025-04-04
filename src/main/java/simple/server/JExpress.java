@@ -3,24 +3,24 @@ package simple.server;
 import simple.constant.ApplicationSetting;
 import simple.config.ApplicationConfig;
 import simple.httpRequest.HttpRequest;
-import simple.logger.RequestLogger;
-import simple.logger.Logger;
-import simple.mapper.GetMapper;
-import simple.mapper.Mapper;
+import simple.logger.RequestILogger;
+import simple.logger.ILogger;
+import simple.mapper.GetIMapper;
+import simple.mapper.IMapper;
 import simple.middleware.Cors;
-import simple.parser.Parser;
-import simple.parser.RequestCharacterParser;
+import simple.parser.IHttpRequestParser;
+import simple.parser.RequestCharacterIHttpRequestParser;
 import simple.context.ApplicationContext;
-import simple.requestHandler.RequestHandler;
+import simple.requestHandler.IRequestHandler;
 import simple.provider.RequestHandlerProvider;
-import simple.response.LambdaHandler;
+import simple.httpResponse.ILambdaHandler;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class JExpress implements Server {
+public class JExpress implements IServer {
 
-    private final Mapper getMap = GetMapper.getInstance();
+    private final IMapper getMap = GetIMapper.getInstance();
     private final ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
     private final Cors cors = Cors.getInstance();
     private final int threadPool;
@@ -49,17 +49,18 @@ public class JExpress implements Server {
     }
 
     @Override
-    public void get(String URL, LambdaHandler responseSuccessHandler) {
+    public void get(String URL, ILambdaHandler responseSuccessHandler) {
+
         getMap.addUrl(URL, responseSuccessHandler);
     }
 
     @Override
-    public void get(String URL, LambdaHandler responseSuccessHandler, Class<?> clazz) {
+    public void get(String URL, ILambdaHandler responseSuccessHandler, Class<?> clazz) {
         getMap.addUrl(URL, responseSuccessHandler, clazz);
     }
 
     @Override
-    public void post(String URL, LambdaHandler responseSuccessHandler) {
+    public void post(String URL, ILambdaHandler responseSuccessHandler) {
 //        getMap.put(URL, new Response(responseSuccess, responseError));
     }
 
@@ -77,18 +78,18 @@ public class JExpress implements Server {
                     InputStream clientInputStream = clientSocket.getInputStream();
                     BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))){
 
-                    Logger logger = new RequestLogger();
-                    Parser requestParser = new RequestCharacterParser(logger);
+                    ILogger ILogger = new RequestILogger();
+                    IHttpRequestParser requestIHttpRequestParser = new RequestCharacterIHttpRequestParser(ILogger);
 
-                    HttpRequest httpRequest = requestParser.parsing(request);
+                    HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);
 
                     RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
-                    RequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
-                    LambdaHandler lambdaHandler = getMap.getLambdaHandler(httpRequest.getUrl());
+                    IRequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
+                    ILambdaHandler ILambdaHandler = getMap.getLambdaHandler(httpRequest.getUrl());
 
-                    handler.sendResponse(clientSocket.getOutputStream(), lambdaHandler, httpRequest);
+                    handler.sendResponse(clientSocket.getOutputStream(), ILambdaHandler, httpRequest);
 
-                    logger.print();
+                    ILogger.print();
                 }
             }
         }
