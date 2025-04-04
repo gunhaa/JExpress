@@ -6,7 +6,7 @@ import simple.httpRequest.LambdaHttpRequest;
 import simple.httpRequest.HttpRequest;
 import simple.httpResponse.HttpResponse;
 import simple.httpResponse.LambdaHttpResponse;
-import simple.httpResponse.ILambdaHandler;
+import simple.httpResponse.ILambdaHandlerWrapper;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -22,11 +22,11 @@ public class IRequestGetHandler implements IRequestHandler {
     private IRequestGetHandler() {}
 
     @Override
-    public void sendResponse(OutputStream outputStream, ILambdaHandler ILambdaHandler, HttpRequest httpRequest) {
+    public void sendResponse(OutputStream outputStream, ILambdaHandlerWrapper ILambdaHandlerWrapper, HttpRequest httpRequest) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
             // 등록되지 않은 요청
-            if(ILambdaHandler == null){
+            if(ILambdaHandlerWrapper == null){
                 HttpResponse httpResponse = new HttpResponse(httpRequest, pw);
                 ErrorStatus errorStatus = new ErrorStatus(HttpStatus.NOT_FOUND_404, "Not valid URL");
                 httpResponse.sendError(errorStatus);
@@ -35,7 +35,7 @@ public class IRequestGetHandler implements IRequestHandler {
 
             LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(httpRequest);
             LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(lambdaHttpRequest, pw);
-            ILambdaHandler.execute(lambdaHttpRequest, lambdaHttpResponse);
+            ILambdaHandlerWrapper.execute(lambdaHttpRequest, lambdaHttpResponse);
 
         }
     }

@@ -1,7 +1,8 @@
 package simple.url;
 
-import simple.httpResponse.ILambdaHandler;
+import simple.httpResponse.LambdaHandlerWrapper;
 
 public interface ITrie {
-    public void insert(String path, ILambdaHandler handler);
+    void insert(String path, LambdaHandlerWrapper handler);
+
 }

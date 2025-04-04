@@ -9,11 +9,11 @@ import simple.mapper.GetIMapper;
 import simple.mapper.IMapper;
 import simple.middleware.Cors;
 import simple.parser.IHttpRequestParser;
-import simple.parser.RequestCharacterIHttpRequestParser;
+import simple.parser.HttpRequestCharParser;
 import simple.context.ApplicationContext;
 import simple.requestHandler.IRequestHandler;
 import simple.provider.RequestHandlerProvider;
-import simple.httpResponse.ILambdaHandler;
+import simple.httpResponse.ILambdaHandlerWrapper;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -49,18 +49,18 @@ public class JExpress implements IServer {
     }
 
     @Override
-    public void get(String URL, ILambdaHandler responseSuccessHandler) {
+    public void get(String URL, ILambdaHandlerWrapper responseSuccessHandler) {
 
         getMap.addUrl(URL, responseSuccessHandler);
     }
 
     @Override
-    public void get(String URL, ILambdaHandler responseSuccessHandler, Class<?> clazz) {
+    public void get(String URL, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz) {
         getMap.addUrl(URL, responseSuccessHandler, clazz);
     }
 
     @Override
-    public void post(String URL, ILambdaHandler responseSuccessHandler) {
+    public void post(String URL, ILambdaHandlerWrapper responseSuccessHandler) {
 //        getMap.put(URL, new Response(responseSuccess, responseError));
     }
 
@@ -79,15 +79,15 @@ public class JExpress implements IServer {
                     BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))){
 
                     ILogger ILogger = new RequestILogger();
-                    IHttpRequestParser requestIHttpRequestParser = new RequestCharacterIHttpRequestParser(ILogger);
+                    IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(ILogger);
 
                     HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);
 
                     RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
                     IRequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
-                    ILambdaHandler ILambdaHandler = getMap.getLambdaHandler(httpRequest.getUrl());
+                    ILambdaHandlerWrapper ILambdaHandlerWrapper = getMap.getLambdaHandler(httpRequest.getUrl());
 
-                    handler.sendResponse(clientSocket.getOutputStream(), ILambdaHandler, httpRequest);
+                    handler.sendResponse(clientSocket.getOutputStream(), ILambdaHandlerWrapper, httpRequest);
 
                     ILogger.print();
                 }

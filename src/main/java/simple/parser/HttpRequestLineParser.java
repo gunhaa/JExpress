@@ -7,11 +7,11 @@ import simple.logger.ILogger;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class RequestLineIHttpRequestParser implements IHttpRequestParser {
+public class HttpRequestLineParser implements IHttpRequestParser {
     private final SimpleLineHttpRequestDTO simpleLineHttpRequestDTO;
     private final ILogger ILogger;
 
-    public RequestLineIHttpRequestParser(ILogger ILogger) {
+    public HttpRequestLineParser(ILogger ILogger) {
         this.simpleLineHttpRequestDTO = new SimpleLineHttpRequestDTO();
         this.ILogger = ILogger;
     }

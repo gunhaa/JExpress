@@ -2,20 +2,20 @@ package simple.httpResponse;
 
 public class LambdaHandlerWrapper {
 
-    private final ILambdaHandler ILambdaHandler;
+    private final ILambdaHandlerWrapper ILambdaHandlerWrapper;
     private Class<?> clazz;
 
-    public LambdaHandlerWrapper(ILambdaHandler ILambdaHandler) {
-        this.ILambdaHandler = ILambdaHandler;
+    public LambdaHandlerWrapper(ILambdaHandlerWrapper ILambdaHandlerWrapper) {
+        this.ILambdaHandlerWrapper = ILambdaHandlerWrapper;
     }
 
-    public LambdaHandlerWrapper(ILambdaHandler ILambdaHandler, Class<?> clazz) {
-        this.ILambdaHandler = ILambdaHandler;
+    public LambdaHandlerWrapper(ILambdaHandlerWrapper ILambdaHandlerWrapper, Class<?> clazz) {
+        this.ILambdaHandlerWrapper = ILambdaHandlerWrapper;
         this.clazz = clazz;
     }
 
-    public ILambdaHandler unwrap(){
-        return ILambdaHandler;
+    public ILambdaHandlerWrapper unwrap(){
+        return ILambdaHandlerWrapper;
     }
 
     public Class<?> getClazz() {

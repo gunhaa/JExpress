@@ -1,6 +1,6 @@
 package simple.url;
 
-import simple.httpResponse.ILambdaHandler;
+import simple.httpResponse.LambdaHandlerWrapper;
 
 import java.util.Arrays;
 
@@ -10,7 +10,7 @@ public class UrlRouterTrie implements ITrie{
 
     // /member/:memberId/team/:teamId stdin
     @Override
-    public void insert(String url, ILambdaHandler handler) {
+    public void insert(String url, LambdaHandlerWrapper handler) {
         String[] parts = url.split("/");
         UrlRouterNode current = this.root;
         for(String part : parts){
@@ -24,7 +24,7 @@ public class UrlRouterTrie implements ITrie{
         current.setEndPoint();
     }
 
-    public ILambdaHandler getLambdaHandlerOrNull(String url){
+    public LambdaHandlerWrapper getLambdaHandlerOrNull(String url){
 
         String realPath = url.split("\\?")[0];
 
@@ -34,7 +34,7 @@ public class UrlRouterTrie implements ITrie{
         return searchLambdaHandlerRecursive(root, parts, 0);
     }
 
-    private ILambdaHandler searchLambdaHandlerRecursive(UrlRouterNode node, String[] parts, int depth){
+    private LambdaHandlerWrapper searchLambdaHandlerRecursive(UrlRouterNode node, String[] parts, int depth){
         if(depth == parts.length){
             return node.getILambdaHandler();
         }

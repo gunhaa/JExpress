@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import simple.httpRequest.LambdaHttpRequest;
-import simple.httpResponse.ILambdaHandler;
+import simple.httpResponse.ILambdaHandlerWrapper;
+import simple.httpResponse.LambdaHandlerWrapper;
 import simple.httpResponse.LambdaHttpResponse;
 
 import java.util.HashMap;
@@ -16,12 +17,15 @@ class UrlRouterTrieTest {
     @Test
     public void TDD_구조테스트(){
         UrlRouterTrie urlRouterTrie = new UrlRouterTrie();
-        ILambdaHandler mock = new ILambdaHandler() {
+        ILambdaHandlerWrapper iLambdaHandlerWrapper = new ILambdaHandlerWrapper() {
             @Override
             public void execute(LambdaHttpRequest lambdaHttpRequest, LambdaHttpResponse lambdaHttpResponse) {
 
             }
         };
+
+        LambdaHandlerWrapper mock = new LambdaHandlerWrapper(iLambdaHandlerWrapper);
+
         urlRouterTrie.insert("/member/:memberId/team/:teamId", mock);
         urlRouterTrie.insert("/member/:memberId", mock);
         urlRouterTrie.insert("/member", mock);
@@ -78,27 +82,30 @@ class UrlRouterTrieTest {
         TestHolder testHolder1 = new TestHolder();
         TestHolder testHolder2 = new TestHolder();
 
-        ILambdaHandler mock1 = (lambdaHttpRequest, lambdaHttpResponse) -> testHolder1.setPath("/member");
-        ILambdaHandler mock2 = (lambdaHttpRequest, lambdaHttpResponse) -> testHolder2.setPath("/member/:memberId");
+        ILambdaHandlerWrapper iLambdaHandlerWrapper1 = (lambdaHttpRequest, lambdaHttpResponse) -> testHolder1.setPath("/member");
+        ILambdaHandlerWrapper iLambdaHandlerWrapper2 = (lambdaHttpRequest, lambdaHttpResponse) -> testHolder2.setPath("/member/:memberId");
+
+        LambdaHandlerWrapper mock1 = new LambdaHandlerWrapper(iLambdaHandlerWrapper1);
+        LambdaHandlerWrapper mock2 = new LambdaHandlerWrapper(iLambdaHandlerWrapper2);
 
         urlRouterTrie.insert("/member", mock1);
         urlRouterTrie.insert("/member/:memberId", mock2);
 
-        ILambdaHandler lambda1 = urlRouterTrie.getLambdaHandlerOrNull("/member");
-        ILambdaHandler lambda2 = urlRouterTrie.getLambdaHandlerOrNull("/member/3");
+        LambdaHandlerWrapper lambda1 = urlRouterTrie.getLambdaHandlerOrNull("/member");
+        LambdaHandlerWrapper lambda2 = urlRouterTrie.getLambdaHandlerOrNull("/member/3");
 
         LambdaHttpRequest dummyRequest = Mockito.mock(LambdaHttpRequest.class);
         LambdaHttpResponse dummyResponse = Mockito.mock(LambdaHttpResponse.class);
 
-        lambda1.execute(dummyRequest, dummyResponse);
-        lambda2.execute(dummyRequest, dummyResponse);
+        lambda1.unwrap().execute(dummyRequest, dummyResponse);
+        lambda2.unwrap().execute(dummyRequest, dummyResponse);
 
         Assertions.assertEquals( "/member", testHolder1.getPath());
         Assertions.assertEquals("/member/:memberId", testHolder2.getPath());
 
         // 쿼리 스트링이 url에 있을 경우
-        ILambdaHandler lambda3 = urlRouterTrie.getLambdaHandlerOrNull("/member?name=asd");
-        lambda3.execute(dummyRequest, dummyResponse);
+        LambdaHandlerWrapper lambda3 = urlRouterTrie.getLambdaHandlerOrNull("/member?name=asd");
+        lambda3.unwrap().execute(dummyRequest, dummyResponse);
 
         Assertions.assertEquals( "/member", testHolder1.getPath());
         

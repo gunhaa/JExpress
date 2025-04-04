@@ -7,12 +7,12 @@ import simple.logger.ILogger;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class RequestCharacterIHttpRequestParser implements IHttpRequestParser {
+public class HttpRequestCharParser implements IHttpRequestParser {
     private final CharHttpRequestBuilder charHttpRequestBuilder;
     private final ILogger ILogger;
     private final StringBuilder lineBuilder;
 
-    public RequestCharacterIHttpRequestParser(ILogger ILogger) {
+    public HttpRequestCharParser(ILogger ILogger) {
         this.charHttpRequestBuilder = new CharHttpRequestBuilder();
         this.ILogger = ILogger;
         this.lineBuilder = new StringBuilder();
