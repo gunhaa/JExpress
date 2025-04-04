@@ -40,10 +40,10 @@ public class UrlRouterTrie implements ITrie{
         String[] parts = Arrays.stream(realPath.split("/"))
                 .filter(s -> !s.isEmpty())
                 .toArray(String[]::new);
-        return searchLambdaHandlerRecursive(root, parts, 0);
+        return searchLambdaHandlerRecursive(root, parts, 0, httpRequest);
     }
 
-    private LambdaHandlerWrapper searchLambdaHandlerRecursive(UrlRouterNode node, String[] parts, int depth){
+    private LambdaHandlerWrapper searchLambdaHandlerRecursive(UrlRouterNode node, String[] parts, int depth, HttpRequest httpRequest){
         if(depth == parts.length){
             return node.getILambdaHandler();
         }
@@ -51,12 +51,18 @@ public class UrlRouterTrie implements ITrie{
         String part = parts[depth];
         
         if(node.getChild().containsKey(part)){
-            return searchLambdaHandlerRecursive(node.getChildNode(part), parts, depth+1);
+            return searchLambdaHandlerRecursive(node.getChildNode(part), parts, depth+1, httpRequest);
         }
 
         for(UrlRouterNode child : node.getChild().values()){
             if(child.isDynamic()){
-                return searchLambdaHandlerRecursive(child, parts, depth+1);
+                // need test
+                String key = child.getPath().replace(":", "");
+                String value = httpRequest.getUrl().split("/")[depth+1];
+                System.out.println("key : " + key);
+                System.out.println("value : " + value);
+                httpRequest.setParam(key , value);
+                return searchLambdaHandlerRecursive(child, parts, depth+1, httpRequest);
             }
         }
 

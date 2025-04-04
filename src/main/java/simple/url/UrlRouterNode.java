@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class UrlRouterNode {
     private final String path;
-    private final HashMap<String, UrlRouterNode> child= new HashMap<>();
+    private final HashMap<String, UrlRouterNode> child = new HashMap<>();
     private final boolean isDynamic;
     private boolean isEndPoint;
     private LambdaHandlerWrapper iLambdaHandlerWrapper;

@@ -6,6 +6,7 @@ import simple.logger.ILogger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class HttpRequestCharParser implements IHttpRequestParser {
     private final CharHttpRequestBuilder charHttpRequestBuilder;
@@ -61,6 +62,7 @@ public class HttpRequestCharParser implements IHttpRequestParser {
         return HttpRequest.builder()
                 .method(charHttpRequestBuilder.getMethod())
                 .url(charHttpRequestBuilder.getUrl())
+                .param(new HashMap<>())
                 .protocol(charHttpRequestBuilder.getProtocol())
                 .queryString(charHttpRequestBuilder.getQueryString())
                 .header(charHttpRequestBuilder.getHeader())

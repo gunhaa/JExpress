@@ -72,7 +72,7 @@ public class Main {
         }, ArrayList.class);
 
         // test url = localhost:8020/member/team?teamName=일팀
-        app.get("/member/team", (req, res) -> {
+        app.get("/member/team/:id", (req, res) -> {
 
             String key1 = "teamName";
             String value1 = req.getQueryString(key1);
