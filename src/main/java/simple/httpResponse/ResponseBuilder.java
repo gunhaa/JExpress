@@ -1,7 +1,6 @@
-package simple.response;
+package simple.httpResponse;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import simple.constant.CustomHttpMethod;
 import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;

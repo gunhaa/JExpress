@@ -2,7 +2,7 @@ package simple;
 
 import simple.repository.JExpressCRUDRepository;
 import simple.repository.JExpressQueryString;
-import simple.server.Server;
+import simple.server.IServer;
 import simple.server.JExpress;
 import simple.tempEntity.Member;
 import simple.tempEntity.MemberDTO1;
@@ -16,7 +16,7 @@ import static simple.constant.ApplicationSetting.*;
 
 public class Main {
     public static void main(String[] args) throws IOException{
-        Server app = new JExpress();
+        IServer app = new JExpress();
         // threadPool을 이용한 서버 생성방법
         // Server app = new JExpress(15);
 
@@ -29,7 +29,7 @@ public class Main {
 //        app.use(GET_CACHE);
 
 
-        // todo 순환 참조 문제 해결
+        // todo 순환 참조 문제 있음
         // test url = localhost:8020/member/name?age=40
         app.get("/member/name", (req, res)-> {
             String key1 = "age";
@@ -43,11 +43,7 @@ public class Main {
 //            res.send(findMember.getName(), String.class);
         }, String.class);
 
-        app.post("/member", (req,res) -> {
-
-        });
-
-        // todo 순환 참조 문제 해결
+        // todo 순환 참조 문제 있음
         // test url = localhost:8020/member?name=gunha&age=50
         app.get("/member" , (req, res) -> {
             String key1 = "name";
@@ -65,7 +61,7 @@ public class Main {
 //            res.send(findMember, Member.class);
         }, Member.class);
 
-        // todo 순환 참조 문제 해결
+        // todo 순환 참조 문제 있음
         // test url = localhost:8020/members
         app.get("/members", (req, res) -> {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
@@ -93,7 +89,28 @@ public class Main {
 //            res.send(List, List.class);
         }, List.class);
 
+        app.get("/member/team/:id", (req, res) -> {
 
+            String id = req.getParam("id");
+            System.out.println("lambda id : " + id);
+
+        }, String.class);
+
+        app.get("/member/team/mock", (req, res) -> {
+
+            String id = req.getParam("id");
+            // isnull
+            System.out.println("lambda id : " + id);
+
+        }, String.class);
+
+        // 해당 url이 해결 되야한다
+        // 일치하는 값을 최우선으로 탐색한다
+//        app.get("/member/:memberId/team/:teamId", (req, res) -> {
+//            Long id = req.getParams.memberId();
+//            Long id = req.getParams.teamId();
+//            res.send(id);
+//        });
 
         app.run(8020);
     }

@@ -1,12 +1,11 @@
 package simple.logger;
 
 
-import simple.constant.ApplicationSetting;
 import simple.constant.ServerSettingChecker;
 
-import static simple.constant.ApplicationSetting.*;
+import static simple.constant.ApplicationSetting.RESPONSE_TIME;
 
-public class RequestLogger implements Logger{
+public class RequestLogger implements ILogger {
 
     private final StringBuilder log;
     private Long startTime;

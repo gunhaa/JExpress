@@ -2,12 +2,12 @@ package simple.middleware;
 
 import simple.apiDocs.ApiDetails;
 import simple.apiDocs.ApiDocsDto;
-import simple.mapper.GetMapper;
-import simple.mapper.Mapper;
+import simple.mapper.GetIMapper;
+import simple.mapper.IMapper;
 
 import java.util.List;
 
-public class ApiDocs implements JExpressExtension {
+public class ApiDocs implements IMiddleWare {
 
     private static volatile ApiDocs INSTANCE;
 
@@ -30,7 +30,7 @@ public class ApiDocs implements JExpressExtension {
 
     @Override
     public void run() {
-        Mapper getMap = GetMapper.getInstance();
+        IMapper getMap = GetIMapper.getInstance();
 
         ApiDocsDto apiDocsDto = new ApiDocsDto();
 //            apiDocsDto.createProxy(getHandlers);

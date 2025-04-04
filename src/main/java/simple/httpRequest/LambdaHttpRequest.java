@@ -1,14 +1,8 @@
 package simple.httpRequest;
 
-import jakarta.persistence.EntityManager;
 import simple.constant.HttpStatus;
-import simple.constant.ServerSettingChecker;
-import simple.database.DBConnection;
 
 import java.util.HashMap;
-import java.util.List;
-
-import static simple.constant.ApplicationSetting.*;
 
 public class LambdaHttpRequest {
 
@@ -16,6 +10,11 @@ public class LambdaHttpRequest {
 
     public LambdaHttpRequest(HttpRequest httpRequest) {
         this.httpRequest = httpRequest;
+    }
+
+    public String getParam(String binding){
+        HashMap<String, String> params = httpRequest.getParams();
+        return params.get(binding);
     }
 
     public String getQueryString(String target){

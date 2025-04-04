@@ -1,10 +1,9 @@
 package simple.requestHandler;
 
-import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.HttpRequest;
-import simple.response.HttpResponse;
-import simple.response.LambdaHandler;
+import simple.httpResponse.HttpResponse;
+import simple.httpResponse.ILambdaHandlerWrapper;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -12,21 +11,21 @@ import java.io.PrintWriter;
 import static simple.constant.HttpStatus.NOT_FOUND_404;
 import static simple.provider.RequestHandlerProvider.*;
 
-public class RequestStaticHandler implements RequestHandler{
+public class IRequestStaticHandler implements IRequestHandler {
 
-    private static final RequestHandler INSTANCE = new RequestStaticHandler();
+    private static final IRequestHandler INSTANCE = new IRequestStaticHandler();
     private static final String API_DOCS_HTML = "src/main/resources/static/API/API_DOCS.html";
     private static final String API_DOCS_JS = "src/main/resources/static/API/Jexpress.js";
 
 
-    public static RequestHandler getInstance(){
+    public static IRequestHandler getInstance(){
         return INSTANCE;
     }
 
-    private RequestStaticHandler() {}
+    private IRequestStaticHandler() {}
 
     @Override
-    public void sendResponse(OutputStream outputStream, LambdaHandler lambdaHandler, HttpRequest httpRequest) {
+    public void sendResponse(OutputStream outputStream, ILambdaHandlerWrapper ILambdaHandlerWrapper, HttpRequest httpRequest) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
 //            HttpRequest httpRequest = new HttpRequest(simpleHttpRequest);

@@ -4,29 +4,29 @@ import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.LambdaHttpRequest;
 import simple.httpRequest.HttpRequest;
-import simple.response.HttpResponse;
-import simple.response.LambdaHttpResponse;
-import simple.response.LambdaHandler;
+import simple.httpResponse.HttpResponse;
+import simple.httpResponse.LambdaHttpResponse;
+import simple.httpResponse.ILambdaHandlerWrapper;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-public class RequestGetHandler implements RequestHandler{
+public class IRequestGetHandler implements IRequestHandler {
 
-    private static final RequestHandler INSTANCE = new RequestGetHandler();
+    private static final IRequestHandler INSTANCE = new IRequestGetHandler();
 
-    public static RequestHandler getInstance(){
+    public static IRequestHandler getInstance(){
         return INSTANCE;
     }
 
-    private RequestGetHandler() {}
+    private IRequestGetHandler() {}
 
     @Override
-    public void sendResponse(OutputStream outputStream, LambdaHandler lambdaHandler, HttpRequest httpRequest) {
+    public void sendResponse(OutputStream outputStream, ILambdaHandlerWrapper ILambdaHandlerWrapper, HttpRequest httpRequest) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
             // 등록되지 않은 요청
-            if(lambdaHandler == null){
+            if(ILambdaHandlerWrapper == null){
                 HttpResponse httpResponse = new HttpResponse(httpRequest, pw);
                 ErrorStatus errorStatus = new ErrorStatus(HttpStatus.NOT_FOUND_404, "Not valid URL");
                 httpResponse.sendError(errorStatus);
@@ -35,7 +35,7 @@ public class RequestGetHandler implements RequestHandler{
 
             LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(httpRequest);
             LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(lambdaHttpRequest, pw);
-            lambdaHandler.execute(lambdaHttpRequest, lambdaHttpResponse);
+            ILambdaHandlerWrapper.execute(lambdaHttpRequest, lambdaHttpResponse);
 
         }
     }

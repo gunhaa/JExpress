@@ -1,6 +1,6 @@
 package simple.middleware;
 
-public class ResponseTime implements JExpressExtension {
+public class ResponseTime implements IMiddleWare {
 
     private static volatile ResponseTime INSTANCE;
 

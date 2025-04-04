@@ -8,7 +8,7 @@ import java.util.Map;
 
 import static simple.constant.ApplicationSetting.CORS;
 
-public class Cors implements JExpressExtension {
+public class Cors implements IMiddleWare {
 
     private static volatile Cors INSTANCE;
     private final Map<Integer, String> corsMap;

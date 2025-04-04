@@ -1,4 +1,4 @@
-package simple.response;
+package simple.httpResponse;
 
 import simple.constant.ServerSettingChecker;
 import simple.httpRequest.ErrorStatus;

@@ -7,7 +7,7 @@ import jakarta.persistence.Persistence;
 import simple.tempEntity.Member;
 import simple.tempEntity.Team;
 
-public class H2Connection implements DBConnection{
+public class H2Connection implements IDBConnection {
 
     private static volatile H2Connection INSTANCE;
     private final EntityManagerFactory emf;
