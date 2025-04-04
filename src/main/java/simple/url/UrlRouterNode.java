@@ -29,12 +29,20 @@ public class UrlRouterNode {
         this.iLambdaHandler = handler;
     }
 
+    public ILambdaHandler getILambdaHandler(){
+        return this.iLambdaHandler;
+    }
+
     public String getPath(){
         return this.path;
     }
 
     public HashMap<String, UrlRouterNode> getChild(){
         return this.child;
+    }
+
+    public UrlRouterNode getChildNode(String part){
+        return this.child.get(part);
     }
 
     public boolean isDynamic(){

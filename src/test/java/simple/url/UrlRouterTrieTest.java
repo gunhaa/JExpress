@@ -78,24 +78,15 @@ class UrlRouterTrieTest {
         TestHolder testHolder1 = new TestHolder();
         TestHolder testHolder2 = new TestHolder();
 
-        ILambdaHandler mock1 = new ILambdaHandler() {
-            @Override
-            public void execute(LambdaHttpRequest lambdaHttpRequest, LambdaHttpResponse lambdaHttpResponse) {
-                testHolder1.setPath("/member");
-            }
-        };
+        ILambdaHandler mock1 = (lambdaHttpRequest, lambdaHttpResponse) -> testHolder1.setPath("/member");
+        ILambdaHandler mock2 = (lambdaHttpRequest, lambdaHttpResponse) -> testHolder2.setPath("/member/:memberId");
 
-        ILambdaHandler mock2 = new ILambdaHandler() {
-            @Override
-            public void execute(LambdaHttpRequest lambdaHttpRequest, LambdaHttpResponse lambdaHttpResponse) {
-                testHolder2.setPath("/member/:memberId");
-            }
-        };
         urlRouterTrie.insert("/member", mock1);
         urlRouterTrie.insert("/member/:memberId", mock2);
 
-        ILambdaHandler lambda1 = urlRouterTrie.getLambdaHandler("/member?name=asd");
-        ILambdaHandler lambda2 = urlRouterTrie.getLambdaHandler("/member/3");
+        ILambdaHandler lambda1 = urlRouterTrie.getLambdaHandlerOrNull("/member");
+//        ILambdaHandler lambda1 = urlRouterTrie.getLambdaHandlerOrNull("/member?name=asd");
+        ILambdaHandler lambda2 = urlRouterTrie.getLambdaHandlerOrNull("/member/3");
 
         LambdaHttpRequest dummyRequest = Mockito.mock(LambdaHttpRequest.class);
         LambdaHttpResponse dummyResponse = Mockito.mock(LambdaHttpResponse.class);

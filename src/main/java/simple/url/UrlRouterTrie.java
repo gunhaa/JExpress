@@ -2,14 +2,16 @@ package simple.url;
 
 import simple.httpResponse.ILambdaHandler;
 
+import java.util.Arrays;
+
 public class UrlRouterTrie implements ITrie{
 
     private final UrlRouterNode root = new UrlRouterNode("/", false);
 
     // /member/:memberId/team/:teamId stdin
     @Override
-    public void insert(String path, ILambdaHandler handler) {
-        String[] parts = path.split("/");
+    public void insert(String url, ILambdaHandler handler) {
+        String[] parts = url.split("/");
         UrlRouterNode current = this.root;
         for(String part : parts){
             if(part.isEmpty()){
@@ -22,9 +24,29 @@ public class UrlRouterTrie implements ITrie{
         current.setEndPoint();
     }
 
-    public ILambdaHandler getLambdaHandler(String url){
+    public ILambdaHandler getLambdaHandlerOrNull(String url){
+        String[] parts = Arrays.stream(url.split("/"))
+                .filter(s -> !s.isEmpty())
+                .toArray(String[]::new);
+        return searchLambdaHandlerRecursive(root, parts, 0);
+    }
 
+    private ILambdaHandler searchLambdaHandlerRecursive(UrlRouterNode node, String[] parts, int depth){
+        if(depth == parts.length){
+            return node.getILambdaHandler();
+        }
+        
+        String part = parts[depth];
+        
+        if(node.getChild().containsKey(part)){
+            return searchLambdaHandlerRecursive(node.getChildNode(part), parts, depth+1);
+        }
 
+        for(UrlRouterNode child : node.getChild().values()){
+            if(child.isDynamic()){
+                return searchLambdaHandlerRecursive(child, parts, depth+1);
+            }
+        }
 
         return null;
     }
