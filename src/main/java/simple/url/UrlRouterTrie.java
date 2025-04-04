@@ -6,7 +6,15 @@ import java.util.Arrays;
 
 public class UrlRouterTrie implements ITrie{
 
-    private final UrlRouterNode root = new UrlRouterNode("/", false);
+    private static final UrlRouterNode root = new UrlRouterNode("/", false);
+    private static final UrlRouterTrie INSTANCE = new UrlRouterTrie();
+
+    private UrlRouterTrie() {
+    }
+
+    public static UrlRouterTrie getInstance(){
+        return INSTANCE;
+    }
 
     // /member/:memberId/team/:teamId stdin
     @Override

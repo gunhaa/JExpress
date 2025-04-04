@@ -16,7 +16,7 @@ class UrlRouterTrieTest {
 
     @Test
     public void TDD_구조테스트(){
-        UrlRouterTrie urlRouterTrie = new UrlRouterTrie();
+        UrlRouterTrie urlRouterTrie = UrlRouterTrie.getInstance();
         ILambdaHandlerWrapper iLambdaHandlerWrapper = new ILambdaHandlerWrapper() {
             @Override
             public void execute(LambdaHttpRequest lambdaHttpRequest, LambdaHttpResponse lambdaHttpResponse) {
@@ -64,7 +64,7 @@ class UrlRouterTrieTest {
 
     @Test
     public void TDD_URL에_맞는_Handler반환(){
-        UrlRouterTrie urlRouterTrie = new UrlRouterTrie();
+        UrlRouterTrie urlRouterTrie = UrlRouterTrie.getInstance();
 
         class TestHolder {
             private String path;

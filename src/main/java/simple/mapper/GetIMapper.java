@@ -18,7 +18,7 @@ public class GetIMapper implements IMapper {
     private GetIMapper() {
         this.customHttpMethod = CustomHttpMethod.GET;
         this.getMap = new HashMap<>();
-        this.urlRouterTrie = new UrlRouterTrie();
+        this.urlRouterTrie = UrlRouterTrie.getInstance();
     }
 
     public static IMapper getInstance(){
@@ -29,13 +29,14 @@ public class GetIMapper implements IMapper {
     public void addUrl(String url, ILambdaHandlerWrapper responseSuccessHandler) {
         LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler);
         urlRouterTrie.insert(url, lambdaHandlerWrapper);
-        getMap.put(url, lambdaHandlerWrapper);
+//        getMap.put(url, lambdaHandlerWrapper);
     }
 
     @Override
     public void addUrl(String url, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz) {
         LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler, clazz);
-        getMap.put(url, lambdaHandlerWrapper);
+        urlRouterTrie.insert(url, lambdaHandlerWrapper);
+//        getMap.put(url, lambdaHandlerWrapper);
     }
 
     @Override
