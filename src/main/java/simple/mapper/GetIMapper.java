@@ -1,6 +1,7 @@
 package simple.mapper;
 
 import simple.constant.CustomHttpMethod;
+import simple.httpRequest.HttpRequest;
 import simple.httpResponse.ILambdaHandlerWrapper;
 import simple.httpResponse.LambdaHandlerWrapper;
 import simple.url.UrlRouterTrie;
@@ -29,14 +30,14 @@ public class GetIMapper implements IMapper {
     public void addUrl(String url, ILambdaHandlerWrapper responseSuccessHandler) {
         LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler);
         urlRouterTrie.insert(url, lambdaHandlerWrapper);
-//        getMap.put(url, lambdaHandlerWrapper);
+        getMap.put(url, lambdaHandlerWrapper);
     }
 
     @Override
     public void addUrl(String url, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz) {
         LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler, clazz);
         urlRouterTrie.insert(url, lambdaHandlerWrapper);
-//        getMap.put(url, lambdaHandlerWrapper);
+        getMap.put(url, lambdaHandlerWrapper);
     }
 
     @Override
@@ -45,8 +46,8 @@ public class GetIMapper implements IMapper {
     }
 
     @Override
-    public ILambdaHandlerWrapper getLambdaHandler(String url) {
-        LambdaHandlerWrapper wrapper = getMap.get(url);
+    public ILambdaHandlerWrapper getLambdaHandler(HttpRequest httpRequest) {
+        LambdaHandlerWrapper wrapper = urlRouterTrie.getLambdaHandlerOrNull(httpRequest);
         return (wrapper != null) ? wrapper.unwrap() : null;
     }
 

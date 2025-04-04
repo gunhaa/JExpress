@@ -3,7 +3,7 @@ package simple.server;
 import simple.constant.ApplicationSetting;
 import simple.config.ApplicationConfig;
 import simple.httpRequest.HttpRequest;
-import simple.logger.RequestILogger;
+import simple.logger.RequestLogger;
 import simple.logger.ILogger;
 import simple.mapper.GetIMapper;
 import simple.mapper.IMapper;
@@ -14,7 +14,10 @@ import simple.context.ApplicationContext;
 import simple.requestHandler.IRequestHandler;
 import simple.provider.RequestHandlerProvider;
 import simple.httpResponse.ILambdaHandlerWrapper;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -50,7 +53,6 @@ public class JExpress implements IServer {
 
     @Override
     public void get(String URL, ILambdaHandlerWrapper responseSuccessHandler) {
-
         getMap.addUrl(URL, responseSuccessHandler);
     }
 
@@ -78,14 +80,14 @@ public class JExpress implements IServer {
                     InputStream clientInputStream = clientSocket.getInputStream();
                     BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))){
 
-                    ILogger ILogger = new RequestILogger();
+                    ILogger ILogger = new RequestLogger();
                     IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(ILogger);
 
                     HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);
 
                     RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
                     IRequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
-                    ILambdaHandlerWrapper ILambdaHandlerWrapper = getMap.getLambdaHandler(httpRequest.getUrl());
+                    ILambdaHandlerWrapper ILambdaHandlerWrapper = getMap.getLambdaHandler(httpRequest);
 
                     handler.sendResponse(clientSocket.getOutputStream(), ILambdaHandlerWrapper, httpRequest);
 
@@ -94,6 +96,4 @@ public class JExpress implements IServer {
             }
         }
     }
-
-
 }

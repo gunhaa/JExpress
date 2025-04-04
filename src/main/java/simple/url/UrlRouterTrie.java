@@ -1,5 +1,6 @@
 package simple.url;
 
+import simple.httpRequest.HttpRequest;
 import simple.httpResponse.LambdaHandlerWrapper;
 
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class UrlRouterTrie implements ITrie{
     @Override
     public void insert(String url, LambdaHandlerWrapper handler) {
         String[] parts = url.split("/");
-        UrlRouterNode current = this.root;
+        UrlRouterNode current = root;
         for(String part : parts){
             if(part.isEmpty()){
                 continue;
@@ -32,9 +33,9 @@ public class UrlRouterTrie implements ITrie{
         current.setEndPoint();
     }
 
-    public LambdaHandlerWrapper getLambdaHandlerOrNull(String url){
+    public LambdaHandlerWrapper getLambdaHandlerOrNull(HttpRequest httpRequest){
 
-        String realPath = url.split("\\?")[0];
+        String realPath = httpRequest.getUrl().split("\\?")[0];
 
         String[] parts = Arrays.stream(realPath.split("/"))
                 .filter(s -> !s.isEmpty())
@@ -63,7 +64,7 @@ public class UrlRouterTrie implements ITrie{
     }
 
     public UrlRouterNode getRoot(){
-        return this.root;
+        return root;
     }
 
     public void printTrie() {

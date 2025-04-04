@@ -3,6 +3,7 @@ package simple.url;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import simple.httpRequest.HttpRequest;
 import simple.httpRequest.LambdaHttpRequest;
 import simple.httpResponse.ILambdaHandlerWrapper;
 import simple.httpResponse.LambdaHandlerWrapper;
@@ -91,8 +92,14 @@ class UrlRouterTrieTest {
         urlRouterTrie.insert("/member", mock1);
         urlRouterTrie.insert("/member/:memberId", mock2);
 
-        LambdaHandlerWrapper lambda1 = urlRouterTrie.getLambdaHandlerOrNull("/member");
-        LambdaHandlerWrapper lambda2 = urlRouterTrie.getLambdaHandlerOrNull("/member/3");
+        HttpRequest mockRequest1 = Mockito.mock(HttpRequest.class);
+        Mockito.when(mockRequest1.getUrl()).thenReturn("/member");
+
+        HttpRequest mockRequest2 = Mockito.mock(HttpRequest.class);
+        Mockito.when(mockRequest2.getUrl()).thenReturn("/member/:memberId");
+
+        LambdaHandlerWrapper lambda1 = urlRouterTrie.getLambdaHandlerOrNull(mockRequest1);
+        LambdaHandlerWrapper lambda2 = urlRouterTrie.getLambdaHandlerOrNull(mockRequest2);
 
         LambdaHttpRequest dummyRequest = Mockito.mock(LambdaHttpRequest.class);
         LambdaHttpResponse dummyResponse = Mockito.mock(LambdaHttpResponse.class);
@@ -103,8 +110,11 @@ class UrlRouterTrieTest {
         Assertions.assertEquals( "/member", testHolder1.getPath());
         Assertions.assertEquals("/member/:memberId", testHolder2.getPath());
 
+
+        HttpRequest mockRequest3 = Mockito.mock(HttpRequest.class);
+        Mockito.when(mockRequest3.getUrl()).thenReturn("/member?name=asd");
         // 쿼리 스트링이 url에 있을 경우
-        LambdaHandlerWrapper lambda3 = urlRouterTrie.getLambdaHandlerOrNull("/member?name=asd");
+        LambdaHandlerWrapper lambda3 = urlRouterTrie.getLambdaHandlerOrNull(mockRequest3);
         lambda3.unwrap().execute(dummyRequest, dummyResponse);
 
         Assertions.assertEquals( "/member", testHolder1.getPath());

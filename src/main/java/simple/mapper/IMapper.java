@@ -1,6 +1,7 @@
 package simple.mapper;
 
 import simple.constant.CustomHttpMethod;
+import simple.httpRequest.HttpRequest;
 import simple.httpResponse.ILambdaHandlerWrapper;
 import simple.httpResponse.LambdaHandlerWrapper;
 
@@ -10,7 +11,7 @@ public interface IMapper {
 
     CustomHttpMethod getMethod();
 
-    ILambdaHandlerWrapper getLambdaHandler(String url);
+    ILambdaHandlerWrapper getLambdaHandler(HttpRequest httpRequest);
 
     Map<String, LambdaHandlerWrapper> getHandlers();
 

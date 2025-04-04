@@ -43,10 +43,6 @@ public class Main {
 //            res.send(findMember.getName(), String.class);
         }, String.class);
 
-        app.post("/member", (req,res) -> {
-
-        });
-
         // todo 순환 참조 문제 있음
         // test url = localhost:8020/member?name=gunha&age=50
         app.get("/member" , (req, res) -> {
@@ -96,11 +92,11 @@ public class Main {
 
         // 해당 url이 해결 되야한다
         // 일치하는 값을 최우선으로 탐색한다
-        app.get("/member/:memberId/team/:teamId", (req, res) -> {
+//        app.get("/member/:memberId/team/:teamId", (req, res) -> {
 //            Long id = req.getParams.memberId();
 //            Long id = req.getParams.teamId();
 //            res.send(id);
-        });
+//        });
 
         app.run(8020);
     }

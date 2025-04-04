@@ -20,15 +20,10 @@ public class HttpRequest {
     private final LinkedTreeMap<String, Object> bodyMap;
     private final Queue<ErrorStatus> errorQueue;
 
-    @Deprecated
-    public boolean isHandshake(){
-        return this.url == null && this.method == null && this.protocol == null;
-    }
-
-    public static HttpRequest createMock(){
+    public static HttpRequest createMockUrl(String mock){
         return builder()
                 .method(CustomHttpMethod.GET)
-                .url("url")
+                .url(mock)
                 .protocol("protocol")
                 .queryString(new HashMap<>())
                 .header(new HashMap<>())

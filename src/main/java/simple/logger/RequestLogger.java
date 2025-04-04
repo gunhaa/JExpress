@@ -3,14 +3,14 @@ package simple.logger;
 
 import simple.constant.ServerSettingChecker;
 
-import static simple.constant.ApplicationSetting.*;
+import static simple.constant.ApplicationSetting.RESPONSE_TIME;
 
-public class RequestILogger implements ILogger {
+public class RequestLogger implements ILogger {
 
     private final StringBuilder log;
     private Long startTime;
 
-    public RequestILogger() {
+    public RequestLogger() {
         this.log = new StringBuilder();
         if(ServerSettingChecker.isServerEnabled(RESPONSE_TIME)){
             this.startTime = System.currentTimeMillis();
