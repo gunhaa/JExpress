@@ -20,6 +20,10 @@ public class UrlRouterTrie implements ITrie{
         current.setEndPoint();
     }
 
+    public UrlRouterNode getRoot(){
+        return this.root;
+    }
+
     public void printTrie() {
         printTrieRecursive(root, 0);
     }

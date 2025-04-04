@@ -1,5 +1,7 @@
 package simple.url;
 
+import simple.httpResponse.ILambdaHandler;
+
 import java.util.HashMap;
 
 public class UrlRouterNode {
@@ -7,6 +9,7 @@ public class UrlRouterNode {
     private final HashMap<String, UrlRouterNode> child= new HashMap<>();
     private final boolean isDynamic;
     private boolean isEndPoint;
+    private ILambdaHandler iLambdaHandler;
 
     public UrlRouterNode(String path, boolean isDynamic) {
         this.path = path;
@@ -20,6 +23,10 @@ public class UrlRouterNode {
 
     public void setEndPoint(){
         this.isEndPoint = true;
+    }
+
+    public void setILambdaHandler(ILambdaHandler handler){
+        this.iLambdaHandler = handler;
     }
 
     public String getPath(){
