@@ -37,6 +37,7 @@ public class UrlRouterTrie implements ITrie{
 
         String realPath = httpRequest.getUrl().split("\\?")[0];
 
+
         String[] parts = Arrays.stream(realPath.split("/"))
                 .filter(s -> !s.isEmpty())
                 .toArray(String[]::new);
@@ -56,12 +57,10 @@ public class UrlRouterTrie implements ITrie{
 
         for(UrlRouterNode child : node.getChild().values()){
             if(child.isDynamic()){
-                // need test
+                // need more test
                 String key = child.getPath().replace(":", "");
                 String value = httpRequest.getUrl().split("/")[depth+1];
-                System.out.println("key : " + key);
-                System.out.println("value : " + value);
-                httpRequest.setParam(key , value);
+                httpRequest.setParams(key , value);
                 return searchLambdaHandlerRecursive(child, parts, depth+1, httpRequest);
             }
         }

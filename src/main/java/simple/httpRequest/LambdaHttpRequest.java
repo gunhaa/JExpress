@@ -12,8 +12,9 @@ public class LambdaHttpRequest {
         this.httpRequest = httpRequest;
     }
 
-    public String getParam(){
-        return null;
+    public String getParam(String binding){
+        HashMap<String, String> params = httpRequest.getParams();
+        return params.get(binding);
     }
 
     public String getQueryString(String target){

@@ -16,13 +16,13 @@ public class HttpRequest {
     private final String url;
     private final String protocol;
     private final HashMap<String, String> queryString;
-    private HashMap<String, String> param;
+    private HashMap<String, String> params;
     private final HashMap<String, String> header;
     private final LinkedTreeMap<String, Object> bodyMap;
     private final Queue<ErrorStatus> errorQueue;
 
-    public void setParam(String key, String value){
-        this.param.put(key, value);
+    public void setParams(String key, String value){
+        this.params.put(key, value);
     }
 
     public static HttpRequest createMockUrl(String mock){

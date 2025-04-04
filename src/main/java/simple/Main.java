@@ -72,7 +72,7 @@ public class Main {
         }, ArrayList.class);
 
         // test url = localhost:8020/member/team?teamName=일팀
-        app.get("/member/team/:id", (req, res) -> {
+        app.get("/member/team", (req, res) -> {
 
             String key1 = "teamName";
             String value1 = req.getQueryString(key1);
@@ -89,6 +89,20 @@ public class Main {
 //            res.send(List, List.class);
         }, List.class);
 
+        app.get("/member/team/:id", (req, res) -> {
+
+            String id = req.getParam("id");
+            System.out.println("lambda id : " + id);
+
+        }, String.class);
+
+        app.get("/member/team/mock", (req, res) -> {
+
+            String id = req.getParam("id");
+            // isnull
+            System.out.println("lambda id : " + id);
+
+        }, String.class);
 
         // 해당 url이 해결 되야한다
         // 일치하는 값을 최우선으로 탐색한다

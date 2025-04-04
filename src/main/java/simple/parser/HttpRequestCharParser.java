@@ -62,7 +62,7 @@ public class HttpRequestCharParser implements IHttpRequestParser {
         return HttpRequest.builder()
                 .method(charHttpRequestBuilder.getMethod())
                 .url(charHttpRequestBuilder.getUrl())
-                .param(new HashMap<>())
+                .params(new HashMap<>())
                 .protocol(charHttpRequestBuilder.getProtocol())
                 .queryString(charHttpRequestBuilder.getQueryString())
                 .header(charHttpRequestBuilder.getHeader())
