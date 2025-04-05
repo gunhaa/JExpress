@@ -4,22 +4,22 @@ import simple.constant.CustomHttpMethod;
 import simple.httpRequest.HttpRequest;
 import simple.httpResponse.ILambdaHandlerWrapper;
 import simple.httpResponse.LambdaHandlerWrapper;
-import simple.url.UrlRouterTrie;
+import simple.url.GetUrlRouterTrie;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class GetIMapper implements IMapper {
+public class GetMapper implements IMapper {
 
-    private static final IMapper GET_I_MAPPER = new GetIMapper();
+    private static final IMapper GET_I_MAPPER = new GetMapper();
     private final HashMap<String, LambdaHandlerWrapper> getMap;
-    private final UrlRouterTrie urlRouterTrie;
+    private final GetUrlRouterTrie getUrlRouterTrie;
     private final CustomHttpMethod customHttpMethod;
 
-    private GetIMapper() {
+    private GetMapper() {
         this.customHttpMethod = CustomHttpMethod.GET;
         this.getMap = new HashMap<>();
-        this.urlRouterTrie = UrlRouterTrie.getInstance();
+        this.getUrlRouterTrie = GetUrlRouterTrie.getInstance();
     }
 
     public static IMapper getInstance(){
@@ -29,14 +29,14 @@ public class GetIMapper implements IMapper {
     @Override
     public void addUrl(String url, ILambdaHandlerWrapper responseSuccessHandler) {
         LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler);
-        urlRouterTrie.insert(url, lambdaHandlerWrapper);
+        getUrlRouterTrie.insert(url, lambdaHandlerWrapper);
         getMap.put(url, lambdaHandlerWrapper);
     }
 
     @Override
     public void addUrl(String url, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz) {
         LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler, clazz);
-        urlRouterTrie.insert(url, lambdaHandlerWrapper);
+        getUrlRouterTrie.insert(url, lambdaHandlerWrapper);
         getMap.put(url, lambdaHandlerWrapper);
     }
 
@@ -47,7 +47,7 @@ public class GetIMapper implements IMapper {
 
     @Override
     public ILambdaHandlerWrapper getLambdaHandler(HttpRequest httpRequest) {
-        LambdaHandlerWrapper wrapper = urlRouterTrie.getLambdaHandlerOrNull(httpRequest);
+        LambdaHandlerWrapper wrapper = getUrlRouterTrie.getLambdaHandlerOrNull(httpRequest);
         return (wrapper != null) ? wrapper.unwrap() : null;
     }
 

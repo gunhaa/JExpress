@@ -19,4 +19,6 @@ public interface IServer {
     void get(String URL, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz);
 
     void post(String URL, ILambdaHandlerWrapper responseSuccessHandler);
+
+    void post(String URL, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz);
 }

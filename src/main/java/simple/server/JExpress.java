@@ -5,7 +5,7 @@ import simple.config.ApplicationConfig;
 import simple.httpRequest.HttpRequest;
 import simple.logger.RequestLogger;
 import simple.logger.ILogger;
-import simple.mapper.GetIMapper;
+import simple.mapper.GetMapper;
 import simple.mapper.IMapper;
 import simple.middleware.Cors;
 import simple.parser.IHttpRequestParser;
@@ -23,7 +23,8 @@ import java.net.Socket;
 
 public class JExpress implements IServer {
 
-    private final IMapper getMap = GetIMapper.getInstance();
+    private final IMapper getMap = GetMapper.getInstance();
+//    private final IMapper postMap;
     private final ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
     private final Cors cors = Cors.getInstance();
     private final int threadPool;
@@ -64,6 +65,11 @@ public class JExpress implements IServer {
     @Override
     public void post(String URL, ILambdaHandlerWrapper responseSuccessHandler) {
 //        getMap.put(URL, new Response(responseSuccess, responseError));
+    }
+
+    @Override
+    public void post(String URL, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz){
+
     }
 
 

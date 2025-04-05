@@ -5,15 +5,15 @@ import simple.httpResponse.LambdaHandlerWrapper;
 
 import java.util.Arrays;
 
-public class UrlRouterTrie implements ITrie{
+public class GetUrlRouterTrie implements ITrie{
 
     private static final UrlRouterNode root = new UrlRouterNode("/", false);
-    private static final UrlRouterTrie INSTANCE = new UrlRouterTrie();
+    private static final GetUrlRouterTrie INSTANCE = new GetUrlRouterTrie();
 
-    private UrlRouterTrie() {
+    private GetUrlRouterTrie() {
     }
 
-    public static UrlRouterTrie getInstance(){
+    public static GetUrlRouterTrie getInstance(){
         return INSTANCE;
     }
 
@@ -60,7 +60,6 @@ public class UrlRouterTrie implements ITrie{
 
         for(UrlRouterNode child : node.getChild().values()){
             if(child.isDynamic()){
-                // need more test
                 String key = child.getPath().replace(":", "");
                 String value = httpRequest.getUrl().split("/")[depth+1];
                 httpRequest.setParams(key , value);

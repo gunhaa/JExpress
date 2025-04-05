@@ -107,6 +107,10 @@ public class Main {
 
         }, MemberTestDTO3.class);
 
+        app.post("/member", (req, res)-> {
+
+        });
+
         app.run(8020);
     }
 }
