@@ -33,8 +33,6 @@ public class ApiDocs implements IMiddleWare {
         IMapper getMap = GetIMapper.getInstance();
 
         ApiDocsDto apiDocsDto = new ApiDocsDto();
-//            apiDocsDto.createProxy(getHandlers);
-//        apiDocsDto.createApiDocsByteCode(getMap);
         apiDocsDto.createApiDocs(getMap);
         List<ApiDetails> apiList = apiDocsDto.getApiList();
 

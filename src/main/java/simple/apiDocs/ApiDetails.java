@@ -1,10 +1,12 @@
 package simple.apiDocs;
 
+import lombok.Getter;
 import simple.constant.CustomHttpMethod;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class ApiDetails {
 
     private final CustomHttpMethod customHttpMethod;

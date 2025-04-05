@@ -82,7 +82,7 @@ public class H2Connection implements IDBConnection {
             member2.setTeam(team1);
             member3.setTeam(team1);
             member4.setTeam(team2);
-            member5.setTeam(team2);
+            member5.setTeam(team1);
 
             tx.commit();
         }

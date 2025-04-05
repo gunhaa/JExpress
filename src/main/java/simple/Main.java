@@ -9,7 +9,6 @@ import simple.tempEntity.MemberDTO1;
 import simple.tempEntity.MemberDTO2;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static simple.constant.ApplicationSettingFlags.*;
@@ -74,16 +73,16 @@ public class Main {
 //            res.send(List, List.class);
         }, List.class);
 
-        // curl -i -X GET "localhost:8020/member/team/1/1"
+        // curl -i -X GET "localhost:8020/member/team/gunha/1"
         // success
-        app.get("/member/team/:memberId/:teamId", (req, res) -> {
+        app.get("/member/team/:memberName/:teamId", (req, res) -> {
 
             StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberDTO2(m.name, m.engName, m.team) FROM Member m join m.team t");
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
 
-            String memberId = req.getParam("memberId");
-            System.out.println("lambda memberId : " + memberId);
-            JExpressCondition condition1 = new JExpressCondition("m.id", memberId);
+            String memberName = req.getParam("memberName");
+            System.out.println("lambda memberId : " + memberName);
+            JExpressCondition condition1 = new JExpressCondition("m.name", memberName);
 
             String teamId = req.getParam("teamId");
             System.out.println("lambda teamId : " + teamId);
@@ -94,15 +93,6 @@ public class Main {
             res.send(result);
 
         }, MemberDTO2.class);
-
-
-        // 해당 url이 해결 되야한다
-        // 일치하는 값을 최우선으로 탐색한다
-//        app.get("/member/:memberId/team/:teamId", (req, res) -> {
-//            Long id = req.getParams.memberId();
-//            Long id = req.getParams.teamId();
-//            res.send(id);
-//        });
 
         app.run(8020);
     }
