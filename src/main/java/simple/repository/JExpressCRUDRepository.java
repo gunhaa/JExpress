@@ -31,8 +31,8 @@ public class JExpressCRUDRepository implements IJExpressRepository {
 
     @Override
     public <T> List<T> findAll(Class<T> clazz) {
-        IDBConnection db = selectDb();
-        EntityManager em = db.getEntityManager();
+        EntityManager em = getEntityManager();
+
         String clazzName = clazz.getName();
 
         StringBuilder jpql = new StringBuilder("SELECT m FROM "+ clazzName +" m");
@@ -48,8 +48,8 @@ public class JExpressCRUDRepository implements IJExpressRepository {
      */
     @Deprecated
     public <T> T findEntity(Class<T> clazz, JExpressCondition... conditions){
-        IDBConnection db = selectDb();
-        EntityManager em = db.getEntityManager();
+        EntityManager em = getEntityManager();
+
         String clazzName = clazz.getName();
         StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberDTO1(m.name, m.engName, m.team, m.age) FROM Member m WHERE 1=1");
 
@@ -87,8 +87,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
     }
 
     public <T> List<T> findListWithNativeQuery(Class<T> clazz, String query){
-        IDBConnection db = selectDb();
-        EntityManager em = db.getEntityManager();
+        EntityManager em = getEntityManager();
 
         try {
             List resultList = em.createNativeQuery(query, clazz)
@@ -100,27 +99,31 @@ public class JExpressCRUDRepository implements IJExpressRepository {
     }
 
     public <T> List<T> findListWithJpql(StringBuilder jpqlQuery, Class<T> mappingClazz, JExpressCondition... conditions){
+        EntityManager em = getEntityManager();
 
+        if(conditions.length!=0){
+
+        }
 
 
         return null;
     }
 
 
-    private IDBConnection selectDb() {
+    private EntityManager getEntityManager() {
         IDBConnection db;
 
         if(ServerSettingChecker.isServerEnabled(DB_MYSQL)){
             db = IDBConnection.getMySQLConnectionInstance();
-            return db;
+            return db.getEntityManager();
         }
 
         if(ServerSettingChecker.isServerEnabled(DB_H2)){
             db = IDBConnection.getH2ConnectionInstance();
-            return db;
+            return db.getEntityManager();
         }
 
         // default used h2 db
-        return IDBConnection.getH2ConnectionInstance();
+        return IDBConnection.getH2ConnectionInstance().getEntityManager();
     }
 }
