@@ -89,10 +89,15 @@ public class Main {
 //            res.send(List, List.class);
         }, List.class);
 
-        app.get("/member/team/:id", (req, res) -> {
+        // curl -i -X GET "localhost:8020/member/team/3/21"
+        // success
+        app.get("/member/team/:id/:ex", (req, res) -> {
 
             String id = req.getParam("id");
             System.out.println("lambda id : " + id);
+
+            String ex = req.getParam("ex");
+            System.out.println("lambda ex : " + ex);
 
         }, String.class);
 

@@ -83,7 +83,6 @@ public class CharHttpRequestBuilder {
             try {
                 this.contentLength = Integer.parseInt(contentLength);
             } catch (NumberFormatException e) {
-                // error Logic
                 System.err.println("Invalid Content-Length Error");
                 errorQueue.add(new simple.httpRequest.ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid Content-Length Error"));
             }
