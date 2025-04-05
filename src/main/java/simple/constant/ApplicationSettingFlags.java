@@ -1,6 +1,6 @@
 package simple.constant;
 
-public enum ApplicationSetting {
+public enum ApplicationSettingFlags {
     API_DOCS(1),
     RESPONSE_TIME(1 << 1),
     GET_CACHE(1 << 2),
@@ -11,7 +11,7 @@ public enum ApplicationSetting {
 
     private final int bitMask;
 
-    ApplicationSetting(int bitMask) {
+    ApplicationSettingFlags(int bitMask) {
         this.bitMask = bitMask;
     }
 

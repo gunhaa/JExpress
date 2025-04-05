@@ -1,6 +1,6 @@
 package simple.config;
 
-import simple.constant.ApplicationSetting;
+import simple.constant.ApplicationSettingFlags;
 import simple.middleware.Cors;
 
 public class ApplicationConfig {
@@ -20,11 +20,11 @@ public class ApplicationConfig {
         return applicationConfig;
     }
 
-    public void registerConfig(ApplicationSetting applicationSetting) {
-        applicationConfig |= applicationSetting.getBit();
-        if(applicationSetting.isCors()) {
+    public void registerConfig(ApplicationSettingFlags applicationSettingFlags) {
+        applicationConfig |= applicationSettingFlags.getBit();
+        if(applicationSettingFlags.isCors()) {
             Cors cors = Cors.getInstance();
-            cors.registerCorsValue(applicationSetting, "*");
+            cors.registerCorsValue(applicationSettingFlags, "*");
         }
     }
 }

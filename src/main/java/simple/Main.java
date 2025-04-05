@@ -1,18 +1,18 @@
 package simple;
 
 import simple.repository.JExpressCRUDRepository;
-import simple.repository.JExpressQueryString;
+import simple.repository.JExpressCondition;
 import simple.server.IServer;
 import simple.server.JExpress;
 import simple.tempEntity.Member;
 import simple.tempEntity.MemberDTO1;
-import simple.tempEntity.MemberDTO3;
+import simple.tempEntity.MemberDTO2;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static simple.constant.ApplicationSetting.*;
+import static simple.constant.ApplicationSettingFlags.*;
 
 public class Main {
     public static void main(String[] args) throws IOException{
@@ -29,39 +29,24 @@ public class Main {
 //        app.use(GET_CACHE);
 
 
-        // todo 순환 참조 문제 있음
-        // test url = localhost:8020/member/name?age=40
-        app.get("/member/name", (req, res)-> {
-            String key1 = "age";
-            String value1 = req.getQueryString(key1);
-            JExpressQueryString jqs1 = new JExpressQueryString(key1, value1);
-
-            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-            Member findMember = jcr.findEntity(Member.class, jqs1);
-
-            res.send(findMember.getName());
-//            res.send(findMember.getName(), String.class);
-        }, String.class);
-
-        // todo 순환 참조 문제 있음
         // test url = localhost:8020/member?name=gunha&age=50
         app.get("/member" , (req, res) -> {
+            // 반드시 파라미터가 두개 다 있어야하는 문제가 있다
             String key1 = "name";
             String value1 = req.getQueryString(key1);
-            JExpressQueryString jqs1 = new JExpressQueryString(key1, value1);
+            JExpressCondition jqs1 = new JExpressCondition(key1, value1);
 
             String key2 = "age";
             String value2 = req.getQueryString(key2);
-            JExpressQueryString jqs2 = new JExpressQueryString(key2, value2);
+            JExpressCondition jqs2 = new JExpressCondition(key2, value2);
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
             MemberDTO1 findMember = jcr.findEntity(MemberDTO1.class, jqs1, jqs2);
 
             res.send(findMember);
 //            res.send(findMember, Member.class);
-        }, Member.class);
+        }, MemberDTO1.class);
 
-        // todo 순환 참조 문제 있음
         // test url = localhost:8020/members
         app.get("/members", (req, res) -> {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
@@ -69,7 +54,7 @@ public class Main {
 
             res.send(List);
 //            res.send(List, List.class);
-        }, ArrayList.class);
+        }, List.class);
 
         // test url = localhost:8020/member/team?teamName=일팀
         app.get("/member/team", (req, res) -> {
@@ -83,7 +68,7 @@ public class Main {
             query.append(key1).append("=").append("'").append(value1).append("'");
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
 
-            List<MemberDTO3> List = jcr.findListWithNativeQuery(MemberDTO3.class, query.toString());
+            List<MemberDTO2> List = jcr.findListWithNativeQuery(MemberDTO2.class, query.toString());
 
             res.send(List);
 //            res.send(List, List.class);
@@ -91,23 +76,24 @@ public class Main {
 
         // curl -i -X GET "localhost:8020/member/team/3/21"
         // success
-        app.get("/member/team/:id/:ex", (req, res) -> {
+        app.get("/member/team/:memberId/:teamId", (req, res) -> {
 
-            String id = req.getParam("id");
-            System.out.println("lambda id : " + id);
+            String memberId = req.getParam("memberId");
+            System.out.println("lambda memberId : " + memberId);
+            JExpressCondition condition1 = new JExpressCondition("memberId", memberId);
 
-            String ex = req.getParam("ex");
-            System.out.println("lambda ex : " + ex);
+            String teamId = req.getParam("teamId");
+            System.out.println("lambda teamId : " + teamId);
+            JExpressCondition condition2 = new JExpressCondition("teamId", teamId);
 
-        }, String.class);
+            StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberDTO2(m.name, m.engName, m.team) FROM Member m fetch join m.team t");
+            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
 
-        app.get("/member/team/mock", (req, res) -> {
+            List<MemberDTO2> result = jcr.findListWithJpql(jpql, MemberDTO2.class, condition1, condition2);
 
-            String id = req.getParam("id");
-            // isnull
-            System.out.println("lambda id : " + id);
 
-        }, String.class);
+        }, List.class);
+
 
         // 해당 url이 해결 되야한다
         // 일치하는 값을 최우선으로 탐색한다

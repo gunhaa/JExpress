@@ -1,5 +1,8 @@
 package simple.tempEntity;
 
+import lombok.Getter;
+
+@Getter
 public class MemberDTO1 {
     private String name;
     private String engName;

@@ -3,7 +3,7 @@ package simple.logger;
 
 import simple.constant.ServerSettingChecker;
 
-import static simple.constant.ApplicationSetting.RESPONSE_TIME;
+import static simple.constant.ApplicationSettingFlags.RESPONSE_TIME;
 
 public class RequestLogger implements ILogger {
 

@@ -1,12 +1,12 @@
 package simple.middleware;
 
-import simple.constant.ApplicationSetting;
+import simple.constant.ApplicationSettingFlags;
 import simple.constant.ServerSettingChecker;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static simple.constant.ApplicationSetting.CORS;
+import static simple.constant.ApplicationSettingFlags.CORS;
 
 public class Cors implements IMiddleWare {
 
@@ -31,9 +31,9 @@ public class Cors implements IMiddleWare {
         return INSTANCE;
     }
 
-    public void registerCorsValue(ApplicationSetting applicationSetting, String option){
-        if(ServerSettingChecker.isServerEnabled(applicationSetting)){
-            corsMap.put(applicationSetting.getBit(), option);
+    public void registerCorsValue(ApplicationSettingFlags applicationSettingFlags, String option){
+        if(ServerSettingChecker.isServerEnabled(applicationSettingFlags)){
+            corsMap.put(applicationSettingFlags.getBit(), option);
         } else {
             System.err.println("cors 관련 오류 발생");
         }

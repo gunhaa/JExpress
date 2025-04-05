@@ -1,6 +1,6 @@
 package simple.middleware;
 
-import simple.constant.ApplicationSetting;
+import simple.constant.ApplicationSettingFlags;
 
 public class MiddlewareProvider {
 
@@ -23,14 +23,14 @@ public class MiddlewareProvider {
         return INSTANCE;
     }
 
-    public void execute(ApplicationSetting applicationSetting){
-        IMiddleWare IMiddleWare = getMiddleware(applicationSetting);
+    public void execute(ApplicationSettingFlags applicationSettingFlags){
+        IMiddleWare IMiddleWare = getMiddleware(applicationSettingFlags);
         IMiddleWare.run();
     }
 
-    private IMiddleWare getMiddleware(ApplicationSetting applicationSetting){
+    private IMiddleWare getMiddleware(ApplicationSettingFlags applicationSettingFlags){
         IMiddleWare IMiddleWare = null;
-        switch (applicationSetting){
+        switch (applicationSettingFlags){
             case API_DOCS -> IMiddleWare = ApiDocs.getInstance();
             case CORS -> IMiddleWare = Cors.getInstance();
             case RESPONSE_TIME -> IMiddleWare = ResponseTime.getInstance();

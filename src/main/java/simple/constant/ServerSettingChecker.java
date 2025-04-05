@@ -15,9 +15,9 @@ public class ServerSettingChecker {
         return INSTANCE;
     }
 
-    public static boolean isServerEnabled(ApplicationSetting applicationSetting){
+    public static boolean isServerEnabled(ApplicationSettingFlags applicationSettingFlags){
         int config = applicationConfig.getConfig();
-        return applicationSetting.isSettingEnabled(config);
+        return applicationSettingFlags.isSettingEnabled(config);
     }
 
 }

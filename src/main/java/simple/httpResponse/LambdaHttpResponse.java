@@ -9,7 +9,7 @@ import simple.httpRequest.LambdaHttpRequest;
 
 import java.io.*;
 
-import static simple.constant.ApplicationSetting.*;
+import static simple.constant.ApplicationSettingFlags.*;
 
 public class LambdaHttpResponse {
 

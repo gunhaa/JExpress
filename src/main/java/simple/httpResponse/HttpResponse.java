@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-import static simple.constant.ApplicationSetting.CORS;
+import static simple.constant.ApplicationSettingFlags.CORS;
 
 public class HttpResponse {
 

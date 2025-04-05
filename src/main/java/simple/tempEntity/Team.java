@@ -1,5 +1,6 @@
 package simple.tempEntity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,5 +26,6 @@ public class Team {
     }
 
     @OneToMany(mappedBy = "team")
+    @JsonIgnore
     private List<Member> memberList = new ArrayList<>();
 }
