@@ -1,12 +1,12 @@
 package simple.httpRequest;
 
-import com.google.gson.internal.LinkedTreeMap;
 import lombok.Builder;
 import lombok.Getter;
 import simple.constant.CustomHttpMethod;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 @Builder
@@ -18,7 +18,7 @@ public class HttpRequest {
     private final HashMap<String, String> queryString;
     private HashMap<String, String> params;
     private final HashMap<String, String> header;
-    private final LinkedTreeMap<String, Object> bodyMap;
+    private final Map<String, Object> bodyMap;
     private final Queue<ErrorStatus> errorQueue;
 
     public void setParams(String key, String value){
@@ -32,7 +32,7 @@ public class HttpRequest {
                 .protocol("protocol")
                 .queryString(new HashMap<>())
                 .header(new HashMap<>())
-                .bodyMap(new LinkedTreeMap<>())
+                .bodyMap(new HashMap<>())
                 .errorQueue(new LinkedList<>())
                 .build();
     }

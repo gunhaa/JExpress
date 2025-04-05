@@ -1,16 +1,12 @@
 package simple.httpRequest;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.internal.LinkedTreeMap;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 import simple.constant.CustomHttpMethod;
 import simple.constant.HttpStatus;
 
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -23,7 +19,7 @@ public class CharHttpRequestBuilder {
     private final HashMap<String, String> queryString = new HashMap<>();
     private final HashMap<String, String> header = new HashMap<>();
     private StringBuilder body = new StringBuilder();
-    private LinkedTreeMap<String, Object> bodyMap = new LinkedTreeMap<>();
+    private Map<String, Object> bodyMap = new HashMap<>();
     private boolean requestLineParsed;
     private boolean parsingHeaders;
     private boolean parsingBody;
@@ -105,24 +101,35 @@ public class CharHttpRequestBuilder {
         this.body.append(c);
     }
 
+//    public void parsingJsonToMap(StringBuilder json) {
+//        Gson gson = new Gson();
+//        Type type = new TypeToken<Map<String, Object>>() {
+//        }.getType();
+//        if (isValidJson(json)) {
+//            this.bodyMap = gson.fromJson(json.toString(), type);
+//        } else {
+//            System.err.println("Invalid json body Error");
+//            errorQueue.add(new ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid json body Error"));
+//        }
+//    }
+//
+//    private boolean isValidJson(StringBuilder json) {
+//        try {
+//            JsonParser.parseString(json.toString());
+//            return true;
+//        } catch (JsonSyntaxException e) {
+//            return false;
+//        }
+//    }
+
     public void parsingJsonToMap(StringBuilder json) {
-        Gson gson = new Gson();
-        Type type = new TypeToken<Map<String, Object>>() {
-        }.getType();
-        if (isValidJson(json)) {
-            this.bodyMap = gson.fromJson(json.toString(), type);
-        } else {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            System.out.println("json :: " + json);
+            this.bodyMap = objectMapper.readValue(json.toString(), new TypeReference<Map<String, Object>>() {});
+        } catch (Exception e) {
             System.err.println("Invalid json body Error");
             errorQueue.add(new ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid json body Error"));
-        }
-    }
-
-    private boolean isValidJson(StringBuilder json) {
-        try {
-            JsonParser.parseString(json.toString());
-            return true;
-        } catch (JsonSyntaxException e) {
-            return false;
         }
     }
 }
