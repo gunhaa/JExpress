@@ -1,13 +1,11 @@
 package simple.httpRequest;
 
-import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 import simple.constant.CustomHttpMethod;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +18,7 @@ public class SimpleLineHttpRequestDTO {
     private final HashMap<String, String> queryString = new HashMap<>();
     private final HashMap<String, String> header = new HashMap<>();
     private StringBuilder body = new StringBuilder();
-    private LinkedTreeMap<String, Object> bodyMap = new LinkedTreeMap<>();
+    private Map<String, Object> bodyMap = new HashMap<>();
     private int contentLength;
     private boolean requestLineParsed;
     private boolean parsingHeaders;
@@ -88,9 +86,15 @@ public class SimpleLineHttpRequestDTO {
 
     public void parsingJsonToMap(StringBuilder json) {
         if(!json.toString().isEmpty()){
-            Gson gson = new Gson();
-            Type type = new TypeToken<Map<String, Object>>() {}.getType();
-            this.bodyMap = gson.fromJson(json.toString(), type);
+//            Gson gson = new Gson();
+//            Type type = new TypeToken<Map<String, Object>>() {}.getType();
+//            this.bodyMap = gson.fromJson(json.toString(), type);
+            ObjectMapper objectMapper = new ObjectMapper();
+            try{
+                this.bodyMap = objectMapper.readValue(json.toString(), new TypeReference<Map<String, Object>>() {});
+            }catch(Exception e){
+                System.err.println("Invalid json body Error");
+            }
         }
     }
 }

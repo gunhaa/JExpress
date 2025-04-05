@@ -1,6 +1,7 @@
 package simple.httpResponse;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import simple.constant.CustomHttpMethod;
 import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
@@ -17,8 +18,8 @@ public class ResponseBuilder {
     private final StringBuilder sb = new StringBuilder();
     private final HttpRequest httpRequest;
     private final ErrorStatus errorStatus;
-    private final Gson gson = new Gson();
-    private final String entityJson;
+    private final ObjectMapper objectMapper = new ObjectMapper();;
+    private String entityJson;
     private String entity;
 
 
@@ -38,7 +39,11 @@ public class ResponseBuilder {
 
     public ResponseBuilder(HttpRequest httpRequest, Object entity) {
         this.httpRequest = httpRequest;
-        this.entityJson = gson.toJson(entity);
+        try {
+            this.entityJson = objectMapper.writeValueAsString(entity);
+        }catch(JsonProcessingException e){
+            System.err.println("json parsing error : " + e);
+        }
         if (entity instanceof ErrorStatus) {
             this.errorStatus = (ErrorStatus) entity;
         } else {
@@ -99,7 +104,12 @@ public class ResponseBuilder {
     }
 
     public ResponseBuilder contentStaticLength(){
-        this.entity = gson.fromJson(this.entityJson, String.class);
+//        this.entity = gson.fromJson(this.entityJson, String.class);
+        try{
+            this.entity = objectMapper.readValue(this.entityJson, String.class);
+        }catch (JsonProcessingException e){
+            System.err.println("json parsing error : " + e);
+        }
         sb.append(FIELD_CONTENT_LENGTH).append(this.entity.getBytes(StandardCharsets.UTF_8).length).append(CRLF);
         return this;
     }
@@ -120,14 +130,26 @@ public class ResponseBuilder {
             sb.append(entityJson);
             return this;
         } else {
-            sb.append(gson.toJson(errorStatus));
+//            sb.append(gson.toJson(errorStatus));
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                sb.append(objectMapper.writeValueAsString(errorStatus));
+            } catch (JsonProcessingException e) {
+                System.err.println("json parsing error : " + e);
+            }
             return this;
         }
 
     }
 
     public ResponseBuilder exceptErrorBody(HttpStatus error){
-        sb.append(gson.toJson(error));
+//        sb.append(gson.toJson(error));
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            sb.append(objectMapper.writeValueAsString(error));
+        } catch (JsonProcessingException e) {
+            System.err.println("json parsing error : " + e);
+        }
         return this;
     }
 
@@ -178,9 +200,5 @@ public class ResponseBuilder {
                 .crlf()
                 .exceptErrorBody(error);
         return sb;
-    }
-
-    public void printTestSb(){
-        System.out.println("this sb : " + this.sb);
     }
 }

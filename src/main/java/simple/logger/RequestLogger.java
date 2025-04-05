@@ -29,8 +29,7 @@ public class RequestLogger implements ILogger {
 
     @Override
     public void print() {
-        System.out.println("===============log===============");
-        System.out.println();
+        System.out.println("=============Request log===============");
         System.out.println(log);
         if(startTime != null){
             Long responseTime = System.currentTimeMillis();

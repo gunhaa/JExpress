@@ -35,8 +35,11 @@ public class UrlRouterTrie implements ITrie{
 
     public LambdaHandlerWrapper getLambdaHandlerOrNull(HttpRequest httpRequest){
 
-        String realPath = httpRequest.getUrl().split("\\?")[0];
+        if(httpRequest.getUrl()==null){
+            return null;
+        }
 
+        String realPath = httpRequest.getUrl().split("\\?")[0];
 
         String[] parts = Arrays.stream(realPath.split("/"))
                 .filter(s -> !s.isEmpty())
