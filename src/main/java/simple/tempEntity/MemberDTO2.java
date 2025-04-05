@@ -5,14 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberDTO3 {
+public class MemberDTO2 {
     private String name;
     private String engName;
-    private String teamName;
+    private Team Team;
 
-    public MemberDTO3(String name, String engName, String teamName) {
+    public MemberDTO2(String name, String engName, Team team) {
         this.name = name;
         this.engName = engName;
-        this.teamName = teamName;
+        this.Team = team;
     }
 }

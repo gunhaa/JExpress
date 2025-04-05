@@ -2,7 +2,7 @@ package simple.context;
 
 
 import simple.config.ApplicationConfig;
-import simple.constant.ApplicationSetting;
+import simple.constant.ApplicationSettingFlags;
 import simple.middleware.MiddlewareProvider;
 
 public class ApplicationContext {
@@ -21,7 +21,7 @@ public class ApplicationContext {
 
         int config = ApplicationConfig.getInstance().getConfig();
 
-        for (ApplicationSetting setting : ApplicationSetting.values()) {
+        for (ApplicationSettingFlags setting : ApplicationSettingFlags.values()) {
             if ((config & setting.getBit()) == setting.getBit()) {
                 middlewareProvider.execute(setting);
             }

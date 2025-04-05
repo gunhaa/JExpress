@@ -1,7 +1,7 @@
 package simple.server;
 
 
-import simple.constant.ApplicationSetting;
+import simple.constant.ApplicationSettingFlags;
 import simple.httpResponse.ILambdaHandlerWrapper;
 
 import java.io.IOException;
@@ -10,9 +10,9 @@ public interface IServer {
 
     void run(int port) throws IOException;
 
-    void use(ApplicationSetting applicationSetting);
+    void use(ApplicationSettingFlags applicationSettingFlags);
 
-    void use(ApplicationSetting applicationSetting, String option);
+    void use(ApplicationSettingFlags applicationSettingFlags, String option);
 
     void get(String URL, ILambdaHandlerWrapper responseSuccessHandler);
 

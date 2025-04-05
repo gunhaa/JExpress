@@ -1,6 +1,6 @@
 package simple.server;
 
-import simple.constant.ApplicationSetting;
+import simple.constant.ApplicationSettingFlags;
 import simple.config.ApplicationConfig;
 import simple.httpRequest.HttpRequest;
 import simple.logger.RequestLogger;
@@ -41,14 +41,14 @@ public class JExpress implements IServer {
     }
 
     @Override
-    public void use(ApplicationSetting applicationSetting){
-        applicationConfig.registerConfig(applicationSetting);
+    public void use(ApplicationSettingFlags applicationSettingFlags){
+        applicationConfig.registerConfig(applicationSettingFlags);
     }
 
     @Override
-    public void use(ApplicationSetting applicationSetting, String option){
-        applicationConfig.registerConfig(applicationSetting);
-        cors.registerCorsValue(applicationSetting, option);
+    public void use(ApplicationSettingFlags applicationSettingFlags, String option){
+        applicationConfig.registerConfig(applicationSettingFlags);
+        cors.registerCorsValue(applicationSettingFlags, option);
     }
 
     @Override

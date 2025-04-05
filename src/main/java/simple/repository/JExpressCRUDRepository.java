@@ -9,8 +9,8 @@ import simple.database.IDBConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import static simple.constant.ApplicationSetting.DB_H2;
-import static simple.constant.ApplicationSetting.DB_MYSQL;
+import static simple.constant.ApplicationSettingFlags.DB_H2;
+import static simple.constant.ApplicationSettingFlags.DB_MYSQL;
 
 public class JExpressCRUDRepository implements IJExpressRepository {
 
@@ -46,11 +46,12 @@ public class JExpressCRUDRepository implements IJExpressRepository {
      * JExpressQueryString이 전달되지 않으면 entity의 첫 결과를 반환하며, 결과가 여러개라면 첫 번째 결과를 반환함
      * 연관 객체가 있을 시 순환 참조 문제 있음
      */
-    public <T> T findEntity(Class<T> clazz, JExpressQueryString... conditions){
+    @Deprecated
+    public <T> T findEntity(Class<T> clazz, JExpressCondition... conditions){
         IDBConnection db = selectDb();
         EntityManager em = db.getEntityManager();
         String clazzName = clazz.getName();
-        StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberDTO1(m.name, m.engName, m.team, m.age) FROM "+ clazzName +" m  WHERE 1=1");
+        StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberDTO1(m.name, m.engName, m.team, m.age) FROM Member m WHERE 1=1");
 
         TypedQuery<T> query = em.createQuery(jpql.toString(), clazz);
 
@@ -61,15 +62,15 @@ public class JExpressCRUDRepository implements IJExpressRepository {
             return resultList.get(0);
         } else {
 
-            for (JExpressQueryString condition : conditions) {
-                String key = condition.getKey();
+            for (JExpressCondition condition : conditions) {
+                String key = condition.getColumnName();
                 jpql.append(" AND m.").append(key).append("=:").append(key);
             }
 
             query = em.createQuery(jpql.toString(), clazz);
 
-            for (JExpressQueryString condition : conditions) {
-                String key = condition.getKey();
+            for (JExpressCondition condition : conditions) {
+                String key = condition.getColumnName();
                 String value = condition.getValue();
                 query.setParameter(key, value);
             }
@@ -85,10 +86,6 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         }
     }
 
-    /**
-     * 파라미터
-     * 반환형
-     */
     public <T> List<T> findListWithNativeQuery(Class<T> clazz, String query){
         IDBConnection db = selectDb();
         EntityManager em = db.getEntityManager();
@@ -101,6 +98,14 @@ public class JExpressCRUDRepository implements IJExpressRepository {
             return new ArrayList<>();
         }
     }
+
+    public <T> List<T> findListWithJpql(StringBuilder jpqlQuery, Class<T> mappingClazz, JExpressCondition... conditions){
+
+
+
+        return null;
+    }
+
 
     private IDBConnection selectDb() {
         IDBConnection db;

@@ -8,7 +8,7 @@ import simple.requestHandler.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static simple.constant.ApplicationSetting.*;
+import static simple.constant.ApplicationSettingFlags.*;
 
 
 public class RequestHandlerProvider {
