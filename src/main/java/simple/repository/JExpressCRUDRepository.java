@@ -51,12 +51,12 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         EntityManager em = getEntityManager();
 
         String clazzName = clazz.getName();
-        StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberDTO1(m.name, m.engName, m.team, m.age) FROM Member m WHERE 1=1");
+        StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberTestDTO1(m.name, m.engName, m.team, m.age) FROM Member m WHERE 1=1");
 
         TypedQuery<T> query = em.createQuery(jpql.toString(), clazz);
 
         // todo : refactoring
-        if(conditions == null){
+        if(conditions.length == 0){
             List<T> resultList = query
                     .getResultList();
             return resultList.get(0);
@@ -98,7 +98,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         }
     }
 
-    public <T> List<T> findListWithJpql(StringBuilder jpqlQuery, Class<T> mappingClazz, JExpressCondition... conditions){
+    public <T> List<T> executeJpql(StringBuilder jpqlQuery, Class<T> mappingClazz, JExpressCondition... conditions){
         EntityManager em = getEntityManager();
 
         String jpqlLower = jpqlQuery.toString().toLowerCase();
