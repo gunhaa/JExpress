@@ -101,12 +101,37 @@ public class JExpressCRUDRepository implements IJExpressRepository {
     public <T> List<T> findListWithJpql(StringBuilder jpqlQuery, Class<T> mappingClazz, JExpressCondition... conditions){
         EntityManager em = getEntityManager();
 
-        if(conditions.length!=0){
+        String jpqlLower = jpqlQuery.toString().toLowerCase();
+        boolean hasWhere = jpqlLower.contains("where");
 
+        if (conditions.length != 0) {
+            for (int i = 0; i < conditions.length; i++) {
+                JExpressCondition cond = conditions[i];
+
+                if (i == 0 && !hasWhere) {
+                    jpqlQuery.append(" WHERE ");
+                } else {
+                    jpqlQuery.append(" AND ");
+                }
+
+                jpqlQuery.append(cond.getColumnName())
+                        .append("  = :")
+                        .append(paramName(cond.getColumnName(), i));
+            }
         }
 
+        TypedQuery<T> building = em.createQuery(jpqlQuery.toString(), mappingClazz);
 
-        return null;
+        for (int i = 0; i < conditions.length; i++) {
+            String param = paramName(conditions[i].getColumnName(), i);
+            building.setParameter(param, conditions[i].getValue());
+        }
+
+        return building.getResultList();
+    }
+
+    private String paramName(String columnName, int index) {
+        return columnName.replace(".", "") + "_" + index;
     }
 
 

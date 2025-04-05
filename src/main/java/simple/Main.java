@@ -74,25 +74,26 @@ public class Main {
 //            res.send(List, List.class);
         }, List.class);
 
-        // curl -i -X GET "localhost:8020/member/team/3/21"
+        // curl -i -X GET "localhost:8020/member/team/1/1"
         // success
         app.get("/member/team/:memberId/:teamId", (req, res) -> {
 
+            StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberDTO2(m.name, m.engName, m.team) FROM Member m join m.team t");
+            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+
             String memberId = req.getParam("memberId");
             System.out.println("lambda memberId : " + memberId);
-            JExpressCondition condition1 = new JExpressCondition("memberId", memberId);
+            JExpressCondition condition1 = new JExpressCondition("m.id", memberId);
 
             String teamId = req.getParam("teamId");
             System.out.println("lambda teamId : " + teamId);
-            JExpressCondition condition2 = new JExpressCondition("teamId", teamId);
-
-            StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberDTO2(m.name, m.engName, m.team) FROM Member m fetch join m.team t");
-            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            JExpressCondition condition2 = new JExpressCondition("t.id", teamId);
 
             List<MemberDTO2> result = jcr.findListWithJpql(jpql, MemberDTO2.class, condition1, condition2);
 
+            res.send(result);
 
-        }, List.class);
+        }, MemberDTO2.class);
 
 
         // 해당 url이 해결 되야한다
