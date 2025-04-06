@@ -1,11 +1,11 @@
-package simple.httpResponse;
+package simple.lambda;
 
 import simple.apiDocs.LastSentObjectHolder;
 import simple.constant.HttpStatus;
 import simple.constant.ServerSettingChecker;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.HttpRequest;
-import simple.httpRequest.LambdaHttpRequest;
+import simple.httpResponse.ResponseBuilder;
 
 import java.io.*;
 

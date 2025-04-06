@@ -1,7 +1,7 @@
 package simple.url;
 
 import simple.httpRequest.HttpRequest;
-import simple.httpResponse.LambdaHandlerWrapper;
+import simple.lambda.LambdaHandlerWrapper;
 
 import java.util.Arrays;
 

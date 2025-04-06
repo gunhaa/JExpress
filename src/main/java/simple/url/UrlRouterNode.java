@@ -1,6 +1,6 @@
 package simple.url;
 
-import simple.httpResponse.LambdaHandlerWrapper;
+import simple.lambda.LambdaHandlerWrapper;
 
 import java.util.HashMap;
 

@@ -109,6 +109,7 @@ public class Main {
 
         app.post("/member", (req, res)-> {
 
+
             class Test{
                 String msg;
                 public Test(String m){
@@ -120,6 +121,7 @@ public class Main {
                 }
             }
             res.send(new Test("test"));
+
         }, MemberTestDTO1.class);
 
         app.run(8020);

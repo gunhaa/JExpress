@@ -2,8 +2,8 @@ package simple.mapper;
 
 import simple.constant.CustomHttpMethod;
 import simple.httpRequest.HttpRequest;
-import simple.httpResponse.ILambdaHandler;
-import simple.httpResponse.LambdaHandlerWrapper;
+import simple.lambda.ILambdaHandler;
+import simple.lambda.LambdaHandlerWrapper;
 
 import java.util.Map;
 

@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import simple.httpRequest.HttpRequest;
-import simple.httpRequest.LambdaHttpRequest;
-import simple.httpResponse.ILambdaHandler;
-import simple.httpResponse.LambdaHandlerWrapper;
-import simple.httpResponse.LambdaHttpResponse;
+import simple.lambda.LambdaHttpRequest;
+import simple.lambda.ILambdaHandler;
+import simple.lambda.LambdaHandlerWrapper;
+import simple.lambda.LambdaHttpResponse;
 
 import java.util.HashMap;
 

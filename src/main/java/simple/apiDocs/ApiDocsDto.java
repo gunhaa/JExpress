@@ -3,7 +3,7 @@ package simple.apiDocs;
 import org.objectweb.asm.*;
 import simple.constant.CustomHttpMethod;
 import simple.mapper.IMapper;
-import simple.httpResponse.LambdaHandlerWrapper;
+import simple.lambda.LambdaHandlerWrapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;

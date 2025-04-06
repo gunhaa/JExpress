@@ -19,7 +19,7 @@ public class CharHttpRequestBuilder {
     private final HashMap<String, String> queryString = new HashMap<>();
     private final HashMap<String, String> header = new HashMap<>();
     private StringBuilder body = new StringBuilder();
-    private Map<String, Object> bodyMap = new HashMap<>();
+    private Map<String, String> bodyMap = new HashMap<>();
     private boolean requestLineParsed;
     private boolean parsingHeaders;
     private boolean parsingBody;
@@ -125,11 +125,7 @@ public class CharHttpRequestBuilder {
     public void parsingJsonToMap(StringBuilder json) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            System.out.println("json :: " + json);
-            this.bodyMap = objectMapper.readValue(json.toString(), new TypeReference<Map<String, Object>>() {});
-            for (String s : bodyMap.keySet()) {
-                System.out.println("map iter" + s);
-            }
+            this.bodyMap = objectMapper.readValue(json.toString(), new TypeReference<Map<String, String>>() {});
         } catch (Exception e) {
             System.err.println("Invalid json body Error");
             errorQueue.add(new ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid json body Error"));

@@ -3,7 +3,7 @@ package simple.requestHandler;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.HttpRequest;
 import simple.httpResponse.HttpResponse;
-import simple.httpResponse.ILambdaHandler;
+import simple.lambda.ILambdaHandler;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;

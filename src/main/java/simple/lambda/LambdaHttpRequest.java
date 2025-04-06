@@ -1,6 +1,8 @@
-package simple.httpRequest;
+package simple.lambda;
 
 import simple.constant.HttpStatus;
+import simple.httpRequest.ErrorStatus;
+import simple.httpRequest.HttpRequest;
 
 import java.util.HashMap;
 
@@ -35,7 +37,7 @@ public class LambdaHttpRequest {
 //        return value;
 //    }
 
-    public HttpRequest getHttpRequest() {
+    protected HttpRequest getHttpRequest() {
         return httpRequest;
     }
 }

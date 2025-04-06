@@ -1,4 +1,4 @@
-package simple.httpResponse;
+package simple.lambda;
 
 public class LambdaHandlerWrapper {
 

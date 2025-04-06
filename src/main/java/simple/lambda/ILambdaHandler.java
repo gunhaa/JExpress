@@ -1,6 +1,4 @@
-package simple.httpResponse;
-
-import simple.httpRequest.LambdaHttpRequest;
+package simple.lambda;
 
 @FunctionalInterface
 public interface ILambdaHandler {

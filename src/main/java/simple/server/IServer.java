@@ -2,7 +2,7 @@ package simple.server;
 
 
 import simple.constant.ApplicationSettingFlags;
-import simple.httpResponse.ILambdaHandler;
+import simple.lambda.ILambdaHandler;
 
 import java.io.IOException;
 

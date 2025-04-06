@@ -3,10 +3,10 @@ package simple.requestHandler;
 import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.HttpRequest;
-import simple.httpRequest.LambdaHttpRequest;
+import simple.lambda.LambdaHttpRequest;
 import simple.httpResponse.HttpResponse;
-import simple.httpResponse.ILambdaHandler;
-import simple.httpResponse.LambdaHttpResponse;
+import simple.lambda.ILambdaHandler;
+import simple.lambda.LambdaHttpResponse;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;

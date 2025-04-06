@@ -1,16 +1,13 @@
 package simple.mapper;
 
 import simple.constant.CustomHttpMethod;
-import simple.constant.ServerSettingChecker;
 import simple.httpRequest.HttpRequest;
-import simple.httpResponse.ILambdaHandler;
-import simple.httpResponse.LambdaHandlerWrapper;
+import simple.lambda.ILambdaHandler;
+import simple.lambda.LambdaHandlerWrapper;
 import simple.url.PostUrlRouterTrie;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static simple.constant.ApplicationSettingFlags.API_DOCS;
 
 public class PostMapper implements IMapper {
 

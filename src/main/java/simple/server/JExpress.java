@@ -15,7 +15,7 @@ import simple.parser.HttpRequestCharParser;
 import simple.context.ApplicationContext;
 import simple.requestHandler.IRequestHandler;
 import simple.provider.RequestHandlerProvider;
-import simple.httpResponse.ILambdaHandler;
+import simple.lambda.ILambdaHandler;
 
 import java.io.*;
 import java.net.ServerSocket;
