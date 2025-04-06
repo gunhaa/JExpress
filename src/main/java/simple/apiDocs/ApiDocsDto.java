@@ -1,5 +1,6 @@
 package simple.apiDocs;
 
+import jakarta.persistence.OneToMany;
 import org.objectweb.asm.*;
 import simple.constant.CustomHttpMethod;
 import simple.mapper.IMapper;
@@ -158,6 +159,9 @@ public class ApiDocsDto {
 //                            field.isAnnotationPresent(ManyToMany.class)) {
 //                        continue;
 //                    }
+                    if(field.isAnnotationPresent(OneToMany.class)){
+                        continue;
+                    }
                     apiDetails.addField(field.getName(), field.getType().getSimpleName());
                 }
             }

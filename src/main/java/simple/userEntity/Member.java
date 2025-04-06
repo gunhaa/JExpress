@@ -1,4 +1,4 @@
-package simple.tempEntity;
+package simple.userEntity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

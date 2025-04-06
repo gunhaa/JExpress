@@ -1,6 +1,7 @@
 package simple.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import simple.constant.ServerSettingChecker;
@@ -31,15 +32,14 @@ public class JExpressCRUDRepository implements IJExpressRepository {
 
     @Override
     public <T> List<T> findAll(Class<T> clazz) {
-        EntityManager em = getEntityManager();
+        try(EntityManager em = getEntityManager()){
+            String clazzName = clazz.getName();
 
-        String clazzName = clazz.getName();
-
-        StringBuilder jpql = new StringBuilder("SELECT m FROM "+ clazzName +" m");
-        List<T> resultList = em.createQuery(jpql.toString(), clazz)
-                .getResultList();
-
-        return resultList;
+            StringBuilder jpql = new StringBuilder("SELECT m FROM "+ clazzName +" m");
+            List<T> resultList = em.createQuery(jpql.toString(), clazz)
+                    .getResultList();
+            return resultList;
+        }
     }
 
     /**
@@ -87,53 +87,69 @@ public class JExpressCRUDRepository implements IJExpressRepository {
     }
 
     public <T> List<T> findListWithNativeQuery(Class<T> clazz, String query){
-        EntityManager em = getEntityManager();
-
-        try {
-            List resultList = em.createNativeQuery(query, clazz)
-                    .getResultList();
-            return resultList;
-        } catch (NoResultException e) {
-            return new ArrayList<>();
-        }
-    }
-
-    public <T> List<T> executeJpql(StringBuilder jpqlQuery, Class<T> mappingClazz, JExpressCondition... conditions){
-        EntityManager em = getEntityManager();
-
-        String jpqlLower = jpqlQuery.toString().toLowerCase();
-        boolean hasWhere = jpqlLower.contains("where");
-
-        if (conditions.length != 0) {
-            for (int i = 0; i < conditions.length; i++) {
-                JExpressCondition cond = conditions[i];
-
-                if (i == 0 && !hasWhere) {
-                    jpqlQuery.append(" WHERE ");
-                } else {
-                    jpqlQuery.append(" AND ");
-                }
-
-                jpqlQuery.append(cond.getColumnName())
-                        .append("  = :")
-                        .append(paramName(cond.getColumnName(), i));
+        try(EntityManager em = getEntityManager()){
+            try {
+                List resultList = em.createNativeQuery(query, clazz)
+                        .getResultList();
+                return resultList;
+            } catch (NoResultException e) {
+                return new ArrayList<>();
             }
         }
 
-        TypedQuery<T> building = em.createQuery(jpqlQuery.toString(), mappingClazz);
+    }
 
-        for (int i = 0; i < conditions.length; i++) {
-            String param = paramName(conditions[i].getColumnName(), i);
-            building.setParameter(param, conditions[i].getValue());
+    public <T> List<T> executeJpql(StringBuilder jpqlQuery, Class<T> mappingClazz, JExpressCondition... conditions){
+        try(EntityManager em = getEntityManager()){
+            String jpqlLower = jpqlQuery.toString().toLowerCase();
+            boolean hasWhere = jpqlLower.contains("where");
+
+            if (conditions.length != 0) {
+                for (int i = 0; i < conditions.length; i++) {
+                    JExpressCondition cond = conditions[i];
+
+                    if (i == 0 && !hasWhere) {
+                        jpqlQuery.append(" WHERE ");
+                    } else {
+                        jpqlQuery.append(" AND ");
+                    }
+
+                    jpqlQuery.append(cond.getColumnName())
+                            .append("  = :")
+                            .append(paramName(cond.getColumnName(), i));
+                }
+            }
+
+            TypedQuery<T> building = em.createQuery(jpqlQuery.toString(), mappingClazz);
+
+            for (int i = 0; i < conditions.length; i++) {
+                String param = paramName(conditions[i].getColumnName(), i);
+                building.setParameter(param, conditions[i].getValue());
+            }
+            return building.getResultList();
         }
+    }
 
-        return building.getResultList();
+    public <T> T registerEntity(T entity){
+        try(EntityManager em = getEntityManager()){
+            EntityTransaction tx = em.getTransaction();
+            try {
+                tx.begin();
+                em.persist(entity);
+                tx.commit();
+            } catch (RuntimeException e) {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+                throw e;
+            }
+        }
+        return entity;
     }
 
     private String paramName(String columnName, int index) {
         return columnName.replace(".", "") + "_" + index;
     }
-
 
     private EntityManager getEntityManager() {
         IDBConnection db;

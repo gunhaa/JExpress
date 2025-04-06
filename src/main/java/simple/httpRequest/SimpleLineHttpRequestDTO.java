@@ -18,7 +18,7 @@ public class SimpleLineHttpRequestDTO {
     private final HashMap<String, String> queryString = new HashMap<>();
     private final HashMap<String, String> header = new HashMap<>();
     private StringBuilder body = new StringBuilder();
-    private Map<String, Object> bodyMap = new HashMap<>();
+    private Map<String, String> bodyMap = new HashMap<>();
     private int contentLength;
     private boolean requestLineParsed;
     private boolean parsingHeaders;
@@ -91,7 +91,7 @@ public class SimpleLineHttpRequestDTO {
 //            this.bodyMap = gson.fromJson(json.toString(), type);
             ObjectMapper objectMapper = new ObjectMapper();
             try{
-                this.bodyMap = objectMapper.readValue(json.toString(), new TypeReference<Map<String, Object>>() {});
+                this.bodyMap = objectMapper.readValue(json.toString(), new TypeReference<Map<String, String>>() {});
             }catch(Exception e){
                 System.err.println("Invalid json body Error");
             }

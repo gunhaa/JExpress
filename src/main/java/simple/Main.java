@@ -4,10 +4,7 @@ import simple.repository.JExpressCRUDRepository;
 import simple.repository.JExpressCondition;
 import simple.server.IServer;
 import simple.server.JExpress;
-import simple.tempEntity.Member;
-import simple.tempEntity.MemberTestDTO1;
-import simple.tempEntity.MemberTestDTO2;
-import simple.tempEntity.MemberTestDTO3;
+import simple.userEntity.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -107,8 +104,7 @@ public class Main {
 
         }, MemberTestDTO3.class);
 
-        app.post("/member", (req, res)-> {
-
+        app.post("/test", (req, res)-> {
 
             class Test{
                 String msg;
@@ -123,6 +119,32 @@ public class Main {
             res.send(new Test("test"));
 
         }, MemberTestDTO1.class);
+
+        // member 등록
+        app.post("/member", (req, res)-> {
+            String name = req.getBody("name");
+            String ageStr = req.getBody("age");
+            String engName = req.getBody("engName");
+            int age = Integer.parseInt(ageStr);
+
+            Member member = new Member(name, age, engName);
+
+            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            Member createMember = jcr.registerEntity(member);
+
+            res.send(createMember);
+
+        }, Member.class);
+
+        // team 등록
+        app.post("/team", (req, res)-> {
+            String s = req.getBody("");
+        }, Team.class);
+
+        // member team 동시 등록
+        app.post("/member/team", (req, res)-> {
+            String s = req.getBody("");
+        }, Member.class);
 
         app.run(8020);
     }

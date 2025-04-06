@@ -1,4 +1,4 @@
-package simple.tempEntity;
+package simple.userEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

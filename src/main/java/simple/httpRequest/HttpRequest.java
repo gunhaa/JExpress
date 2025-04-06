@@ -18,7 +18,7 @@ public class HttpRequest {
     private final HashMap<String, String> queryString;
     private HashMap<String, String> params;
     private final HashMap<String, String> header;
-    private final Map<String, Object> bodyMap;
+    private final Map<String, String> bodyMap;
     private final Queue<ErrorStatus> errorQueue;
 
     public void setParams(String key, String value){

@@ -4,8 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
-import simple.tempEntity.Member;
-import simple.tempEntity.Team;
+import simple.userEntity.Member;
+import simple.userEntity.Team;
 
 public class H2Connection implements IDBConnection {
 
