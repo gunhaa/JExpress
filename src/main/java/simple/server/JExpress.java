@@ -10,6 +10,7 @@ import simple.mapper.IMapper;
 import simple.context.MapperResolver;
 import simple.mapper.PostMapper;
 import simple.middleware.Cors;
+import simple.middleware.MiddlewareProvider;
 import simple.parser.IHttpRequestParser;
 import simple.parser.HttpRequestCharParser;
 import simple.context.ApplicationContext;
@@ -76,7 +77,13 @@ public class JExpress implements IServer {
     @Override
     public void run(int port) throws IOException {
 
-        ApplicationContext.initializeApplicationContext();
+        ApplicationContext.initialize(
+                GetMapper.getInstance(),
+                PostMapper.getInstance(),
+                MiddlewareProvider.getInstance()
+        );
+
+        ApplicationContext.initializeMiddleWare();
 
         System.out.println("server port : " + port);
         try (ServerSocket serverSocket = new ServerSocket(port)) {
@@ -87,12 +94,14 @@ public class JExpress implements IServer {
                     BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))){
 
                     ILogger ILogger = new RequestLogger();
+
+                    ApplicationContext applicationContext = ApplicationContext.getInstance();
                     IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(ILogger);
                     OutputStream clientOutputStream = clientSocket.getOutputStream();
 
                     HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);
 
-                    MapperResolver mapperResolver = ApplicationContext.getMapperResolver();
+                    MapperResolver mapperResolver = applicationContext.getMapperResolver();
                     IMapper mapper = mapperResolver.resolveMapper(httpRequest);
                     ILambdaHandler ILambdaHandler = mapper.getLambdaHandler(httpRequest);
 
