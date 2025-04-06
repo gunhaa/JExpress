@@ -7,7 +7,6 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import simple.constant.ServerSettingChecker;
 import simple.database.IDBConnection;
-import simple.userEntity.Member;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +132,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         }
     }
 
-    public <T> T registerEntity(Map map, Class<T> clazz){
+    public <T> T registerEntityOrNull(Map<String, String> map, Class<T> clazz){
         try(EntityManager em = getEntityManager()){
 
             T entity;
@@ -156,13 +155,11 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         }
     }
 
-
-
     private String paramName(String columnName, int index) {
         return columnName.replace(".", "") + "_" + index;
     }
 
-    private EntityManager getEntityManager() {
+    protected static EntityManager getEntityManager() {
         IDBConnection db;
 
         if(ServerSettingChecker.isServerEnabled(DB_MYSQL)){

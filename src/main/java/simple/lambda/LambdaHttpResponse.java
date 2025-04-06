@@ -44,7 +44,6 @@ public class LambdaHttpResponse {
             if(lambdaHttpRequest.getCustomHttpMethod() == CustomHttpMethod.POST){
                 responseBody = new ErrorStatus(HttpStatus.BAD_REQUEST_400, "cant create entity");
             }
-
         }
 
         ResponseBuilder responseBuilder = new ResponseBuilder(httpRequest, responseBody);

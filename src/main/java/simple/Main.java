@@ -1,6 +1,6 @@
 package simple;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import simple.repository.CustomRepository;
 import simple.repository.JExpressCRUDRepository;
 import simple.repository.JExpressCondition;
 import simple.server.IServer;
@@ -66,10 +66,10 @@ public class Main {
             }
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
 
-            List<MemberTestDTO1> List = jcr.findListWithNativeQuery(MemberTestDTO1.class, query.toString());
+            List<MemberDto1> List = jcr.findListWithNativeQuery(MemberDto1.class, query.toString());
 
             res.send(List);
-        }, MemberTestDTO1.class);
+        }, MemberDto1.class);
 
         // curl -i -X GET "localhost:8020/member/team/gunha/1"
         // success
@@ -84,14 +84,13 @@ public class Main {
             StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberTestDTO2(m.name, m.engName, m.team) FROM Member m join m.team t");
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-            List<MemberTestDTO2> result = jcr.executeJpql(jpql, MemberTestDTO2.class, condition1, condition2);
+            List<MemberDto2> result = jcr.executeJpql(jpql, MemberDto2.class, condition1, condition2);
 
             res.send(result);
 
-        }, MemberTestDTO2.class);
+        }, MemberDto2.class);
 
         // curl -i -X GET "localhost:8020/member/team/gunha"
-        // success
         app.get("/member/team/:memberName", (req, res)->{
 
             String memberName = req.getParam("memberName");
@@ -100,11 +99,11 @@ public class Main {
             StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberTestDTO3(m.age, m.engName) FROM Member m");
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-            List<MemberTestDTO3> result = jcr.executeJpql(jpql, MemberTestDTO3.class, condition);
+            List<MemberDto3> result = jcr.executeJpql(jpql, MemberDto3.class, condition);
 
             res.send(result);
 
-        }, MemberTestDTO3.class);
+        }, MemberDto3.class);
 
         app.post("/test", (req, res)-> {
 
@@ -120,7 +119,7 @@ public class Main {
             }
             res.send(new Test("test"));
 
-        }, MemberTestDTO1.class);
+        }, MemberDto1.class);
 
         // member 등록
         app.post("/member", (req, res)-> {
@@ -128,7 +127,7 @@ public class Main {
             Map<String, String> map = req.getBodyMap();
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-            Member registerMember = jcr.registerEntity(map, Member.class);
+            Member registerMember = jcr.registerEntityOrNull(map, Member.class);
 
             res.send(registerMember);
 
@@ -139,16 +138,28 @@ public class Main {
             Map<String, String> map = req.getBodyMap();
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-            Team registerTeam = jcr.registerEntity(map, Team.class);
+            Team registerTeam = jcr.registerEntityOrNull(map, Team.class);
 
             res.send(registerTeam);
-
         }, Team.class);
 
+
+        /* sample body
+        {
+          "name": "재원",
+          "age": "120",
+          "engName": "jae",
+          "teamId": "1" or null
+        }
+        */
         // member team 동시 등록
         app.post("/member/team", (req, res)-> {
-            String s = req.getBody("");
-        }, Member.class);
+            Map<String, String> map = req.getBodyMap();
+
+            Member registerMember = CustomRepository.registerMemberWithTeamOrNull(map);
+
+            res.send(registerMember);
+        }, MemberTeamDto.class);
 
         app.run(8020);
     }
