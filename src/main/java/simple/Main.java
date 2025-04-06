@@ -128,15 +128,21 @@ public class Main {
             Map<String, String> map = req.getBodyMap();
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-            Member createMember = jcr.registerEntity(map, Member.class);
+            Member registerMember = jcr.registerEntity(map, Member.class);
 
-            res.send(createMember);
+            res.send(registerMember);
 
         }, Member.class);
 
         // team 등록
         app.post("/team", (req, res)-> {
-            String s = req.getBody("");
+            Map<String, String> map = req.getBodyMap();
+
+            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            Team registerTeam = jcr.registerEntity(map, Team.class);
+
+            res.send(registerTeam);
+
         }, Team.class);
 
         // member team 동시 등록

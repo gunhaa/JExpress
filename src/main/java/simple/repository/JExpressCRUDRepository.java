@@ -135,11 +135,14 @@ public class JExpressCRUDRepository implements IJExpressRepository {
 
     public <T> T registerEntity(Map map, Class<T> clazz){
         try(EntityManager em = getEntityManager()){
-            ObjectMapper mapper = new ObjectMapper();
-            T entity = mapper.convertValue(map, clazz);
 
+            T entity;
             EntityTransaction tx = em.getTransaction();
+
             try {
+                ObjectMapper mapper = new ObjectMapper();
+                entity = mapper.convertValue(map, clazz);
+
                 tx.begin();
                 em.persist(entity);
                 tx.commit();
@@ -147,7 +150,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
                 if (tx.isActive()) {
                     tx.rollback();
                 }
-                throw e;
+                return null;
             }
             return entity;
         }

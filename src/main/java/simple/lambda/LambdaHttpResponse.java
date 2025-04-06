@@ -1,15 +1,17 @@
 package simple.lambda;
 
 import simple.apiDocs.LastSentObjectHolder;
+import simple.constant.CustomHttpMethod;
 import simple.constant.HttpStatus;
 import simple.constant.ServerSettingChecker;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.HttpRequest;
 import simple.httpResponse.ResponseBuilder;
 
-import java.io.*;
+import java.io.PrintWriter;
 
-import static simple.constant.ApplicationSettingFlags.*;
+import static simple.constant.ApplicationSettingFlags.API_DOCS;
+import static simple.constant.ApplicationSettingFlags.CORS;
 
 public class LambdaHttpResponse {
 
@@ -35,7 +37,14 @@ public class LambdaHttpResponse {
         HttpRequest httpRequest = lambdaHttpRequest.getHttpRequest();
 
         if(responseBody == null){
-            responseBody = new ErrorStatus(HttpStatus.NOT_FOUND_404, "cant find entity");
+            if(lambdaHttpRequest.getCustomHttpMethod() == CustomHttpMethod.GET){
+                responseBody = new ErrorStatus(HttpStatus.NOT_FOUND_404, "cant find entity");
+            }
+
+            if(lambdaHttpRequest.getCustomHttpMethod() == CustomHttpMethod.POST){
+                responseBody = new ErrorStatus(HttpStatus.BAD_REQUEST_400, "cant create entity");
+            }
+
         }
 
         ResponseBuilder responseBuilder = new ResponseBuilder(httpRequest, responseBody);

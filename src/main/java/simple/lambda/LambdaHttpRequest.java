@@ -1,5 +1,6 @@
 package simple.lambda;
 
+import simple.constant.CustomHttpMethod;
 import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.HttpRequest;
@@ -48,5 +49,9 @@ public class LambdaHttpRequest {
 
     protected HttpRequest getHttpRequest() {
         return httpRequest;
+    }
+
+    protected CustomHttpMethod getCustomHttpMethod(){
+        return httpRequest.getMethod();
     }
 }
