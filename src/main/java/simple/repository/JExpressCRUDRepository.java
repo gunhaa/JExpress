@@ -1,14 +1,17 @@
 package simple.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import simple.constant.ServerSettingChecker;
 import simple.database.IDBConnection;
+import simple.userEntity.Member;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static simple.constant.ApplicationSettingFlags.DB_H2;
 import static simple.constant.ApplicationSettingFlags.DB_MYSQL;
@@ -130,8 +133,11 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         }
     }
 
-    public <T> T registerEntity(T entity){
+    public <T> T registerEntity(Map map, Class<T> clazz){
         try(EntityManager em = getEntityManager()){
+            ObjectMapper mapper = new ObjectMapper();
+            T entity = mapper.convertValue(map, clazz);
+
             EntityTransaction tx = em.getTransaction();
             try {
                 tx.begin();
@@ -143,9 +149,11 @@ public class JExpressCRUDRepository implements IJExpressRepository {
                 }
                 throw e;
             }
+            return entity;
         }
-        return entity;
     }
+
+
 
     private String paramName(String columnName, int index) {
         return columnName.replace(".", "") + "_" + index;

@@ -1,5 +1,6 @@
 package simple;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import simple.repository.JExpressCRUDRepository;
 import simple.repository.JExpressCondition;
 import simple.server.IServer;
@@ -8,6 +9,7 @@ import simple.userEntity.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static simple.constant.ApplicationSettingFlags.*;
 
@@ -122,15 +124,11 @@ public class Main {
 
         // member 등록
         app.post("/member", (req, res)-> {
-            String name = req.getBody("name");
-            String ageStr = req.getBody("age");
-            String engName = req.getBody("engName");
-            int age = Integer.parseInt(ageStr);
 
-            Member member = new Member(name, age, engName);
+            Map<String, String> map = req.getBodyMap();
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-            Member createMember = jcr.registerEntity(member);
+            Member createMember = jcr.registerEntity(map, Member.class);
 
             res.send(createMember);
 
