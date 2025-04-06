@@ -5,19 +5,18 @@ import simple.httpResponse.LambdaHandlerWrapper;
 
 import java.util.Arrays;
 
-public class UrlRouterTrie implements ITrie{
+public class PostUrlRouterTrie implements ITrie{
 
     private static final UrlRouterNode root = new UrlRouterNode("/", false);
-    private static final UrlRouterTrie INSTANCE = new UrlRouterTrie();
+    private static final PostUrlRouterTrie INSTANCE = new PostUrlRouterTrie();
 
-    private UrlRouterTrie() {
+    private PostUrlRouterTrie() {
     }
 
-    public static UrlRouterTrie getInstance(){
+    public static PostUrlRouterTrie getInstance(){
         return INSTANCE;
     }
 
-    // /member/:memberId/team/:teamId stdin
     @Override
     public void insert(String url, LambdaHandlerWrapper handler) {
         String[] parts = url.split("/");
@@ -33,6 +32,7 @@ public class UrlRouterTrie implements ITrie{
         current.setEndPoint();
     }
 
+    @Override
     public LambdaHandlerWrapper getLambdaHandlerOrNull(HttpRequest httpRequest){
 
         if(httpRequest.getUrl()==null){
@@ -51,16 +51,15 @@ public class UrlRouterTrie implements ITrie{
         if(depth == parts.length){
             return node.getILambdaHandler();
         }
-        
+
         String part = parts[depth];
-        
+
         if(node.getChild().containsKey(part)){
             return searchLambdaHandlerRecursive(node.getChildNode(part), parts, depth+1, httpRequest);
         }
 
         for(UrlRouterNode child : node.getChild().values()){
             if(child.isDynamic()){
-                // need more test
                 String key = child.getPath().replace(":", "");
                 String value = httpRequest.getUrl().split("/")[depth+1];
                 httpRequest.setParams(key , value);
@@ -71,6 +70,7 @@ public class UrlRouterTrie implements ITrie{
         return null;
     }
 
+    @Override
     public UrlRouterNode getRoot(){
         return root;
     }

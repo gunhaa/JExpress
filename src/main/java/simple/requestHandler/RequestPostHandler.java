@@ -2,31 +2,32 @@ package simple.requestHandler;
 
 import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
-import simple.httpRequest.LambdaHttpRequest;
 import simple.httpRequest.HttpRequest;
+import simple.httpRequest.LambdaHttpRequest;
 import simple.httpResponse.HttpResponse;
+import simple.httpResponse.ILambdaHandler;
 import simple.httpResponse.LambdaHttpResponse;
-import simple.httpResponse.ILambdaHandlerWrapper;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-public class IRequestGetHandler implements IRequestHandler {
+public class RequestPostHandler implements IRequestHandler {
 
-    private static final IRequestHandler INSTANCE = new IRequestGetHandler();
+    private static final IRequestHandler INSTANCE = new RequestPostHandler();
 
     public static IRequestHandler getInstance(){
         return INSTANCE;
     }
 
-    private IRequestGetHandler() {}
+    private RequestPostHandler() {
+    }
 
     @Override
-    public void sendResponse(OutputStream outputStream, ILambdaHandlerWrapper ILambdaHandlerWrapper, HttpRequest httpRequest) {
+    public void sendResponse(OutputStream outputStream, ILambdaHandler ILambdaHandler, HttpRequest httpRequest) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
             // 등록되지 않은 요청
-            if(ILambdaHandlerWrapper == null){
+            if(ILambdaHandler == null){
                 HttpResponse httpResponse = new HttpResponse(httpRequest, pw);
                 ErrorStatus errorStatus = new ErrorStatus(HttpStatus.NOT_FOUND_404, "Not valid URL");
                 httpResponse.sendError(errorStatus);
@@ -35,7 +36,7 @@ public class IRequestGetHandler implements IRequestHandler {
 
             LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(httpRequest);
             LambdaHttpResponse lambdaHttpResponse = new LambdaHttpResponse(lambdaHttpRequest, pw);
-            ILambdaHandlerWrapper.execute(lambdaHttpRequest, lambdaHttpResponse);
+            ILambdaHandler.execute(lambdaHttpRequest, lambdaHttpResponse);
 
         }
     }

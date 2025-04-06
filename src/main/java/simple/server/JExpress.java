@@ -5,36 +5,37 @@ import simple.config.ApplicationConfig;
 import simple.httpRequest.HttpRequest;
 import simple.logger.RequestLogger;
 import simple.logger.ILogger;
-import simple.mapper.GetIMapper;
+import simple.mapper.GetMapper;
 import simple.mapper.IMapper;
+import simple.mapper.MapperResolver;
+import simple.mapper.PostMapper;
 import simple.middleware.Cors;
 import simple.parser.IHttpRequestParser;
 import simple.parser.HttpRequestCharParser;
 import simple.context.ApplicationContext;
 import simple.requestHandler.IRequestHandler;
 import simple.provider.RequestHandlerProvider;
-import simple.httpResponse.ILambdaHandlerWrapper;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
+import simple.httpResponse.ILambdaHandler;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class JExpress implements IServer {
 
-    private final IMapper getMap = GetIMapper.getInstance();
+    private final IMapper getMapper = GetMapper.getInstance();
+    private final IMapper postMapper = PostMapper.getInstance();
     private final ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
     private final Cors cors = Cors.getInstance();
     private final int threadPool;
 
     public JExpress() {
-        this.threadPool = 0;
+        this.threadPool = 1;
     }
 
     public JExpress(int threadPool) {
         if(threadPool<2){
-            this.threadPool = 0;
+            this.threadPool = 1;
         } else {
             this.threadPool = threadPool;
         }
@@ -52,18 +53,23 @@ public class JExpress implements IServer {
     }
 
     @Override
-    public void get(String URL, ILambdaHandlerWrapper responseSuccessHandler) {
-        getMap.addUrl(URL, responseSuccessHandler);
+    public void get(String url, ILambdaHandler responseSuccessHandler) {
+        getMapper.addUrl(url, responseSuccessHandler);
     }
 
     @Override
-    public void get(String URL, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz) {
-        getMap.addUrl(URL, responseSuccessHandler, clazz);
+    public void get(String url, ILambdaHandler responseSuccessHandler, Class<?> clazz) {
+        getMapper.addUrl(url, responseSuccessHandler, clazz);
     }
 
     @Override
-    public void post(String URL, ILambdaHandlerWrapper responseSuccessHandler) {
-//        getMap.put(URL, new Response(responseSuccess, responseError));
+    public void post(String url, ILambdaHandler responseSuccessHandler) {
+        postMapper.addUrl(url, responseSuccessHandler);
+    }
+
+    @Override
+    public void post(String url, ILambdaHandler responseSuccessHandler, Class<?> clazz){
+        postMapper.addUrl(url, responseSuccessHandler, clazz);
     }
 
 
@@ -82,14 +88,18 @@ public class JExpress implements IServer {
 
                     ILogger ILogger = new RequestLogger();
                     IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(ILogger);
+                    OutputStream clientOutputStream = clientSocket.getOutputStream();
 
                     HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);
 
                     RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
                     IRequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
-                    ILambdaHandlerWrapper ILambdaHandlerWrapper = getMap.getLambdaHandler(httpRequest);
 
-                    handler.sendResponse(clientSocket.getOutputStream(), ILambdaHandlerWrapper, httpRequest);
+                    MapperResolver mapperResolver = ApplicationContext.getMapperResolver();
+                    IMapper mapper = mapperResolver.resolveMapper(httpRequest);
+                    ILambdaHandler ILambdaHandler = mapper.getLambdaHandler(httpRequest);
+
+                    handler.sendResponse(clientOutputStream, ILambdaHandler, httpRequest);
 
                     ILogger.print();
                 }

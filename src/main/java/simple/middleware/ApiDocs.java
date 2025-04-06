@@ -2,7 +2,7 @@ package simple.middleware;
 
 import simple.apiDocs.ApiDetails;
 import simple.apiDocs.ApiDocsDto;
-import simple.mapper.GetIMapper;
+import simple.mapper.GetMapper;
 import simple.mapper.IMapper;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class ApiDocs implements IMiddleWare {
 
     @Override
     public void run() {
-        IMapper getMap = GetIMapper.getInstance();
+        IMapper getMap = GetMapper.getInstance();
 
         ApiDocsDto apiDocsDto = new ApiDocsDto();
         apiDocsDto.createApiDocs(getMap);

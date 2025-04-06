@@ -46,7 +46,7 @@ public class Main {
 //            res.send(findMember);
 //        }, MemberTestDTO1.class);
 
-        // test url = localhost:8020/members
+        //curl -i -X GET "localhost:8020/members"
         app.get("/members", (req, res) -> {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
             List<?> List = jcr.findAll(Member.class);
@@ -54,7 +54,7 @@ public class Main {
             res.send(List);
         }, List.class);
 
-        // test url = localhost:8020/member/team?teamName=일팀
+        // curl -i -X GET "localhost:8020/member/team?teamName=일팀"
         app.get("/member/team", (req, res) -> {
 
             String key1 = "teamName";
@@ -106,6 +106,20 @@ public class Main {
             res.send(result);
 
         }, MemberTestDTO3.class);
+
+        app.post("/member", (req, res)-> {
+            class Test{
+                String msg;
+                public Test(String m){
+                     this.msg = m;
+                }
+
+                public String getMsg() {
+                    return msg;
+                }
+            }
+            res.send(new Test("test"));
+        });
 
         app.run(8020);
     }
