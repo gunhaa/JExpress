@@ -3,6 +3,7 @@ package simple.context;
 
 import simple.config.ApplicationConfig;
 import simple.constant.ApplicationSettingFlags;
+import simple.database.IDBConnection;
 import simple.mapper.GetMapper;
 import simple.mapper.PostMapper;
 import simple.middleware.MiddlewareProvider;
@@ -36,4 +37,5 @@ public class ApplicationContext {
     public static MapperResolver getMapperResolver(){
         return mapperResolver;
     }
+
 }
