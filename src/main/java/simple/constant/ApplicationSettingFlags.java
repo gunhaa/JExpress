@@ -3,7 +3,7 @@ package simple.constant;
 public enum ApplicationSettingFlags {
     API_DOCS(1),
     RESPONSE_TIME(1 << 1),
-    GET_CACHE(1 << 2),
+    BLOCK_SAME_IP_PER_SEC(1 << 2),
     CORS(1 << 3),
     DB_H2(1 << 4),
     DB_MYSQL(1 << 5),

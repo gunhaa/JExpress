@@ -33,6 +33,7 @@ public class GetUrlRouterTrie implements ITrie{
         current.setEndPoint();
     }
 
+    @Override
     public LambdaHandlerWrapper getLambdaHandlerOrNull(HttpRequest httpRequest){
 
         if(httpRequest.getUrl()==null){
@@ -70,6 +71,7 @@ public class GetUrlRouterTrie implements ITrie{
         return null;
     }
 
+    @Override
     public UrlRouterNode getRoot(){
         return root;
     }
