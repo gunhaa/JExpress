@@ -17,7 +17,7 @@ public class RequestDeleteHandler implements IRequestHandler {
     }
 
     @Override
-    public void sendResponse(OutputStream outputStream, ILambdaHandler ILambdaHandler, HttpRequest httpRequest) {
+    public void sendResponse(OutputStream outputStream, HttpRequest httpRequest, ILambdaHandler ILambdaHandler) {
 
     }
 }

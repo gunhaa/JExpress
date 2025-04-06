@@ -25,7 +25,7 @@ public class RequestStaticHandler implements IRequestHandler {
     private RequestStaticHandler() {}
 
     @Override
-    public void sendResponse(OutputStream outputStream, ILambdaHandler ILambdaHandler, HttpRequest httpRequest) {
+    public void sendResponse(OutputStream outputStream, HttpRequest httpRequest, ILambdaHandler ILambdaHandler) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
 //            HttpRequest httpRequest = new HttpRequest(simpleHttpRequest);

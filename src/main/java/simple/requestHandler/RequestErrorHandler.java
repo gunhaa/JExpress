@@ -16,7 +16,7 @@ public class RequestErrorHandler implements IRequestHandler {
     }
 
     @Override
-    public void sendResponse(OutputStream outputStream, ILambdaHandler ILambdaHandler, HttpRequest httpRequest) {
+    public void sendResponse(OutputStream outputStream, HttpRequest httpRequest, ILambdaHandler ILambdaHandler) {
 
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 

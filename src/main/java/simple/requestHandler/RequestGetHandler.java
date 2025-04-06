@@ -22,7 +22,7 @@ public class RequestGetHandler implements IRequestHandler {
     private RequestGetHandler() {}
 
     @Override
-    public void sendResponse(OutputStream outputStream, ILambdaHandler ILambdaHandler, HttpRequest httpRequest) {
+    public void sendResponse(OutputStream outputStream, HttpRequest httpRequest, ILambdaHandler ILambdaHandler) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
             // 등록되지 않은 요청
