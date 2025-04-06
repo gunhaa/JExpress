@@ -4,7 +4,6 @@ package simple.context;
 import simple.config.ApplicationConfig;
 import simple.constant.ApplicationSettingFlags;
 import simple.mapper.GetMapper;
-import simple.mapper.MapperResolver;
 import simple.mapper.PostMapper;
 import simple.middleware.MiddlewareProvider;
 

@@ -1,14 +1,14 @@
-package simple.mapper;
+package simple.context;
 
 import simple.constant.CustomHttpMethod;
 import simple.httpRequest.HttpRequest;
+import simple.mapper.IMapper;
 
 public class MapperResolver {
     private final IMapper getMapper;
     private final IMapper postMapper;
 
-    @Deprecated
-    public MapperResolver(IMapper getMapper, IMapper postMapper){
+    protected MapperResolver(IMapper getMapper, IMapper postMapper){
         this.getMapper = getMapper;
         this.postMapper = postMapper;
     }

@@ -7,7 +7,7 @@ import simple.logger.RequestLogger;
 import simple.logger.ILogger;
 import simple.mapper.GetMapper;
 import simple.mapper.IMapper;
-import simple.mapper.MapperResolver;
+import simple.context.MapperResolver;
 import simple.mapper.PostMapper;
 import simple.middleware.Cors;
 import simple.parser.IHttpRequestParser;
