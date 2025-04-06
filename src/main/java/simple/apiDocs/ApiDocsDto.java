@@ -13,7 +13,6 @@ import java.util.*;
 
 public class ApiDocsDto {
 
-    private final List<ApiDetails> apiList = new ArrayList<>();
     private final List<String> lambdaParam = new ArrayList<>();
 
 //    @Deprecated
@@ -134,7 +133,9 @@ public class ApiDocsDto {
         Collections.reverse(this.lambdaParam);
     }
 
-    public void createApiDocs(IMapper IMapper) {
+    public List<ApiDetails> createApiDocs(IMapper IMapper) {
+
+        List<ApiDetails> apiList = new ArrayList<>();
 
         Map<String, LambdaHandlerWrapper> apiHandlers = IMapper.getHandlers();
         CustomHttpMethod method = IMapper.getMethod();
@@ -161,15 +162,9 @@ public class ApiDocsDto {
                 }
             }
             apiList.add(apiDetails);
-
         }
+        return apiList;
     }
-
-
-    public List<ApiDetails> getApiList() {
-        return this.apiList;
-    }
-
 
 };
 
