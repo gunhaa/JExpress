@@ -108,6 +108,7 @@ public class Main {
         }, MemberTestDTO3.class);
 
         app.post("/member", (req, res)-> {
+
             class Test{
                 String msg;
                 public Test(String m){

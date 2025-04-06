@@ -96,7 +96,8 @@ public class JExpress implements IServer {
                     IRequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
 
                     MapperResolver mapperResolver = ApplicationContext.getMapperResolver();
-                    IMapper mapper = mapperResolver.resolveMapper(httpRequest);
+
+                    IMapper mapper = mapperResolver.resolveMapperOrNull(httpRequest);
                     ILambdaHandler ILambdaHandler = mapper.getLambdaHandler(httpRequest);
 
                     handler.sendResponse(clientOutputStream, ILambdaHandler, httpRequest);

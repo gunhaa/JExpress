@@ -127,6 +127,9 @@ public class CharHttpRequestBuilder {
         try {
             System.out.println("json :: " + json);
             this.bodyMap = objectMapper.readValue(json.toString(), new TypeReference<Map<String, Object>>() {});
+            for (String s : bodyMap.keySet()) {
+                System.out.println("map iter" + s);
+            }
         } catch (Exception e) {
             System.err.println("Invalid json body Error");
             errorQueue.add(new ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid json body Error"));

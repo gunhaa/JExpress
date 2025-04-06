@@ -1,5 +1,6 @@
 package simple.mapper;
 
+import simple.constant.CustomHttpMethod;
 import simple.httpRequest.HttpRequest;
 
 public class MapperResolver {
@@ -12,8 +13,15 @@ public class MapperResolver {
         this.postMapper = postMapper;
     }
 
-    public IMapper resolveMapper(HttpRequest httpRequest){
-        switch (httpRequest.getMethod()){
+    public IMapper resolveMapperOrNull(HttpRequest httpRequest){
+        CustomHttpMethod httpMethod = httpRequest.getMethod();
+
+        // todo refactoring
+        if (httpRequest.getMethod() == null) {
+            return getMapper;
+        }
+
+        switch (httpMethod){
             case GET -> {
                 return getMapper;
             }
@@ -21,7 +29,6 @@ public class MapperResolver {
                 return postMapper;
             }
             default -> {
-                // todo exception
                 return getMapper;
             }
         }
