@@ -9,13 +9,14 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import static simple.constant.HttpStatus.NOT_FOUND_404;
-import static simple.provider.RequestHandlerProvider.*;
+import static simple.provider.RequestHandlerProvider.URL_FAVICON;
 
 public class RequestStaticHandler implements IRequestHandler {
 
     private static final IRequestHandler INSTANCE = new RequestStaticHandler();
     private static final String API_DOCS_HTML = "src/main/resources/static/API/API_DOCS.html";
     private static final String API_DOCS_JS = "src/main/resources/static/API/JExpress.js";
+    private static final String API_DOCS_FAVICON = "src/main/resources/static/API/favicon.ico";
 
 
     public static IRequestHandler getInstance(){
@@ -28,7 +29,6 @@ public class RequestStaticHandler implements IRequestHandler {
     public void sendResponse(OutputStream outputStream, HttpRequest httpRequest, ILambdaHandler ILambdaHandler) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
-//            HttpRequest httpRequest = new HttpRequest(simpleHttpRequest);
             HttpResponse httpResponse = new HttpResponse(httpRequest, pw);
 
             if(httpRequest.getUrl().equals("/api-docs.html")){
@@ -42,8 +42,7 @@ public class RequestStaticHandler implements IRequestHandler {
             }
 
             if(httpRequest.getUrl().equals(URL_FAVICON)){
-                ErrorStatus faviconNotFound = new ErrorStatus(NOT_FOUND_404, "favicon not found");
-                httpResponse.sendError(faviconNotFound);
+                httpResponse.sendFile(API_DOCS_FAVICON, outputStream);
                 return;
             }
 

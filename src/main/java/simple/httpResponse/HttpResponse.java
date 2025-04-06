@@ -4,17 +4,14 @@ import simple.constant.ServerSettingChecker;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.HttpRequest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Optional;
 
 import static simple.constant.ApplicationSettingFlags.CORS;
 
 public class HttpResponse {
-
 
     private final HttpRequest httpRequest;
     private final PrintWriter pw;
@@ -50,9 +47,35 @@ public class HttpResponse {
         }
 
         StringBuilder response = responseBuilder.getStaticResponse();
-//        responseBuilder.printTestSb();
 
         pw.print(response);
+        pw.flush();
+    }
+
+    public void sendFile(String path, OutputStream outputStream) {
+
+        File file = new File(path);
+
+        try  {
+            byte[] fileBytes = Files.readAllBytes(file.toPath());
+
+            ResponseBuilder responseBuilder = new ResponseBuilder(httpRequest);
+
+            responseBuilder = responseBuilder.getFileHeader(file.length());
+            if(ServerSettingChecker.isServerEnabled(CORS)){
+                responseBuilder.cors();
+            }
+            responseBuilder.crlf();
+
+            String fileHeader = responseBuilder.getFileHeader();
+
+            outputStream.write(fileHeader.getBytes(StandardCharsets.UTF_8));
+            outputStream.write(fileBytes);
+            outputStream.flush();
+
+        } catch (IOException e) {
+            System.err.println("sendFile err");
+        }
     }
 
     public void sendError(){
@@ -70,7 +93,7 @@ public class HttpResponse {
 
         StringBuilder response = responseBuilder.getResponse();
         pw.print(response);
-
+        pw.flush();
     }
 
     public void sendError(ErrorStatus error){
@@ -85,5 +108,6 @@ public class HttpResponse {
 
         StringBuilder response = responseBuilder.getResponse();
         pw.print(response);
+        pw.flush();
     }
 }

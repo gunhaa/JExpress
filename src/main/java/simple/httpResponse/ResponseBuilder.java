@@ -34,8 +34,14 @@ public class ResponseBuilder {
 
     private static final String VALUE_CONTENT_TYPE = "text/html; charset=UTF-8";
     private static final String VALUE_CONNECTION_CLOSED = "close";
+    private static final String VALUE_FAVICON = "image/x-icon";
 
     private static final String DEFAULT_SERVER_NAME = "SimpREST/1.0";
+
+    public ResponseBuilder(HttpRequest httpRequest){
+        this.httpRequest = httpRequest;
+        this.errorStatus = null;
+    }
 
     public ResponseBuilder(HttpRequest httpRequest, Object entity) {
         this.httpRequest = httpRequest;
@@ -98,8 +104,18 @@ public class ResponseBuilder {
         return this;
     }
 
+    public ResponseBuilder fileContentType(){
+        sb.append(FIELD_CONTENT_TYPE).append(VALUE_FAVICON).append(CRLF);
+        return this;
+    }
+
     public ResponseBuilder contentLength(){
         sb.append(FIELD_CONTENT_LENGTH).append(entityJson.getBytes(StandardCharsets.UTF_8).length).append(CRLF);
+        return this;
+    }
+
+    public ResponseBuilder contentCustomLength(Long customLength){
+        sb.append(FIELD_CONTENT_LENGTH).append(customLength).append(CRLF);
         return this;
     }
 
@@ -168,6 +184,10 @@ public class ResponseBuilder {
                 .connection();
     }
 
+    public String getFileHeader(){
+        return sb.toString();
+    }
+
     public StringBuilder getResponse() {
         this.crlf().jsonBody();
         return sb;
@@ -179,6 +199,16 @@ public class ResponseBuilder {
                 .date()
                 .contentType()
                 .contentStaticLength()
+                .server()
+                .connection();
+    }
+
+    public ResponseBuilder getFileHeader(Long customLength){
+        return this.protocol()
+                .httpStatus()
+                .date()
+                .fileContentType()
+                .contentCustomLength(customLength)
                 .server()
                 .connection();
     }

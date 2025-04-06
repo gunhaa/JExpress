@@ -28,6 +28,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         await createDocs("/api-docs/get/v1");
         await createDocs("/api-docs/post/v1");
     } catch (err) {
-        console.error("문서 생성 중 에러 발생:", err);
+        console.error("err:", err);
     }
 });
