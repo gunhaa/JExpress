@@ -15,9 +15,10 @@ import static simple.constant.ApplicationSettingFlags.*;
 
 public class Main {
     public static void main(String[] args) throws IOException{
-        IServer app = new JExpress();
+
+        //        IServer app = new JExpress();
         // threadPool을 이용한 서버 생성방법
-        // Server app = new JExpress(15);
+        IServer app = new JExpress(15);
 
         app.use(API_DOCS);
         app.use(CORS);
@@ -25,30 +26,11 @@ public class Main {
         app.use(RESPONSE_TIME);
         app.use(DB_H2);
 //        app.use(DB_MYSQL);
-//        app.use(GET_CACHE);
-
-
-        // test url = localhost:8020/member?name=gunha&age=50
-        // issue : 반드시 파라미터가 두개 다 있어야함
-//        app.get("/member" , (req, res) -> {
-//            String key1 = "name";
-//            String value1 = req.getQueryString(key1);
-//            JExpressCondition jqs1 = new JExpressCondition(key1, value1);
-//
-//            String key2 = "age";
-//            String value2 = req.getQueryString(key2);
-//            JExpressCondition jqs2 = new JExpressCondition(key2, value2);
-//
-//            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-//            MemberTestDTO1 findMember = jcr.findEntity(MemberTestDTO1.class, jqs1, jqs2);
-//
-//            res.send(findMember);
-//        }, MemberTestDTO1.class);
 
         //curl -i -X GET "localhost:8020/members"
         app.get("/members", (req, res) -> {
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-            List<?> List = jcr.findAll(Member.class);
+            List<Member> List = jcr.findAll(Member.class);
 
             res.send(List);
         }, List.class);
@@ -144,7 +126,7 @@ public class Main {
         }, Team.class);
 
 
-        /* sample body
+        /* sample json
         {
           "name": "재원",
           "age": "120",

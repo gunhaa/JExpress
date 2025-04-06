@@ -4,36 +4,47 @@ package simple.context;
 import simple.config.ApplicationConfig;
 import simple.constant.ApplicationSettingFlags;
 import simple.mapper.GetMapper;
+import simple.mapper.IMapper;
 import simple.mapper.PostMapper;
 import simple.middleware.MiddlewareProvider;
 
 public class ApplicationContext {
 
-    private static final ApplicationContext INSTANCE = new ApplicationContext();
+    private static ApplicationContext INSTANCE;
 
-    private static final MapperResolver mapperResolver =
-            new MapperResolver(GetMapper.getInstance(), PostMapper.getInstance());
+    private final MapperResolver mapperResolver;
+    private final MiddlewareProvider middlewareProvider;
 
-    private ApplicationContext() {
+    private ApplicationContext(MapperResolver mapperResolver, MiddlewareProvider middlewareProvider) {
+        this.mapperResolver = mapperResolver;
+        this.middlewareProvider = middlewareProvider;
+    }
+
+    public static void initialize(IMapper getMapper, IMapper postMapper, MiddlewareProvider middlewareProvider) {
+        MapperResolver resolver = new MapperResolver(getMapper, postMapper);
+        INSTANCE = new ApplicationContext(resolver, middlewareProvider);
     }
 
     public static ApplicationContext getInstance(){
+        if (INSTANCE == null) {
+            throw new IllegalStateException("not initialized");
+        }
         return INSTANCE;
     }
 
-    public static void initializeApplicationContext(){
-        MiddlewareProvider middlewareProvider = MiddlewareProvider.getInstance();
+    public void initializeMiddleWare(){
 
         int config = ApplicationConfig.getInstance().getConfig();
 
         for (ApplicationSettingFlags setting : ApplicationSettingFlags.values()) {
             if ((config & setting.getBit()) == setting.getBit()) {
-                middlewareProvider.execute(setting);
+                this.middlewareProvider.execute(setting);
             }
         }
     }
 
-    public static MapperResolver getMapperResolver(){
-        return mapperResolver;
+    public MapperResolver getMapperResolver(){
+        return this.mapperResolver;
     }
+
 }

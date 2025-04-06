@@ -2,56 +2,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const table = document.querySelector("#MAIN-API-DOCS table");
 
-    const createGetDocs = async () => {
-        await fetch("/api-docs/get/v1")
-            .then(res => res.json())
-            .then(res => {
+    const createDocs = async (url) => {
+        const res = await fetch(url);
+        const data = await res.json();
 
-                console.log(res);
+        data.sort((a, b) => a.url.length - b.url.length);
 
-                res.forEach(v => {
+        data.forEach(v => {
+            const fieldsStr = Object.entries(v.fields)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join("<br>");
 
-                    const fieldsStr = Object.entries(v.fields)
-                        .map(([key, value]) => `${key}: ${value}`)
-                        .join("<br>");
-
-                    table.insertAdjacentHTML("beforeend", `
-                        <tr>
-                            <td>${v.customHttpMethod}</td>
-                            <td>${v.url}</td>
-                            <td>${v.returnType}</td>
-                            <td>${fieldsStr}</td>
-                        </tr>
-                    `);
-                });
-            });
+            table.insertAdjacentHTML("beforeend", `
+                <tr>
+                    <td>${v.customHttpMethod}</td>
+                    <td>${v.url}</td>
+                    <td>${v.returnType}</td>
+                    <td>${fieldsStr}</td>
+                </tr>
+            `);
+        });
     };
 
-        const createPostDocs = async () => {
-            await fetch("/api-docs/post/v1")
-                .then(res => res.json())
-                .then(res => {
-
-                    console.log(res);
-
-                    res.forEach(v => {
-
-                        const fieldsStr = Object.entries(v.fields)
-                            .map(([key, value]) => `${key}: ${value}`)
-                            .join("<br>");
-
-                        table.insertAdjacentHTML("beforeend", `
-                            <tr>
-                                <td>${v.customHttpMethod}</td>
-                                <td>${v.url}</td>
-                                <td>${v.returnType}</td>
-                                <td>${fieldsStr}</td>
-                            </tr>
-                        `);
-                    });
-                });
-        };
-
-    await createGetDocs();
-    await createPostDocs();
+    try {
+        await createDocs("/api-docs/get/v1");
+        await createDocs("/api-docs/post/v1");
+    } catch (err) {
+        console.error("err:", err);
+    }
 });

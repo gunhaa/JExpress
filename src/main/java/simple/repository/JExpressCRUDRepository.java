@@ -88,6 +88,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         }
     }
 
+    @Override
     public <T> List<T> findListWithNativeQuery(Class<T> clazz, String query){
         try(EntityManager em = getEntityManager()){
             try {
@@ -101,6 +102,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
 
     }
 
+    @Override
     public <T> List<T> executeJpql(StringBuilder jpqlQuery, Class<T> mappingClazz, JExpressCondition... conditions){
         try(EntityManager em = getEntityManager()){
             String jpqlLower = jpqlQuery.toString().toLowerCase();
@@ -132,6 +134,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         }
     }
 
+    @Override
     public <T> T registerEntityOrNull(Map<String, String> map, Class<T> clazz){
         try(EntityManager em = getEntityManager()){
 
