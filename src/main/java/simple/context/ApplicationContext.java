@@ -32,14 +32,13 @@ public class ApplicationContext {
         return INSTANCE;
     }
 
-    public static void initializeMiddleWare(){
-        MiddlewareProvider middlewareProvider = MiddlewareProvider.getInstance();
+    public void initializeMiddleWare(){
 
         int config = ApplicationConfig.getInstance().getConfig();
 
         for (ApplicationSettingFlags setting : ApplicationSettingFlags.values()) {
             if ((config & setting.getBit()) == setting.getBit()) {
-                middlewareProvider.execute(setting);
+                this.middlewareProvider.execute(setting);
             }
         }
     }

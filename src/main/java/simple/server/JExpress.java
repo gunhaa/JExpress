@@ -21,6 +21,8 @@ import simple.lambda.ILambdaHandler;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class JExpress implements IServer {
 
@@ -35,7 +37,7 @@ public class JExpress implements IServer {
     }
 
     public JExpress(int threadPool) {
-        if(threadPool<2){
+        if (threadPool < 2) {
             this.threadPool = 1;
         } else {
             this.threadPool = threadPool;
@@ -43,12 +45,12 @@ public class JExpress implements IServer {
     }
 
     @Override
-    public void use(ApplicationSettingFlags applicationSettingFlags){
+    public void use(ApplicationSettingFlags applicationSettingFlags) {
         applicationConfig.registerConfig(applicationSettingFlags);
     }
 
     @Override
-    public void use(ApplicationSettingFlags applicationSettingFlags, String option){
+    public void use(ApplicationSettingFlags applicationSettingFlags, String option) {
         applicationConfig.registerConfig(applicationSettingFlags);
         cors.registerCorsValue(applicationSettingFlags, option);
     }
@@ -69,7 +71,7 @@ public class JExpress implements IServer {
     }
 
     @Override
-    public void post(String url, ILambdaHandler responseSuccessHandler, Class<?> clazz){
+    public void post(String url, ILambdaHandler responseSuccessHandler, Class<?> clazz) {
         postMapper.addUrl(url, responseSuccessHandler, clazz);
     }
 
@@ -83,35 +85,51 @@ public class JExpress implements IServer {
                 MiddlewareProvider.getInstance()
         );
 
-        ApplicationContext.initializeMiddleWare();
+        ApplicationContext applicationContext = ApplicationContext.getInstance();
+        applicationContext.initializeMiddleWare();
 
-        System.out.println("server port : " + port);
+        ExecutorService threadPool = Executors.newFixedThreadPool(this.threadPool);
+
         try (ServerSocket serverSocket = new ServerSocket(port)) {
+            System.out.println("server port : " + port);
+            System.out.println("thread pool : " + this.threadPool);
             while (true) {
+                Socket clientSocket = serverSocket.accept();
+                threadPool.execute(() -> handleClient(clientSocket, applicationContext));
+            }
+        } finally {
+            threadPool.shutdown();
+        }
+    }
 
-                try(Socket clientSocket = serverSocket.accept();
-                    InputStream clientInputStream = clientSocket.getInputStream();
-                    BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))){
+    private void handleClient(Socket clientSocket, ApplicationContext applicationContext) {
+        try (InputStream clientInputStream = clientSocket.getInputStream();
+             BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))) {
 
-                    ILogger ILogger = new RequestLogger();
+            ILogger ILogger = new RequestLogger();
 
-                    ApplicationContext applicationContext = ApplicationContext.getInstance();
-                    IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(ILogger);
-                    OutputStream clientOutputStream = clientSocket.getOutputStream();
+            IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(ILogger);
+            OutputStream clientOutputStream = clientSocket.getOutputStream();
 
-                    HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);
+            HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);
 
-                    MapperResolver mapperResolver = applicationContext.getMapperResolver();
-                    IMapper mapper = mapperResolver.resolveMapper(httpRequest);
-                    ILambdaHandler ILambdaHandler = mapper.getLambdaHandler(httpRequest);
+            MapperResolver mapperResolver = applicationContext.getMapperResolver();
+            IMapper mapper = mapperResolver.resolveMapper(httpRequest);
+            ILambdaHandler ILambdaHandler = mapper.getLambdaHandler(httpRequest);
 
-                    RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
-                    IRequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
+            RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
+            IRequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
 
-                    handler.sendResponse(clientOutputStream, httpRequest, ILambdaHandler);
+            handler.sendResponse(clientOutputStream, httpRequest, ILambdaHandler);
 
-                    ILogger.print();
-                }
+            ILogger.print();
+        } catch (IOException e) {
+            System.err.println("handleClient IO Exception");
+        } finally {
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                System.err.println("clientSocket IO Exception");
             }
         }
     }

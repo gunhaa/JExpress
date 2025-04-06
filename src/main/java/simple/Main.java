@@ -15,9 +15,9 @@ import static simple.constant.ApplicationSettingFlags.*;
 
 public class Main {
     public static void main(String[] args) throws IOException{
-        IServer app = new JExpress();
+//        IServer app = new JExpress();
         // threadPool을 이용한 서버 생성방법
-        // Server app = new JExpress(15);
+        IServer app = new JExpress(15);
 
         app.use(API_DOCS);
         app.use(CORS);
