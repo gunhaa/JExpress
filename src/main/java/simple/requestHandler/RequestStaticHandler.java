@@ -15,7 +15,7 @@ public class RequestStaticHandler implements IRequestHandler {
 
     private static final IRequestHandler INSTANCE = new RequestStaticHandler();
     private static final String API_DOCS_HTML = "src/main/resources/static/API/API_DOCS.html";
-    private static final String API_DOCS_JS = "src/main/resources/static/API/Jexpress.js";
+    private static final String API_DOCS_JS = "src/main/resources/static/API/JExpress.js";
 
 
     public static IRequestHandler getInstance(){
@@ -36,7 +36,7 @@ public class RequestStaticHandler implements IRequestHandler {
                 return;
             }
 
-            if(httpRequest.getUrl().equals("/Jexpress.js")){
+            if(httpRequest.getUrl().equals("/JExpress.js")){
                 httpResponse.sendStatic(API_DOCS_JS);
                 return;
             }
