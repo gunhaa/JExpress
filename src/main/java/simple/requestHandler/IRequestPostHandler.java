@@ -1,7 +1,7 @@
 package simple.requestHandler;
 
 import simple.httpRequest.HttpRequest;
-import simple.httpResponse.ILambdaHandlerWrapper;
+import simple.httpResponse.ILambdaHandler;
 
 import java.io.OutputStream;
 
@@ -17,7 +17,7 @@ public class IRequestPostHandler implements IRequestHandler {
     }
 
     @Override
-    public void sendResponse(OutputStream outputStream, ILambdaHandlerWrapper ILambdaHandlerWrapper, HttpRequest httpRequest) {
-//        userCustomResponse.getResponseSuccess().responseParser(out);
+    public void sendResponse(OutputStream outputStream, ILambdaHandler ILambdaHandler, HttpRequest httpRequest) {
+        System.out.println("여기까지 잘왔음");
     }
 }

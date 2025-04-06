@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import simple.httpRequest.HttpRequest;
 import simple.httpRequest.LambdaHttpRequest;
-import simple.httpResponse.ILambdaHandlerWrapper;
+import simple.httpResponse.ILambdaHandler;
 import simple.httpResponse.LambdaHandlerWrapper;
 import simple.httpResponse.LambdaHttpResponse;
 
@@ -18,14 +18,14 @@ class GetUrlRouterTrieTest {
     @Test
     public void TDD_구조테스트(){
         GetUrlRouterTrie getUrlRouterTrie = GetUrlRouterTrie.getInstance();
-        ILambdaHandlerWrapper iLambdaHandlerWrapper = new ILambdaHandlerWrapper() {
+        ILambdaHandler iLambdaHandler = new ILambdaHandler() {
             @Override
             public void execute(LambdaHttpRequest lambdaHttpRequest, LambdaHttpResponse lambdaHttpResponse) {
 
             }
         };
 
-        LambdaHandlerWrapper mock = new LambdaHandlerWrapper(iLambdaHandlerWrapper);
+        LambdaHandlerWrapper mock = new LambdaHandlerWrapper(iLambdaHandler);
 
         getUrlRouterTrie.insert("/member/:memberId/team/:teamId", mock);
         getUrlRouterTrie.insert("/member/:memberId", mock);
@@ -83,11 +83,11 @@ class GetUrlRouterTrieTest {
         TestHolder testHolder1 = new TestHolder();
         TestHolder testHolder2 = new TestHolder();
 
-        ILambdaHandlerWrapper iLambdaHandlerWrapper1 = (lambdaHttpRequest, lambdaHttpResponse) -> testHolder1.setPath("/member");
-        ILambdaHandlerWrapper iLambdaHandlerWrapper2 = (lambdaHttpRequest, lambdaHttpResponse) -> testHolder2.setPath("/member/:memberId");
+        ILambdaHandler iLambdaHandler1 = (lambdaHttpRequest, lambdaHttpResponse) -> testHolder1.setPath("/member");
+        ILambdaHandler iLambdaHandler2 = (lambdaHttpRequest, lambdaHttpResponse) -> testHolder2.setPath("/member/:memberId");
 
-        LambdaHandlerWrapper mock1 = new LambdaHandlerWrapper(iLambdaHandlerWrapper1);
-        LambdaHandlerWrapper mock2 = new LambdaHandlerWrapper(iLambdaHandlerWrapper2);
+        LambdaHandlerWrapper mock1 = new LambdaHandlerWrapper(iLambdaHandler1);
+        LambdaHandlerWrapper mock2 = new LambdaHandlerWrapper(iLambdaHandler2);
 
         getUrlRouterTrie.insert("/member", mock1);
         getUrlRouterTrie.insert("/member/:memberId", mock2);

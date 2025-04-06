@@ -2,7 +2,7 @@ package simple.server;
 
 
 import simple.constant.ApplicationSettingFlags;
-import simple.httpResponse.ILambdaHandlerWrapper;
+import simple.httpResponse.ILambdaHandler;
 
 import java.io.IOException;
 
@@ -14,11 +14,11 @@ public interface IServer {
 
     void use(ApplicationSettingFlags applicationSettingFlags, String option);
 
-    void get(String URL, ILambdaHandlerWrapper responseSuccessHandler);
+    void get(String URL, ILambdaHandler responseSuccessHandler);
 
-    void get(String URL, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz);
+    void get(String URL, ILambdaHandler responseSuccessHandler, Class<?> clazz);
 
-    void post(String URL, ILambdaHandlerWrapper responseSuccessHandler);
+    void post(String URL, ILambdaHandler responseSuccessHandler);
 
-    void post(String URL, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz);
+    void post(String URL, ILambdaHandler responseSuccessHandler, Class<?> clazz);
 }

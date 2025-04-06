@@ -1,18 +1,30 @@
 package simple.mapper;
 
+import simple.httpRequest.HttpRequest;
+
 public class MapperResolver {
     private final IMapper getMapper;
     private final IMapper postMapper;
-    private static final MapperResolver INSTANCE = new MapperResolver(GetMapper.getInstance(), PostMapper.getInstance());
 
-    // cant new
+    @Deprecated
     public MapperResolver(IMapper getMapper, IMapper postMapper){
         this.getMapper = getMapper;
         this.postMapper = postMapper;
     }
 
-    public static MapperResolver getInstance(){
-        return INSTANCE;
+    public IMapper resolveMapper(HttpRequest httpRequest){
+        switch (httpRequest.getMethod()){
+            case GET -> {
+                return getMapper;
+            }
+            case POST -> {
+                return postMapper;
+            }
+            default -> {
+                // todo exception
+                return getMapper;
+            }
+        }
     }
 
 }

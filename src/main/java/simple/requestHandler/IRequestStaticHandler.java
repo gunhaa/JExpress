@@ -3,7 +3,7 @@ package simple.requestHandler;
 import simple.httpRequest.ErrorStatus;
 import simple.httpRequest.HttpRequest;
 import simple.httpResponse.HttpResponse;
-import simple.httpResponse.ILambdaHandlerWrapper;
+import simple.httpResponse.ILambdaHandler;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -25,7 +25,7 @@ public class IRequestStaticHandler implements IRequestHandler {
     private IRequestStaticHandler() {}
 
     @Override
-    public void sendResponse(OutputStream outputStream, ILambdaHandlerWrapper ILambdaHandlerWrapper, HttpRequest httpRequest) {
+    public void sendResponse(OutputStream outputStream, ILambdaHandler ILambdaHandler, HttpRequest httpRequest) {
         try(PrintWriter pw = new PrintWriter(outputStream, true)){
 
 //            HttpRequest httpRequest = new HttpRequest(simpleHttpRequest);

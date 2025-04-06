@@ -3,7 +3,7 @@ package simple.mapper;
 import simple.constant.CustomHttpMethod;
 import simple.constant.ServerSettingChecker;
 import simple.httpRequest.HttpRequest;
-import simple.httpResponse.ILambdaHandlerWrapper;
+import simple.httpResponse.ILambdaHandler;
 import simple.httpResponse.LambdaHandlerWrapper;
 import simple.url.GetUrlRouterTrie;
 
@@ -22,12 +22,10 @@ public class GetMapper implements IMapper {
     private GetMapper() {
         this.customHttpMethod = CustomHttpMethod.GET;
         this.getUrlRouterTrie = GetUrlRouterTrie.getInstance();
-        if(ServerSettingChecker.isServerEnabled(API_DOCS)){
-            this.getMap = new HashMap<>();
-        }
+        this.getMap = new HashMap<>();
     }
 
-    public static IMapper getInstance(){
+    public static IMapper getInstance() {
         return getMapper;
     }
 
@@ -37,32 +35,28 @@ public class GetMapper implements IMapper {
     }
 
     @Override
-    public ILambdaHandlerWrapper getLambdaHandler(HttpRequest httpRequest) {
+    public ILambdaHandler getLambdaHandler(HttpRequest httpRequest) {
         LambdaHandlerWrapper wrapper = getUrlRouterTrie.getLambdaHandlerOrNull(httpRequest);
         return (wrapper != null) ? wrapper.unwrap() : null;
     }
 
     @Override
-    public Map<String, LambdaHandlerWrapper> getHandlers(){
+    public Map<String, LambdaHandlerWrapper> getHandlers() {
         return getMap;
     }
 
     @Override
-    public void addUrl(String url, ILambdaHandlerWrapper responseSuccessHandler){
+    public void addUrl(String url, ILambdaHandler responseSuccessHandler) {
         LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler);
         getUrlRouterTrie.insert(url, lambdaHandlerWrapper);
-        if(ServerSettingChecker.isServerEnabled(API_DOCS)){
-            getMap.put(url, lambdaHandlerWrapper);
-        }
+        getMap.put(url, lambdaHandlerWrapper);
     }
 
     @Override
-    public void addUrl(String url, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz) {
+    public void addUrl(String url, ILambdaHandler responseSuccessHandler, Class<?> clazz) {
         LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler, clazz);
         getUrlRouterTrie.insert(url, lambdaHandlerWrapper);
-        if(ServerSettingChecker.isServerEnabled(API_DOCS)){
-            getMap.put(url, lambdaHandlerWrapper);
-        }
+        getMap.put(url, lambdaHandlerWrapper);
     }
 
 }

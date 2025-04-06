@@ -34,7 +34,7 @@ public class ApplicationContext {
         }
     }
 
-    public MapperResolver getMapperResolver(){
+    public static MapperResolver getMapperResolver(){
         return mapperResolver;
     }
 }

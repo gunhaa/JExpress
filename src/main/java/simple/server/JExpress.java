@@ -7,6 +7,7 @@ import simple.logger.RequestLogger;
 import simple.logger.ILogger;
 import simple.mapper.GetMapper;
 import simple.mapper.IMapper;
+import simple.mapper.MapperResolver;
 import simple.mapper.PostMapper;
 import simple.middleware.Cors;
 import simple.parser.IHttpRequestParser;
@@ -14,11 +15,9 @@ import simple.parser.HttpRequestCharParser;
 import simple.context.ApplicationContext;
 import simple.requestHandler.IRequestHandler;
 import simple.provider.RequestHandlerProvider;
-import simple.httpResponse.ILambdaHandlerWrapper;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
+import simple.httpResponse.ILambdaHandler;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -54,22 +53,22 @@ public class JExpress implements IServer {
     }
 
     @Override
-    public void get(String url, ILambdaHandlerWrapper responseSuccessHandler) {
+    public void get(String url, ILambdaHandler responseSuccessHandler) {
         getMapper.addUrl(url, responseSuccessHandler);
     }
 
     @Override
-    public void get(String url, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz) {
+    public void get(String url, ILambdaHandler responseSuccessHandler, Class<?> clazz) {
         getMapper.addUrl(url, responseSuccessHandler, clazz);
     }
 
     @Override
-    public void post(String url, ILambdaHandlerWrapper responseSuccessHandler) {
+    public void post(String url, ILambdaHandler responseSuccessHandler) {
         postMapper.addUrl(url, responseSuccessHandler);
     }
 
     @Override
-    public void post(String url, ILambdaHandlerWrapper responseSuccessHandler, Class<?> clazz){
+    public void post(String url, ILambdaHandler responseSuccessHandler, Class<?> clazz){
         postMapper.addUrl(url, responseSuccessHandler, clazz);
     }
 
@@ -89,16 +88,18 @@ public class JExpress implements IServer {
 
                     ILogger ILogger = new RequestLogger();
                     IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(ILogger);
+                    OutputStream clientOutputStream = clientSocket.getOutputStream();
 
                     HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);
 
                     RequestHandlerProvider requestHandlerProvider = RequestHandlerProvider.getInstance();
                     IRequestHandler handler = requestHandlerProvider.getHandler(httpRequest);
 
+                    MapperResolver mapperResolver = ApplicationContext.getMapperResolver();
+                    IMapper mapper = mapperResolver.resolveMapper(httpRequest);
+                    ILambdaHandler ILambdaHandler = mapper.getLambdaHandler(httpRequest);
 
-                    ILambdaHandlerWrapper ILambdaHandlerWrapper = getMapper.getLambdaHandler(httpRequest);
-
-                    handler.sendResponse(clientSocket.getOutputStream(), ILambdaHandlerWrapper, httpRequest);
+                    handler.sendResponse(clientOutputStream, ILambdaHandler, httpRequest);
 
                     ILogger.print();
                 }
