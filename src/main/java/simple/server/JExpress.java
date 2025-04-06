@@ -90,9 +90,10 @@ public class JExpress implements IServer {
 
         ExecutorService threadPool = Executors.newFixedThreadPool(this.threadPool);
 
+        System.out.println("server port : " + port);
+        System.out.println("thread pool : " + this.threadPool);
+
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("server port : " + port);
-            System.out.println("thread pool : " + this.threadPool);
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 threadPool.execute(() -> handleClient(clientSocket, applicationContext));
