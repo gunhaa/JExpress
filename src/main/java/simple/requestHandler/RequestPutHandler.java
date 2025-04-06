@@ -5,15 +5,15 @@ import simple.httpResponse.ILambdaHandler;
 
 import java.io.OutputStream;
 
-public class IRequestPutHandler implements IRequestHandler {
+public class RequestPutHandler implements IRequestHandler {
 
-    private static final IRequestHandler INSTANCE = new IRequestPutHandler();
+    private static final IRequestHandler INSTANCE = new RequestPutHandler();
 
     public static IRequestHandler getInstance(){
         return INSTANCE;
     }
 
-    private IRequestPutHandler() {
+    private RequestPutHandler() {
     }
 
     @Override

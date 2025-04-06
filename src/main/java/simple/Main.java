@@ -108,14 +108,16 @@ public class Main {
         }, MemberTestDTO3.class);
 
         app.post("/member", (req, res)-> {
-            System.out.println("post 요청 성공");
             class Test{
                 String msg;
                 public Test(String m){
                      this.msg = m;
                 }
-            }
 
+                public String getMsg() {
+                    return msg;
+                }
+            }
             res.send(new Test("test"));
         });
 

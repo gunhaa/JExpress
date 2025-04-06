@@ -7,9 +7,9 @@ import simple.httpResponse.ILambdaHandler;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-public class IRequestErrorHandler implements IRequestHandler {
+public class RequestErrorHandler implements IRequestHandler {
 
-    private static final IRequestHandler INSTANCE = new IRequestErrorHandler();
+    private static final IRequestHandler INSTANCE = new RequestErrorHandler();
 
     public static IRequestHandler getInstance(){
         return INSTANCE;

@@ -5,15 +5,15 @@ import simple.httpResponse.ILambdaHandler;
 
 import java.io.OutputStream;
 
-public class IRequestDeleteHandler implements IRequestHandler {
+public class RequestDeleteHandler implements IRequestHandler {
 
-    private static final IRequestHandler INSTANCE = new IRequestDeleteHandler();
+    private static final IRequestHandler INSTANCE = new RequestDeleteHandler();
 
     public static IRequestHandler getInstance(){
         return INSTANCE;
     }
 
-    private IRequestDeleteHandler() {
+    private RequestDeleteHandler() {
     }
 
     @Override

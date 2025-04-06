@@ -21,18 +21,18 @@ public class RequestHandlerProvider {
 
     private RequestHandlerProvider() {
         this.requestHandlers = new HashMap<>();
-        requestHandlers.put(CustomHttpMethod.GET, IRequestGetHandler.getInstance());
-        requestHandlers.put(CustomHttpMethod.POST, IRequestPostHandler.getInstance());
-        requestHandlers.put(CustomHttpMethod.PUT, IRequestPutHandler.getInstance());
-        requestHandlers.put(CustomHttpMethod.DELETE, IRequestDeleteHandler.getInstance());
-        requestHandlers.put(CustomHttpMethod.EXCEPTION_STATIC, IRequestStaticHandler.getInstance());
-        requestHandlers.put(CustomHttpMethod.ERROR, IRequestErrorHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.GET, RequestGetHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.POST, RequestPostHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.PUT, RequestPutHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.DELETE, RequestDeleteHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.EXCEPTION_STATIC, RequestStaticHandler.getInstance());
+        requestHandlers.put(CustomHttpMethod.ERROR, RequestErrorHandler.getInstance());
     }
 
     public IRequestHandler getHandler(HttpRequest httpRequest) {
 
         if (!httpRequest.getErrorQueue().isEmpty()) {
-            return IRequestErrorHandler.getInstance();
+            return RequestErrorHandler.getInstance();
         }
 
         if (ServerSettingChecker.isServerEnabled(API_DOCS) && httpRequest.getUrl() != null) {
@@ -61,7 +61,7 @@ public class RequestHandlerProvider {
 //            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
 //        }
 
-        return requestHandlers.getOrDefault(httpRequest.getMethod(), IRequestErrorHandler.getInstance());
+        return requestHandlers.getOrDefault(httpRequest.getMethod(), RequestErrorHandler.getInstance());
     }
 
     public static RequestHandlerProvider getInstance() {

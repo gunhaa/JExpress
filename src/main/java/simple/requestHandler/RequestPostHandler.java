@@ -2,24 +2,25 @@ package simple.requestHandler;
 
 import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
-import simple.httpRequest.LambdaHttpRequest;
 import simple.httpRequest.HttpRequest;
+import simple.httpRequest.LambdaHttpRequest;
 import simple.httpResponse.HttpResponse;
-import simple.httpResponse.LambdaHttpResponse;
 import simple.httpResponse.ILambdaHandler;
+import simple.httpResponse.LambdaHttpResponse;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-public class IRequestGetHandler implements IRequestHandler {
+public class RequestPostHandler implements IRequestHandler {
 
-    private static final IRequestHandler INSTANCE = new IRequestGetHandler();
+    private static final IRequestHandler INSTANCE = new RequestPostHandler();
 
     public static IRequestHandler getInstance(){
         return INSTANCE;
     }
 
-    private IRequestGetHandler() {}
+    private RequestPostHandler() {
+    }
 
     @Override
     public void sendResponse(OutputStream outputStream, ILambdaHandler ILambdaHandler, HttpRequest httpRequest) {
