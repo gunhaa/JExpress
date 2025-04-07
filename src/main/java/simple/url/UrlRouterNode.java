@@ -9,7 +9,7 @@ public class UrlRouterNode {
     private final HashMap<String, UrlRouterNode> child = new HashMap<>();
     private final boolean isDynamic;
     private boolean isEndPoint;
-    private LambdaHandlerWrapper iLambdaHandlerWrapper;
+    private LambdaHandlerWrapper lambdaHandlerWrapper;
 
     public UrlRouterNode(String path, boolean isDynamic) {
         this.path = path;
@@ -26,11 +26,11 @@ public class UrlRouterNode {
     }
 
     public void setILambdaHandler(LambdaHandlerWrapper handler){
-        this.iLambdaHandlerWrapper = handler;
+        this.lambdaHandlerWrapper = handler;
     }
 
     public LambdaHandlerWrapper getILambdaHandler(){
-        return this.iLambdaHandlerWrapper;
+        return this.lambdaHandlerWrapper;
     }
 
     public String getPath(){
@@ -51,5 +51,10 @@ public class UrlRouterNode {
 
     public boolean isEndPoint(){
         return this.isEndPoint;
+    }
+
+    // for test
+    public void clearChild(){
+        this.child.clear();
     }
 }

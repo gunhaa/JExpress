@@ -5,15 +5,15 @@ import simple.lambda.LambdaHandlerWrapper;
 
 import java.util.Arrays;
 
-public class PostUrlRouterTrie implements ITrie{
+public class PostUrlRouterRouterTrie implements IRouterTrie {
 
     private static final UrlRouterNode root = new UrlRouterNode("/", false);
-    private static final PostUrlRouterTrie INSTANCE = new PostUrlRouterTrie();
+    private static final PostUrlRouterRouterTrie INSTANCE = new PostUrlRouterRouterTrie();
 
-    private PostUrlRouterTrie() {
+    private PostUrlRouterRouterTrie() {
     }
 
-    public static PostUrlRouterTrie getInstance(){
+    public static PostUrlRouterRouterTrie getInstance(){
         return INSTANCE;
     }
 

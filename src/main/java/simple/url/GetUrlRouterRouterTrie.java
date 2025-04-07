@@ -5,15 +5,15 @@ import simple.lambda.LambdaHandlerWrapper;
 
 import java.util.Arrays;
 
-public class GetUrlRouterTrie implements ITrie{
+public class GetUrlRouterRouterTrie implements IRouterTrie {
 
     private static final UrlRouterNode root = new UrlRouterNode("/", false);
-    private static final GetUrlRouterTrie INSTANCE = new GetUrlRouterTrie();
+    private static final GetUrlRouterRouterTrie INSTANCE = new GetUrlRouterRouterTrie();
 
-    private GetUrlRouterTrie() {
+    private GetUrlRouterRouterTrie() {
     }
 
-    public static GetUrlRouterTrie getInstance(){
+    public static GetUrlRouterRouterTrie getInstance(){
         return INSTANCE;
     }
 
@@ -76,10 +76,12 @@ public class GetUrlRouterTrie implements ITrie{
         return root;
     }
 
+    // for test
     public void printTrie() {
         printTrieRecursive(root, 0);
     }
 
+    // for test
     private void printTrieRecursive(UrlRouterNode node, int depth) {
         String indent = "===".repeat(depth);
         System.out.println(indent + "|-- " + node.getPath() +
@@ -91,4 +93,8 @@ public class GetUrlRouterTrie implements ITrie{
         }
     }
 
+    // for test
+    public void clearTrie(){
+        root.clearChild();
+    }
 }

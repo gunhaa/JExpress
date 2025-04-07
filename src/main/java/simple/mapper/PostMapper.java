@@ -4,7 +4,7 @@ import simple.constant.CustomHttpMethod;
 import simple.httpRequest.HttpRequest;
 import simple.lambda.ILambdaHandler;
 import simple.lambda.LambdaHandlerWrapper;
-import simple.url.PostUrlRouterTrie;
+import simple.url.PostUrlRouterRouterTrie;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +14,11 @@ import static simple.constant.CustomHttpMethod.POST;
 public class PostMapper implements IMapper {
 
     private HashMap<String, LambdaHandlerWrapper> postMap;
-    private final PostUrlRouterTrie postUrlRouterTrie;
+    private final PostUrlRouterRouterTrie postUrlRouterTrie;
     private final CustomHttpMethod customHttpMethod;
-    private static final IMapper postMapper = new PostMapper(POST, PostUrlRouterTrie.getInstance());
+    private static final IMapper postMapper = new PostMapper(POST, PostUrlRouterRouterTrie.getInstance());
 
-    private PostMapper(CustomHttpMethod customHttpMethod, PostUrlRouterTrie trie) {
+    private PostMapper(CustomHttpMethod customHttpMethod, PostUrlRouterRouterTrie trie) {
         this.customHttpMethod = customHttpMethod;
         this.postUrlRouterTrie = trie;
         this.postMap = new HashMap<>();

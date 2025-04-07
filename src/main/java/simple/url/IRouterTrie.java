@@ -3,7 +3,7 @@ package simple.url;
 import simple.httpRequest.HttpRequest;
 import simple.lambda.LambdaHandlerWrapper;
 
-public interface ITrie {
+public interface IRouterTrie {
 
     UrlRouterNode getRoot();
 
