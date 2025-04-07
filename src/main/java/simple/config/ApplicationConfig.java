@@ -27,4 +27,9 @@ public class ApplicationConfig {
             cors.registerCorsValue(applicationSettingFlags, "*");
         }
     }
+
+    // for test
+    public void clearConfigs(){
+        this.applicationConfig = 0;
+    }
 }
