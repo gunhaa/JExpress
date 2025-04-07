@@ -63,7 +63,7 @@ public class Main {
             String teamId = req.getParam("teamId");
             JExpressCondition condition2 = new JExpressCondition("t.id", teamId);
 
-            StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberTestDTO2(m.name, m.engName, m.team) FROM Member m join m.team t");
+            StringBuilder jpql = new StringBuilder("SELECT new simple.userEntity.MemberDto2(m.name, m.engName, m.team) FROM Member m join m.team t");
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
             List<MemberDto2> result = jcr.executeJpql(jpql, MemberDto2.class, condition1, condition2);
@@ -76,9 +76,10 @@ public class Main {
         app.get("/member/team/:memberName", (req, res)->{
 
             String memberName = req.getParam("memberName");
+            System.out.println("lambda membername : " + memberName);
             JExpressCondition condition = new JExpressCondition("m.name", memberName);
 
-            StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberTestDTO3(m.age, m.engName) FROM Member m");
+            StringBuilder jpql = new StringBuilder("SELECT new simple.userEntity.MemberDto3(m.age, m.engName) FROM Member m");
 
             JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
             List<MemberDto3> result = jcr.executeJpql(jpql, MemberDto3.class, condition);

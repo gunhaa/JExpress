@@ -124,6 +124,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
                 }
             }
 
+            System.out.println("query : " +jpqlQuery.toString());
             TypedQuery<T> building = em.createQuery(jpqlQuery.toString(), mappingClazz);
 
             for (int i = 0; i < conditions.length; i++) {

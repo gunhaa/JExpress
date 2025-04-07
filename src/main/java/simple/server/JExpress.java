@@ -107,9 +107,9 @@ public class JExpress implements IServer {
         try (InputStream clientInputStream = clientSocket.getInputStream();
              BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))) {
 
-            ILogger ILogger = new RequestLogger();
+            ILogger logger = new RequestLogger();
 
-            IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(ILogger);
+            IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(logger);
             OutputStream clientOutputStream = clientSocket.getOutputStream();
 
             HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);
@@ -123,7 +123,7 @@ public class JExpress implements IServer {
 
             handler.sendResponse(clientOutputStream, httpRequest, ILambdaHandler);
 
-            ILogger.print();
+            logger.print();
         } catch (IOException e) {
             System.err.println("handleClient IO Exception");
         } finally {
