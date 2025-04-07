@@ -76,7 +76,6 @@ public class Main {
         app.get("/member/team/:memberName", (req, res)->{
 
             String memberName = req.getParam("memberName");
-            System.out.println("lambda membername : " + memberName);
             JExpressCondition condition = new JExpressCondition("m.name", memberName);
 
             StringBuilder jpql = new StringBuilder("SELECT new simple.userEntity.MemberDto3(m.age, m.engName) FROM Member m");

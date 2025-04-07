@@ -9,16 +9,18 @@ import simple.url.PostUrlRouterTrie;
 import java.util.HashMap;
 import java.util.Map;
 
+import static simple.constant.CustomHttpMethod.POST;
+
 public class PostMapper implements IMapper {
 
-    private static final IMapper postMapper = new PostMapper();
     private HashMap<String, LambdaHandlerWrapper> postMap;
     private final PostUrlRouterTrie postUrlRouterTrie;
     private final CustomHttpMethod customHttpMethod;
+    private static final IMapper postMapper = new PostMapper(POST, PostUrlRouterTrie.getInstance());
 
-    private PostMapper() {
-        this.customHttpMethod = CustomHttpMethod.POST;
-        this.postUrlRouterTrie = PostUrlRouterTrie.getInstance();
+    private PostMapper(CustomHttpMethod customHttpMethod, PostUrlRouterTrie trie) {
+        this.customHttpMethod = customHttpMethod;
+        this.postUrlRouterTrie = trie;
         this.postMap = new HashMap<>();
     }
 

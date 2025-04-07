@@ -20,11 +20,6 @@
             <property name="hibernate.hbm2ddl.auto" value="create"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-<!--           auto detection이 안 잡히는 이유 해결해야함-->
-<!--            https://www.inflearn.com/community/questions/34294/jpa%EC%97%90%EC%84%9C-entity-autodetection-%EA%B4%80%EB%A0%A8%ED%95%B4%EC%84%9C-%EC%A7%88%EB%AC%B8%EB%93%9C%EB%A6%BD%EB%8B%88%EB%8B%A4?srsltid=AfmBOopV9YJ1YXdUqyD77MNZrnnQnld84Q7duLsCkW5529zR5lylIz5w-->
-<!--            <property name="hibernate.archive.autodetection" value="class"/>-->
-
-
         </properties>
     </persistence-unit>
 
