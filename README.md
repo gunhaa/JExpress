@@ -133,7 +133,7 @@
 - 사용자 정의 스레드 풀  
   `IServer app = new JExpress(30)` (예: 30개의 스레드)
 
-### DB 설정 (`persistence.xml` 사용)
+### DB 설정 (`persistence.xml` 설정 사용)
 - H2 사용  
   `app.use(DB_H2)`
 - MySQL 사용
