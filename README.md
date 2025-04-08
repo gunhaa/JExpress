@@ -143,7 +143,7 @@
 - `app.use(API_DOCS)`
 - 생성 위치 : `http://localhost:port/api-docs.html`
 
-  ![api-docs](docs/images/api-docs.png)
+  ![api-docs](docs/images/api-docs1.png)
 
 ## 실행 환경
 
