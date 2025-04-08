@@ -28,8 +28,8 @@ public class Main {
         app.use(CORS);
 //        app.use(CORS, "https://bitlibrary.com");
         app.use(RESPONSE_TIME);
-        app.use(DB_H2);
-//        app.use(DB_MYSQL);
+//        app.use(DB_H2);
+        app.use(DB_MYSQL);
 
         //curl -i -X GET "localhost:8020/members"
         app.get("/members", (req, res) -> {

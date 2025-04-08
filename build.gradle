@@ -46,6 +46,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'com.h2database:h2:2.2.224'
+    implementation 'mysql:mysql-connector-java:8.0.33'
 
     // byte code
     implementation("org.ow2.asm:asm:9.6")

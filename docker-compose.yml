@@ -1,1 +1,37 @@
-i love docker-compose
+version: '3.8'
+
+services:
+  db:
+    image: mysql:latest
+    container_name: j-mysql-container
+    environment:
+      MYSQL_DATABASE: jexpress
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS}
+    ports:
+      - "3306:3306"
+    networks:
+      - jexpress-mysql-net
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+
+  jexpress:
+    build: .
+    image: jexpress:latest
+    container_name: jexpress-container
+    ports:
+      - "${PORT}:${PORT}"
+    networks:
+      - jexpress-mysql-net
+    depends_on:
+      - db
+    env_file: .env
+    restart: always
+
+networks:
+  jexpress-mysql-net:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local

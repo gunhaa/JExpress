@@ -167,3 +167,5 @@
 - MySQL 미사용시
   - `docker build --no-cache -t jexpress .`
   - `docker run --env-file .env -d --rm -p 8123:8123 jexpress`
+- MySQL 사용시
+  - `docker-compose up`
