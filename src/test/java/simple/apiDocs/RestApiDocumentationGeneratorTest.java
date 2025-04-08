@@ -1,12 +1,13 @@
 package simple.apiDocs;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import simple.mapper.GetMapper;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class RestApiDocumentationGeneratorTest {
 
@@ -31,18 +32,18 @@ class RestApiDocumentationGeneratorTest {
         ApiDetail list = getDocs.get(1);
         ApiDetail test = getDocs.get(2);
 
-        Assertions.assertEquals("/int", num.getUrl());
-        Assertions.assertEquals("/list", list.getUrl());
-        Assertions.assertEquals("/test", test.getUrl());
+        assertEquals("/int", num.getUrl());
+        assertEquals("/list", list.getUrl());
+        assertEquals("/test", test.getUrl());
 
-        Assertions.assertEquals("int", num.getReturnType());
-        Assertions.assertEquals("List", list.getReturnType());
-        Assertions.assertEquals("TestClazz", test.getReturnType());
+        assertEquals("int", num.getReturnType());
+        assertEquals("List", list.getReturnType());
+        assertEquals("TestClazz", test.getReturnType());
 
         Map<String, String> listFields = list.getFields();
-        Assertions.assertEquals("List", listFields.get("표준 자바 클래스"));
+        assertEquals("List", listFields.get("표준 자바 클래스"));
 
         Map<String, String> testFields = test.getFields();
-        Assertions.assertEquals("Map", testFields.get("field1"));
+        assertEquals("Map", testFields.get("field1"));
     }
 }

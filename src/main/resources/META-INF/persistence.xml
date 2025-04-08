@@ -6,14 +6,16 @@
     <persistence-unit name="h2">
         <class>simple.userEntity.Member</class>
         <class>simple.userEntity.Team</class>
-        <class>simple.userEntity.MemberDto1</class>
-        <class>simple.userEntity.MemberDto2</class>
-        <class>simple.userEntity.MemberDto3</class>
-        <class>simple.userEntity.MemberTeamDto</class>
+<!--        <class>simple.userEntity.MemberDto1</class>-->
+<!--        <class>simple.userEntity.MemberDto2</class>-->
+<!--        <class>simple.userEntity.MemberDto3</class>-->
+<!--        <class>simple.userEntity.MemberTeamDto</class>-->
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/Jexpress"/>
+<!--    파일 모드 -->
+<!--            <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/Jexpress"/>-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:JExpress;DB_CLOSE_DELAY=-1"/>
             <property name="javax.persistence.jdbc.user" value="sa"/>
             <property name="javax.persistence.jdbc.password" value=""/>
 

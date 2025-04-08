@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import simple.config.ApplicationConfig;
 import simple.httpRequest.HttpRequest;
 import simple.lambda.LambdaHttpRequest;
 import simple.lambda.ILambdaHandler;
