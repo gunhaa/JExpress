@@ -7,9 +7,9 @@ import simple.constant.ServerSettingChecker;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static simple.constant.ApplicationSettingFlags.*;
 import static simple.constant.ApplicationSettingFlags.API_DOCS;
 import static simple.constant.ApplicationSettingFlags.CORS;
+import static simple.constant.ApplicationSettingFlags.RESPONSE_TIME;
 
 class ApplicationConfigTest {
 

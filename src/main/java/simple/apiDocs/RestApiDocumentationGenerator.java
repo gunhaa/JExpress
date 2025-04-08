@@ -1,51 +1,83 @@
 package simple.apiDocs;
 
 import jakarta.persistence.OneToMany;
-import org.objectweb.asm.*;
 import simple.constant.CustomHttpMethod;
 import simple.mapper.IMapper;
 import simple.lambda.LambdaHandlerWrapper;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
-public class ApiDocsDto {
+public class RestApiDocumentationGenerator {
 
-    private final List<String> lambdaParam = new ArrayList<>();
+    public List<ApiDetails> extractApiDetails(IMapper IMapper) {
 
-//    @Deprecated
-//    public void createProxy(Map<String, LambdaHandler> apiHandlers) {
-//
-//        for (Map.Entry<String, LambdaHandler> entry : apiHandlers.entrySet()) {
-//            String url = entry.getKey();
-//            LambdaHandler handler = entry.getValue();
-//
-//            HttpRequest mock = HttpRequest.createMock();
-//            LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(mock);
-//
-//            LambdaHttpResponse response = new LambdaHttpResponse(lambdaHttpRequest, new PrintWriter(System.out, true));
-//
-//            handler.execute(null, response);
-//
-//            Class<?> returnType = LastSentObjectHolder.getLastSentType();
-//            if (returnType != null) {
-//                ApiDetails apiDetails = new ApiDetails(url, returnType.getSimpleName());
-//
-//                if(returnType.getPackage().getName().startsWith("java.util")){
-//                    apiDetails.addField("collection", returnType.getSimpleName());
-//                } else {
-//                    Field[] fields = returnType.getDeclaredFields();
-//                    for (Field field : fields) {
-//                        apiDetails.addField(field.getName(), field.getType().getSimpleName());
+        List<ApiDetails> apiList = new ArrayList<>();
+
+        Map<String, LambdaHandlerWrapper> apiHandlers = IMapper.getHandlers();
+        CustomHttpMethod method = IMapper.getMethod();
+
+        for (Map.Entry<String, LambdaHandlerWrapper> entry : apiHandlers.entrySet()) {
+            String url = entry.getKey();
+            Class<?> returnClazz = entry.getValue().getClazz();
+
+            ApiDetails apiDetails = new ApiDetails(method, url, returnClazz.getSimpleName());
+
+            if (returnClazz.isPrimitive() || returnClazz.isArray() ||
+                    (returnClazz.getPackage() != null && returnClazz.getPackage().getName().startsWith("java"))) {
+                apiDetails.addField(returnClazz);
+            } else {
+                Field[] fields = returnClazz.getDeclaredFields();
+                for (Field field : fields) {
+//                    if (field.isAnnotationPresent(ManyToOne.class) ||
+//                            field.isAnnotationPresent(OneToMany.class) ||
+//                            field.isAnnotationPresent(OneToOne.class) ||
+//                            field.isAnnotationPresent(ManyToMany.class)) {
+//                        continue;
 //                    }
-//                }
-//                apiList.add(apiDetails);
-//            }
-//        }
-//    }
+                    if(field.isAnnotationPresent(OneToMany.class)){
+                        continue;
+                    }
+                    apiDetails.addField(field.getName(), field.getType().getSimpleName());
+                }
+            }
+            apiList.add(apiDetails);
+        }
+        return apiList;
+    }
+    /*
+         private final List<String> lambdaParam = new ArrayList<>();
+
+    @Deprecated
+    public void createProxy(Map<String, LambdaHandler> apiHandlers) {
+
+        for (Map.Entry<String, LambdaHandler> entry : apiHandlers.entrySet()) {
+            String url = entry.getKey();
+            LambdaHandler handler = entry.getValue();
+
+            HttpRequest mock = HttpRequest.createMock();
+            LambdaHttpRequest lambdaHttpRequest = new LambdaHttpRequest(mock);
+
+            LambdaHttpResponse response = new LambdaHttpResponse(lambdaHttpRequest, new PrintWriter(System.out, true));
+
+            handler.execute(null, response);
+
+            Class<?> returnType = LastSentObjectHolder.getLastSentType();
+            if (returnType != null) {
+                ApiDetails apiDetails = new ApiDetails(url, returnType.getSimpleName());
+
+                if(returnType.getPackage().getName().startsWith("java.util")){
+                    apiDetails.addField("collection", returnType.getSimpleName());
+                } else {
+                    Field[] fields = returnType.getDeclaredFields();
+                    for (Field field : fields) {
+                        apiDetails.addField(field.getName(), field.getType().getSimpleName());
+                    }
+                }
+                apiList.add(apiDetails);
+            }
+        }
+    }
 
 
     @Deprecated
@@ -111,15 +143,15 @@ public class ApiDocsDto {
         parsingParam();
         System.out.println(this.lambdaParam);
 
-//        Map<String, LambdaHandler> apiHandlers = getMap.getHandlers();
+        Map<String, LambdaHandler> apiHandlers = getMap.getHandlers();
 
-//        for (Map.Entry<String, LambdaHandler> entry : apiHandlers.entrySet()) {
-//            String url = entry.getKey();
-//            CustomHttpMethod method = getMap.getMethod();
+        for (Map.Entry<String, LambdaHandler> entry : apiHandlers.entrySet()) {
+            String url = entry.getKey();
+            CustomHttpMethod method = getMap.getMethod();
 
-//            ApiDetails apiDetails = new ApiDetails(method, url, );
-//            apiList.add(apiDetails);
-//        }
+            ApiDetails apiDetails = new ApiDetails(method, url, );
+            apiList.add(apiDetails);
+        }
     }
 
     @Deprecated
@@ -133,42 +165,5 @@ public class ApiDocsDto {
         }
         Collections.reverse(this.lambdaParam);
     }
-
-    public List<ApiDetails> createApiDocs(IMapper IMapper) {
-
-        List<ApiDetails> apiList = new ArrayList<>();
-
-        Map<String, LambdaHandlerWrapper> apiHandlers = IMapper.getHandlers();
-        CustomHttpMethod method = IMapper.getMethod();
-
-        for (Map.Entry<String, LambdaHandlerWrapper> entry : apiHandlers.entrySet()) {
-            String url = entry.getKey();
-            Class<?> returnClazz = entry.getValue().getClazz();
-
-            ApiDetails apiDetails = new ApiDetails(method, url, returnClazz.getSimpleName());
-
-            if (returnClazz.isPrimitive() || returnClazz.isArray() ||
-                    (returnClazz.getPackage() != null && returnClazz.getPackage().getName().startsWith("java"))) {
-                apiDetails.addField(returnClazz);
-            } else {
-                Field[] fields = returnClazz.getDeclaredFields();
-                for (Field field : fields) {
-//                    if (field.isAnnotationPresent(ManyToOne.class) ||
-//                            field.isAnnotationPresent(OneToMany.class) ||
-//                            field.isAnnotationPresent(OneToOne.class) ||
-//                            field.isAnnotationPresent(ManyToMany.class)) {
-//                        continue;
-//                    }
-                    if(field.isAnnotationPresent(OneToMany.class)){
-                        continue;
-                    }
-                    apiDetails.addField(field.getName(), field.getType().getSimpleName());
-                }
-            }
-            apiList.add(apiDetails);
-        }
-        return apiList;
-    }
-
-};
-
+    */
+}
