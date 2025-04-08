@@ -28,6 +28,9 @@ public class ApplicationConfig {
         }
     }
 
+    public void unRegisterConfig(ApplicationSettingFlags applicationSettingFlags){
+        applicationConfig &= ~applicationSettingFlags.getBit();
+    }
 
     // for test
     public void clearConfigs(){

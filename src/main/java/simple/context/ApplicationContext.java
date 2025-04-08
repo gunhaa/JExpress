@@ -3,10 +3,12 @@ package simple.context;
 
 import simple.config.ApplicationConfig;
 import simple.constant.ApplicationSettingFlags;
-import simple.mapper.GetMapper;
+import simple.constant.ServerSettingChecker;
 import simple.mapper.IMapper;
-import simple.mapper.PostMapper;
 import simple.middleware.MiddlewareProvider;
+
+import static simple.constant.ApplicationSettingFlags.DB_MYSQL;
+
 
 public class ApplicationContext {
 
@@ -38,7 +40,8 @@ public class ApplicationContext {
 
         int config = applicationConfig.getConfig();
 
-        if(ApplicationSettingFlags.isH2AndMySQLEnabled(config)){
+        if(ServerSettingChecker.isH2AndMySQLEnabled(config)){
+            applicationConfig.unRegisterConfig(DB_MYSQL);
         }
 
         for (ApplicationSettingFlags setting : ApplicationSettingFlags.values()) {

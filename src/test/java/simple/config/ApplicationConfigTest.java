@@ -1,5 +1,6 @@
 package simple.config;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import simple.constant.ApplicationSettingFlags;
@@ -41,15 +42,21 @@ class ApplicationConfigTest {
     }
 
     @Test
-    public void H2_MySQL_동시_설정시_H2_설정_자동끄기(){
+    public void 여러_DB_사용시_설정_등록_설정_끄기_테스트(){
         ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
         applicationConfig.registerConfig(DB_H2);
         applicationConfig.registerConfig(DB_MYSQL);
 
-        int config = applicationConfig.getConfig();
+        int registerConfig = applicationConfig.getConfig();
 
-        boolean useH2AndMySQL = ApplicationSettingFlags.isH2AndMySQLEnabled(config);
-        System.out.println(useH2AndMySQL);
+        boolean useH2MySQLConfig = ServerSettingChecker.isH2AndMySQLEnabled(registerConfig);
+        Assertions.assertTrue(useH2MySQLConfig);
+
+        applicationConfig.unRegisterConfig(DB_H2);
+
+        int unRegisterConfig = applicationConfig.getConfig();
+        boolean useMySQLConfig = ServerSettingChecker.isH2AndMySQLEnabled(unRegisterConfig);
+        Assertions.assertFalse(useMySQLConfig);
     }
 
     @BeforeEach
