@@ -23,6 +23,10 @@ public enum ApplicationSettingFlags {
         return (bitMask & CORS.bitMask) != 0;
     }
 
+    public static boolean isH2AndMySQLEnabled(int config){
+        return (config & DB_H2.bitMask) != 0 && (config & DB_MYSQL.bitMask) !=0 ;
+    }
+
     public boolean isSettingEnabled(int config){
         return (bitMask & config) != 0;
     }

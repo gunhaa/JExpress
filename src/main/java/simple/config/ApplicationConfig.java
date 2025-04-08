@@ -28,6 +28,7 @@ public class ApplicationConfig {
         }
     }
 
+
     // for test
     public void clearConfigs(){
         this.applicationConfig = 0;

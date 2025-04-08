@@ -12,17 +12,19 @@ public class ApplicationContext {
 
     private static ApplicationContext INSTANCE;
 
+    private final ApplicationConfig applicationConfig;
     private final MapperResolver mapperResolver;
     private final MiddlewareProvider middlewareProvider;
 
-    private ApplicationContext(MapperResolver mapperResolver, MiddlewareProvider middlewareProvider) {
+    private ApplicationContext(MapperResolver mapperResolver, MiddlewareProvider middlewareProvider, ApplicationConfig applicationConfig) {
         this.mapperResolver = mapperResolver;
         this.middlewareProvider = middlewareProvider;
+        this.applicationConfig = applicationConfig;
     }
 
-    public static void initialize(IMapper getMapper, IMapper postMapper, MiddlewareProvider middlewareProvider) {
+    public static void initialize(IMapper getMapper, IMapper postMapper, MiddlewareProvider middlewareProvider, ApplicationConfig applicationConfig) {
         MapperResolver resolver = new MapperResolver(getMapper, postMapper);
-        INSTANCE = new ApplicationContext(resolver, middlewareProvider);
+        INSTANCE = new ApplicationContext(resolver, middlewareProvider, applicationConfig);
     }
 
     public static ApplicationContext getInstance(){
@@ -34,7 +36,10 @@ public class ApplicationContext {
 
     public void initializeMiddleWare(){
 
-        int config = ApplicationConfig.getInstance().getConfig();
+        int config = applicationConfig.getConfig();
+
+        if(ApplicationSettingFlags.isH2AndMySQLEnabled(config)){
+        }
 
         for (ApplicationSettingFlags setting : ApplicationSettingFlags.values()) {
             if ((config & setting.getBit()) == setting.getBit()) {

@@ -82,7 +82,8 @@ public class JExpress implements IServer {
         ApplicationContext.initialize(
                 GetMapper.getInstance(),
                 PostMapper.getInstance(),
-                MiddlewareProvider.getInstance()
+                MiddlewareProvider.getInstance(),
+                ApplicationConfig.getInstance()
         );
         ApplicationContext applicationContext = ApplicationContext.getInstance();
         applicationContext.initializeMiddleWare();

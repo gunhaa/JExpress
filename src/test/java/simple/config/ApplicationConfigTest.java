@@ -7,9 +7,7 @@ import simple.constant.ServerSettingChecker;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static simple.constant.ApplicationSettingFlags.API_DOCS;
-import static simple.constant.ApplicationSettingFlags.CORS;
-import static simple.constant.ApplicationSettingFlags.RESPONSE_TIME;
+import static simple.constant.ApplicationSettingFlags.*;
 
 class ApplicationConfigTest {
 
@@ -40,6 +38,18 @@ class ApplicationConfigTest {
         for (ApplicationSettingFlags setting : settings) {
             assertTrue(ServerSettingChecker.isServerEnabled(setting), setting.name() + "가 정상적으로 등록되어야 함");
         }
+    }
+
+    @Test
+    public void H2_MySQL_동시_설정시_H2_설정_자동끄기(){
+        ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
+        applicationConfig.registerConfig(DB_H2);
+        applicationConfig.registerConfig(DB_MYSQL);
+
+        int config = applicationConfig.getConfig();
+
+        boolean useH2AndMySQL = ApplicationSettingFlags.isH2AndMySQLEnabled(config);
+        System.out.println(useH2AndMySQL);
     }
 
     @BeforeEach
