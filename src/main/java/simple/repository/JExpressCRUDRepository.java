@@ -167,16 +167,16 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         IDBConnection db;
 
         if(ServerSettingChecker.isServerEnabled(DB_MYSQL)){
-            db = IDBConnection.getMySQLConnectionInstance();
+            db = IDBConnection.getMySQLConnection();
             return db.getEntityManager();
         }
 
         if(ServerSettingChecker.isServerEnabled(DB_H2)){
-            db = IDBConnection.getH2ConnectionInstance();
+            db = IDBConnection.getH2Connection();
             return db.getEntityManager();
         }
 
         // default used h2 db
-        return IDBConnection.getH2ConnectionInstance().getEntityManager();
+        return IDBConnection.getH2Connection().getEntityManager();
     }
 }

@@ -2,25 +2,25 @@ package simple.middleware;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import simple.database.H2Connection;
+import simple.database.IDBConnection;
+import simple.database.MySQLConnection;
 import simple.userEntity.Member;
 import simple.userEntity.Team;
 
-public class H2DataInitialize implements IMiddleWare {
+public class MySQLInitialize implements IMiddleWare{
+    private static volatile MySQLInitialize INSTANCE;
 
-    private static volatile H2DataInitialize INSTANCE;
-
-    private H2DataInitialize() {
+    private MySQLInitialize() {
     }
 
     /**
      * lazy Loading, Double-Checked Locking
      */
-    public static H2DataInitialize getInstance() {
+    public static MySQLInitialize getInstance() {
         if (INSTANCE == null) {
-            synchronized (H2DataInitialize.class) {
+            synchronized (MySQLInitialize.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new H2DataInitialize();
+                    INSTANCE = new MySQLInitialize();
                 }
             }
         }
@@ -29,8 +29,8 @@ public class H2DataInitialize implements IMiddleWare {
 
     @Override
     public void run() {
-        H2Connection h2 = H2Connection.getInstance();
-        EntityManager em = h2.getEntityManager();
+        IDBConnection mySQL = IDBConnection.getH2Connection();
+        EntityManager em = mySQL.getEntityManager();
         setTestData(em);
     }
 

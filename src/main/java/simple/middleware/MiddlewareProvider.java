@@ -34,8 +34,8 @@ public class MiddlewareProvider {
             case API_DOCS -> IMiddleWare = ApiDocs.getInstance();
             case CORS -> IMiddleWare = Cors.getInstance();
             case RESPONSE_TIME -> IMiddleWare = ResponseTime.getInstance();
-            case DB_H2 -> IMiddleWare = H2DataInitialize.getInstance();
-            case DB_MYSQL -> IMiddleWare = MySQLDatabase.getInstance();
+            case DB_H2 -> IMiddleWare = H2Initialize.getInstance();
+            case DB_MYSQL -> IMiddleWare = MySQLInitialize.getInstance();
         }
 
         return IMiddleWare;

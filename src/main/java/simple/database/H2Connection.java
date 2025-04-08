@@ -16,7 +16,7 @@ public class H2Connection implements IDBConnection {
         this.emf = Persistence.createEntityManagerFactory("h2");
     }
 
-    public static H2Connection getInstance() {
+    protected static H2Connection getInstance() {
         if (INSTANCE == null) {
             synchronized (H2Connection.class) {
                 if (INSTANCE == null) {

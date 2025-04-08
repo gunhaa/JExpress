@@ -3,44 +3,35 @@ package simple.database;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
-// Todo
 public class MySQLConnection implements IDBConnection {
-    @Override
-    public EntityManagerFactory getEntityManagerFactory() {
-//        Configuration configuration = new Configuration();
-//        configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
-//        configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/testdb");
-//        configuration.setProperty("hibernate.connection.username", "root");
-//        configuration.setProperty("hibernate.connection.password", "password");
-//        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-//
-//        // SessionFactory 생성
-//        SessionFactory sessionFactory = configuration.buildSessionFactory();
-//        Session session = sessionFactory.openSession();
-//
-//        try {
-//            // Connection 가져오기
-//            Connection connection = session.doReturningWork(Connection::unwrap);
-//            System.out.println("DB 연결 성공: " + connection.getMetaData().getURL());
-//
-//            // Connection 닫기
-//            connection.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            session.close();
-//            sessionFactory.close();
-//        }
-        return null;
+
+    private static volatile MySQLConnection INSTANCE;
+    private final EntityManagerFactory emf;
+
+    private MySQLConnection() {
+        this.emf = Persistence.createEntityManagerFactory("h2");
     }
 
-    public static IDBConnection getInstance(){
-        return null;
+    protected static MySQLConnection getInstance() {
+        if (INSTANCE == null) {
+            synchronized (MySQLConnection.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new MySQLConnection();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+    @Override
+    public EntityManagerFactory getEntityManagerFactory() {
+        return emf;
     }
 
     @Override
     public EntityManager getEntityManager() {
-        return null;
+        return emf.createEntityManager();
     }
 }

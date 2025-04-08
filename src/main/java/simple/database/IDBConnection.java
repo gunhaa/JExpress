@@ -7,11 +7,11 @@ public interface IDBConnection {
     EntityManagerFactory getEntityManagerFactory();
     EntityManager getEntityManager();
 
-    static IDBConnection getH2ConnectionInstance() {
+    static IDBConnection getH2Connection() {
         return H2Connection.getInstance();
     }
 
-    static IDBConnection getMySQLConnectionInstance() {
+    static IDBConnection getMySQLConnection() {
         return MySQLConnection.getInstance();
     }
 }
