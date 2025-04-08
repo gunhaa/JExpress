@@ -13,7 +13,7 @@ import static simple.constant.CustomHttpMethod.GET;
 
 public class GetMapper implements IMapper {
 
-    private HashMap<String, LambdaHandlerWrapper> getMap;
+    private final HashMap<String, LambdaHandlerWrapper> getMap;
     private final GetUrlRouterRouterTrie getUrlRouterTrie;
     private final CustomHttpMethod customHttpMethod;
     private static final IMapper getMapper = new GetMapper(GET, GetUrlRouterRouterTrie.getInstance());
@@ -56,6 +56,11 @@ public class GetMapper implements IMapper {
         LambdaHandlerWrapper lambdaHandlerWrapper = new LambdaHandlerWrapper(responseSuccessHandler, clazz);
         getUrlRouterTrie.insert(url, lambdaHandlerWrapper);
         getMap.put(url, lambdaHandlerWrapper);
+    }
+
+    //for test
+    public static GetMapper createGetMapper(){
+        return new GetMapper(GET, GetUrlRouterRouterTrie.getInstance());
     }
 
 }

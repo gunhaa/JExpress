@@ -6,13 +6,15 @@ import simple.mapper.IMapper;
 import simple.lambda.LambdaHandlerWrapper;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class RestApiDocumentationGenerator {
 
-    public List<ApiDetails> extractApiDetails(IMapper IMapper) {
+    public List<ApiDetail> extractApiDetails(IMapper IMapper) {
 
-        List<ApiDetails> apiList = new ArrayList<>();
+        List<ApiDetail> apiList = new ArrayList<>();
 
         Map<String, LambdaHandlerWrapper> apiHandlers = IMapper.getHandlers();
         CustomHttpMethod method = IMapper.getMethod();
@@ -21,11 +23,11 @@ public class RestApiDocumentationGenerator {
             String url = entry.getKey();
             Class<?> returnClazz = entry.getValue().getClazz();
 
-            ApiDetails apiDetails = new ApiDetails(method, url, returnClazz.getSimpleName());
+            ApiDetail apiDetail = new ApiDetail(method, url, returnClazz.getSimpleName());
 
             if (returnClazz.isPrimitive() || returnClazz.isArray() ||
                     (returnClazz.getPackage() != null && returnClazz.getPackage().getName().startsWith("java"))) {
-                apiDetails.addField(returnClazz);
+                apiDetail.addField(returnClazz);
             } else {
                 Field[] fields = returnClazz.getDeclaredFields();
                 for (Field field : fields) {
@@ -38,10 +40,10 @@ public class RestApiDocumentationGenerator {
                     if(field.isAnnotationPresent(OneToMany.class)){
                         continue;
                     }
-                    apiDetails.addField(field.getName(), field.getType().getSimpleName());
+                    apiDetail.addField(field.getName(), field.getType().getSimpleName());
                 }
             }
-            apiList.add(apiDetails);
+            apiList.add(apiDetail);
         }
         return apiList;
     }

@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class ApiDetails {
+public class ApiDetail {
 
     private final CustomHttpMethod customHttpMethod;
     private final String url;
     private final String returnType;
-    private Map<String, String> fields = new HashMap<>();
+    private final Map<String, String> fields = new HashMap<>();
 
-    public ApiDetails(CustomHttpMethod customHttpMethod, String url, String returnType) {
+    public ApiDetail(CustomHttpMethod customHttpMethod, String url, String returnType) {
         this.customHttpMethod = customHttpMethod;
         this.url = url;
         this.returnType = returnType;

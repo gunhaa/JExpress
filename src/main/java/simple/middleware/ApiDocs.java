@@ -1,6 +1,6 @@
 package simple.middleware;
 
-import simple.apiDocs.ApiDetails;
+import simple.apiDocs.ApiDetail;
 import simple.apiDocs.RestApiDocumentationGenerator;
 import simple.mapper.GetMapper;
 import simple.mapper.IMapper;
@@ -35,8 +35,8 @@ public class ApiDocs implements IMiddleWare {
         IMapper postMap = PostMapper.getInstance();
 
         RestApiDocumentationGenerator restApiDocumentationGenerator = new RestApiDocumentationGenerator();
-        List<ApiDetails> getDocs = restApiDocumentationGenerator.extractApiDetails(getMap);
-        List<ApiDetails> postDocs = restApiDocumentationGenerator.extractApiDetails(postMap);
+        List<ApiDetail> getDocs = restApiDocumentationGenerator.extractApiDetails(getMap);
+        List<ApiDetail> postDocs = restApiDocumentationGenerator.extractApiDetails(postMap);
 
         getMap.addUrl("/api-docs/get/v1", (req, res) -> {
             res.send(getDocs);
