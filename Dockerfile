@@ -10,6 +10,6 @@ RUN apt-get update && apt-get install -y dos2unix \
 
 RUN ./gradlew shadowJar
 
-EXPOSE 8020
+ENV PORT=8020
 
 CMD ["java", "-jar", "/app/build/libs/JExpress-1.0-SNAPSHOT-all.jar"]

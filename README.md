@@ -166,4 +166,4 @@
 ## 사용 방법
 - MySQL 미사용시
   - `docker build --no-cache -t jexpress .`
-  - `docker run -d --rm -p 8020:8020 jexpress`
+  - `docker run --env-file .env -d --rm -p 8123:8123 jexpress`

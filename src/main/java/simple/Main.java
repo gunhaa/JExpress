@@ -153,6 +153,7 @@ public class Main {
             res.send(registerMember);
         }, MemberTeamDto.class);
 
-        app.run(8020);
+        String port = System.getenv("PORT");
+        app.run(Integer.parseInt(port));
     }
 }
