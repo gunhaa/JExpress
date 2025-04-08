@@ -9,10 +9,13 @@ public class MySQLConnection implements IDBConnection {
 
     private static volatile MySQLConnection INSTANCE;
     private final EntityManagerFactory emf;
-
+    // todo mySQL 구현체로 교체
     private MySQLConnection() {
         this.emf = Persistence.createEntityManagerFactory("h2");
     }
+//    private MySQLConnection() {
+//        this.emf = Persistence.createEntityManagerFactory("mysql");
+//    }
 
     protected static MySQLConnection getInstance() {
         if (INSTANCE == null) {

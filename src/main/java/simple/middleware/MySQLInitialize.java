@@ -29,7 +29,7 @@ public class MySQLInitialize implements IMiddleWare{
 
     @Override
     public void run() {
-        IDBConnection mySQL = IDBConnection.getH2Connection();
+        IDBConnection mySQL = IDBConnection.getMySQLConnection();
         EntityManager em = mySQL.getEntityManager();
         setTestData(em);
     }

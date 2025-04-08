@@ -25,7 +25,7 @@ public class Main {
 //        app.use(CORS, "https://bitlibrary.com");
         app.use(RESPONSE_TIME);
         app.use(DB_H2);
-        app.use(DB_MYSQL);
+//        app.use(DB_MYSQL);
 
         //curl -i -X GET "localhost:8020/members"
         app.get("/members", (req, res) -> {
@@ -33,7 +33,15 @@ public class Main {
             List<Member> List = jcr.findAll(Member.class);
 
             res.send(List);
-        }, List.class);
+        }, Member.class);
+
+        //curl -i -X GET "localhost:8020/teams"
+        app.get("/teams", (req, res) -> {
+            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            List<Team> List = jcr.findAll(Team.class);
+
+            res.send(List);
+        }, Team.class);
 
         // curl -i -X GET "localhost:8020/member/team?teamName=일팀"
         app.get("/member/team", (req, res) -> {
@@ -86,7 +94,14 @@ public class Main {
             res.send(result);
 
         }, MemberDto3.class);
-
+        
+        /* body
+        {
+          "name": "테스트",
+          "age": "150",
+          "engName" : "Test"
+        }
+        */
         // member 등록
         app.post("/member", (req, res)-> {
 
@@ -99,6 +114,13 @@ public class Main {
 
         }, Member.class);
 
+
+        /* body
+        {
+          "teamName": "테스트팀",
+          "teamEngName": "testTeam",
+        }
+        */
         // team 등록
         app.post("/team", (req, res)-> {
             Map<String, String> map = req.getBodyMap();
@@ -110,12 +132,12 @@ public class Main {
         }, Team.class);
 
 
-        /* sample json
+        /* body
         {
           "name": "재원",
           "age": "120",
           "engName": "jae",
-          "teamId": "1" or null
+          "teamId": "1"
         }
         */
         // member team 동시 등록
