@@ -11,7 +11,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static simple.constant.ApplicationSettingFlags.*;
+import static simple.constant.ApplicationSettingFlags.API_DOCS;
+import static simple.constant.ApplicationSettingFlags.CORS;
+import static simple.constant.ApplicationSettingFlags.RESPONSE_TIME;
+import static simple.constant.ApplicationSettingFlags.DB_H2;
+import static simple.constant.ApplicationSettingFlags.DB_MYSQL;
 
 public class Main {
     public static void main(String[] args) throws IOException{
