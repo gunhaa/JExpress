@@ -44,6 +44,11 @@ class ApplicationConfigTest {
     @Test
     public void 여러_DB_사용시_설정_등록_설정_끄기_테스트(){
         ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
+        int defaultConfig = applicationConfig.getConfig();
+        boolean defaultConfigBoolean = ServerSettingChecker.isH2AndMySQLDisabled(defaultConfig);
+
+        Assertions.assertTrue(defaultConfigBoolean);
+
         applicationConfig.registerConfig(DB_H2);
         applicationConfig.registerConfig(DB_MYSQL);
 

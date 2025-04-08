@@ -2,6 +2,9 @@ package simple.constant;
 
 import simple.config.ApplicationConfig;
 
+import static simple.constant.ApplicationSettingFlags.DB_MYSQL;
+import static simple.constant.ApplicationSettingFlags.DB_H2;
+
 public class ServerSettingChecker {
 
     private static final ApplicationConfig applicationConfig = ApplicationConfig.getInstance();
@@ -21,8 +24,13 @@ public class ServerSettingChecker {
     }
 
     public static boolean isH2AndMySQLEnabled(int config){
-        return (config & ApplicationSettingFlags.DB_H2.getBit()) != 0
-                && (config & ApplicationSettingFlags.DB_MYSQL.getBit()) != 0;
+        return (config & DB_H2.getBit()) != 0
+                && (config & DB_MYSQL.getBit()) != 0;
+    }
+
+    public static boolean isH2AndMySQLDisabled(int config){
+        return (config & DB_H2.getBit()) == 0
+                && (config & DB_MYSQL.getBit()) == 0;
     }
 
 }
