@@ -41,6 +41,7 @@ public class ApplicationContext {
         int config = applicationConfig.getConfig();
 
         if(ServerSettingChecker.isH2AndMySQLEnabled(config)){
+            //todo 현재 테스트용으로 두 설정 모두 사용시 MySQL 설정 off, 정상은 h2 off
             applicationConfig.unRegisterConfig(DB_MYSQL);
         }
 
