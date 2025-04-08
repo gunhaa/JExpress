@@ -1,5 +1,6 @@
 package simple.apiDocs;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import simple.mapper.GetMapper;
 
@@ -15,8 +16,9 @@ class RestApiDocumentationGeneratorTest {
         private Map field1;
     }
 
+    @DisplayName("Mapper 통합 테스트")
     @Test
-    public void Mapper_Integration_테스트(){
+    public void testMapperIntegration(){
         GetMapper getMap = GetMapper.createGetMapper();
 
         getMap.addUrl("/test", (req, res)->{}, TestClazz.class);

@@ -2,6 +2,7 @@ package simple.url;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import simple.httpRequest.HttpRequest;
@@ -17,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class GetUrlRouterTrieTest {
 
     @Test
-    public void TDD_구조테스트(){
+    @DisplayName("TDD_구조테스트")
+    public void testRouterTrieStructure(){
         GetUrlRouterRouterTrie getUrlRouterTrie = GetUrlRouterRouterTrie.getInstance();
         ILambdaHandler iLambdaHandler = new ILambdaHandler() {
             @Override
@@ -65,7 +67,8 @@ class GetUrlRouterTrieTest {
     }
 
     @Test
-    public void TDD_URL에_맞는_Handler반환(){
+    @DisplayName("URL에 맞는 핸들러 반환 테스트")
+    public void testReturnHandlerMatchingUrl(){
         GetUrlRouterRouterTrie getUrlRouterTrie = GetUrlRouterRouterTrie.getInstance();
 
         class TestHolder {
@@ -122,7 +125,8 @@ class GetUrlRouterTrieTest {
     }
 
     @BeforeEach
-    public void 트라이_초기화(){
+    @DisplayName("트라이 초기화")
+    public void initializeRouterTrie(){
         GetUrlRouterRouterTrie.getInstance().clearTrie();
     }
 }

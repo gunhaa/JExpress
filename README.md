@@ -160,3 +160,6 @@
 3. 리팩토링
 
 ## 사용 방법
+- MySQL 미사용시
+  - `docker build --no-cache -t jexpress .`
+  - `docker run -d --rm -p 8020:8020 jexpress`
