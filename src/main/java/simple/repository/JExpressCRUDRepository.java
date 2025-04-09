@@ -147,6 +147,12 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         }
     }
 
+    public boolean isSqlInjection(String value){
+        String lowerValue = value.toLowerCase();
+        return lowerValue.contains("'") || lowerValue.contains("--") ||
+                lowerValue.contains(";") || lowerValue.matches(".*\\b(select|insert|update|delete|drop|union|or|and)\\b.*");
+    }
+
     private String paramName(String columnName, int index) {
         return columnName.replace(".", "") + "_" + index;
     }

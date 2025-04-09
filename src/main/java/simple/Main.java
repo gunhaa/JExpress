@@ -1,5 +1,7 @@
 package simple;
 
+import simple.constant.HttpStatus;
+import simple.httpRequest.ErrorStatus;
 import simple.repository.CustomRepository;
 import simple.repository.JExpressCRUDRepository;
 import simple.repository.JExpressCondition;
@@ -15,7 +17,7 @@ import static simple.constant.ApplicationSettingFlags.API_DOCS;
 import static simple.constant.ApplicationSettingFlags.CORS;
 import static simple.constant.ApplicationSettingFlags.RESPONSE_TIME;
 import static simple.constant.ApplicationSettingFlags.DB_H2;
-import static simple.constant.ApplicationSettingFlags.DB_MYSQL;
+import static simple.constant.HttpStatus.BAD_REQUEST_400;
 
 public class Main {
     public static void main(String[] args) throws IOException{
@@ -48,17 +50,22 @@ public class Main {
         }, Team.class);
 
         // curl -i -X GET "localhost:8020/member/team?teamName=일팀"
+        // curl -G "localhost:8020/member/team" --data-urlencode "teamName=drop table users"
         app.get("/member/team", (req, res) -> {
 
             String key1 = "teamName";
             String value1 = req.getQueryString(key1);
+            JExpressCRUDRepository jcr = new JExpressCRUDRepository();
+
+            if(value1 != null && jcr.isSqlInjection(value1)){
+                res.send(new ErrorStatus(BAD_REQUEST_400, "sql injection detected"));
+                return;
+            }
 
             StringBuilder query = new StringBuilder("SELECT m.name, m.engName, m.age FROM MEMBER m JOIN TEAM t ON t.TEAM_ID=m.TEAM_ID WHERE 1=1");
-            // ' 를 구분하는 validation 함수 필요
             if(value1 != null){
                 query.append(" AND ").append(key1).append("=").append("'").append(value1).append("'");
             }
-            JExpressCRUDRepository jcr = new JExpressCRUDRepository();
 
             List<MemberDto1> List = jcr.findListWithNativeQuery(MemberDto1.class, query.toString());
 
