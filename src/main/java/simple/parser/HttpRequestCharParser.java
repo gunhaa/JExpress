@@ -3,6 +3,7 @@ package simple.parser;
 import simple.httpRequest.HttpRequest;
 import simple.httpRequest.CharHttpRequestBuilder;
 import simple.logger.ILogger;
+import simple.logger.LoggerManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,12 +11,12 @@ import java.util.HashMap;
 
 public class HttpRequestCharParser implements IHttpRequestParser {
     private final CharHttpRequestBuilder charHttpRequestBuilder;
-    private final ILogger ILogger;
+    private final LoggerManager loggerManager;
     private final StringBuilder lineBuilder;
 
-    public HttpRequestCharParser(ILogger ILogger) {
+    public HttpRequestCharParser(LoggerManager loggerManager) {
         this.charHttpRequestBuilder = new CharHttpRequestBuilder();
-        this.ILogger = ILogger;
+        this.loggerManager = loggerManager;
         this.lineBuilder = new StringBuilder();
     }
 
@@ -25,8 +26,6 @@ public class HttpRequestCharParser implements IHttpRequestParser {
 
         while ( charHttpRequestBuilder.getContentLength() != 0
                 && (ch = request.read()) != -1) {
-
-            ILogger.add((char) ch);
 
             if(charHttpRequestBuilder.isParsingBody()){
                 charHttpRequestBuilder.addRequestBody((char)ch);
@@ -59,6 +58,7 @@ public class HttpRequestCharParser implements IHttpRequestParser {
             charHttpRequestBuilder.parsingJsonToMap(charHttpRequestBuilder.getBody());
         }
 
+        loggerManager.addLog(charHttpRequestBuilder.getLogBuffer());
         return HttpRequest.builder()
                 .method(charHttpRequestBuilder.getMethod())
                 .url(charHttpRequestBuilder.getUrl())

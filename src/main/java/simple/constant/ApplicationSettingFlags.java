@@ -7,7 +7,7 @@ public enum ApplicationSettingFlags {
     CORS(1 << 3),
     DB_H2(1 << 4),
     DB_MYSQL(1 << 5),
-    LOGGER_REQUEST(1 << 6);
+    REQUEST_LOGGER(1 << 6);
 
     private final int bitMask;
 

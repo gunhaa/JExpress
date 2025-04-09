@@ -1,6 +1,5 @@
 package simple;
 
-import simple.constant.HttpStatus;
 import simple.httpRequest.ErrorStatus;
 import simple.repository.CustomRepository;
 import simple.repository.JExpressCRUDRepository;
@@ -13,10 +12,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static simple.constant.ApplicationSettingFlags.API_DOCS;
-import static simple.constant.ApplicationSettingFlags.CORS;
-import static simple.constant.ApplicationSettingFlags.RESPONSE_TIME;
-import static simple.constant.ApplicationSettingFlags.DB_H2;
+import static simple.constant.ApplicationSettingFlags.*;
 import static simple.constant.HttpStatus.BAD_REQUEST_400;
 
 public class Main {
@@ -29,6 +25,7 @@ public class Main {
         app.use(API_DOCS);
         app.use(CORS);
 //        app.use(CORS, "https://bitlibrary.com");
+        app.use(REQUEST_LOGGER);
         app.use(RESPONSE_TIME);
         app.use(DB_H2);
 //        app.use(DB_MYSQL);
@@ -162,7 +159,7 @@ public class Main {
 
         String port = System.getenv("PORT");
         // use docker
-        //app.run(Integer.parseInt(port));
+        //app.run(port);
         app.run("8020");
     }
 }

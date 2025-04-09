@@ -24,23 +24,25 @@ public class CharHttpRequestBuilder {
     private boolean parsingHeaders;
     private boolean parsingBody;
     private int contentLength;
-    private Queue<ErrorStatus> errorQueue;
+    private Queue<ErrorStatus> errorQueue = new ArrayDeque<>();
+    private StringBuilder logBuffer = new StringBuilder();
 
     public CharHttpRequestBuilder() {
         this.requestLineParsed = true;
         this.parsingHeaders = false;
         this.parsingBody = false;
         this.contentLength = -1;
-        this.errorQueue = new ArrayDeque<>();
     }
 
     public void addHeader(String line) {
         String[] splitLine = line.split(": ");
+        logBuffer.append(line).append("\r\n");
         this.header.put(splitLine[0], splitLine[1]);
     }
 
     public void addRequestLine(String line) {
         String[] request = line.split(" ");
+        logBuffer.append(line).append("\r\n");
         try {
             this.method = CustomHttpMethod.valueOf(request[0]);
         } catch (IllegalArgumentException e) {
@@ -73,6 +75,7 @@ public class CharHttpRequestBuilder {
     public void updateRemainingBodyLength() {
         this.parsingHeaders = false;
         this.parsingBody = true;
+        this.logBuffer.append("\r\n");
 
         String contentLength = this.getHeader().get("Content-Length");
         if (contentLength != null) {
@@ -88,6 +91,7 @@ public class CharHttpRequestBuilder {
     }
 
     public void addRequestBody(String line) {
+        logBuffer.append(line);
         byte[] bytes = line.getBytes(StandardCharsets.UTF_8);
         int length = bytes.length;
         this.contentLength -= length;
@@ -95,32 +99,12 @@ public class CharHttpRequestBuilder {
     }
 
     public void addRequestBody(char c) {
+        logBuffer.append(c);
         byte[] bytes = Character.toString(c).getBytes(StandardCharsets.UTF_8);
         int length = bytes.length;
         this.contentLength -= length;
         this.body.append(c);
     }
-
-//    public void parsingJsonToMap(StringBuilder json) {
-//        Gson gson = new Gson();
-//        Type type = new TypeToken<Map<String, Object>>() {
-//        }.getType();
-//        if (isValidJson(json)) {
-//            this.bodyMap = gson.fromJson(json.toString(), type);
-//        } else {
-//            System.err.println("Invalid json body Error");
-//            errorQueue.add(new ErrorStatus(HttpStatus.BAD_REQUEST_400, "Invalid json body Error"));
-//        }
-//    }
-//
-//    private boolean isValidJson(StringBuilder json) {
-//        try {
-//            JsonParser.parseString(json.toString());
-//            return true;
-//        } catch (JsonSyntaxException e) {
-//            return false;
-//        }
-//    }
 
     public void parsingJsonToMap(StringBuilder json) {
         ObjectMapper objectMapper = new ObjectMapper();

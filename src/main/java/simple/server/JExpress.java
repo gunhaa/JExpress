@@ -3,6 +3,8 @@ package simple.server;
 import simple.constant.ApplicationSettingFlags;
 import simple.config.ApplicationConfig;
 import simple.httpRequest.HttpRequest;
+import simple.logger.LoggerFactory;
+import simple.logger.LoggerManager;
 import simple.logger.RequestLogger;
 import simple.logger.ILogger;
 import simple.mapper.GetMapper;
@@ -108,9 +110,11 @@ public class JExpress implements IServer {
         try (InputStream clientInputStream = clientSocket.getInputStream();
              BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))) {
 
-            ILogger logger = new RequestLogger();
+            LoggerManager loggerManager = applicationContext.getLoggerManager();
 
-            IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(logger);
+//            ILogger logger = new RequestLogger();
+
+            IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(loggerManager);
             OutputStream clientOutputStream = clientSocket.getOutputStream();
 
             HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);
@@ -124,7 +128,7 @@ public class JExpress implements IServer {
 
             handler.sendResponse(clientOutputStream, httpRequest, ILambdaHandler);
 
-            logger.print();
+            loggerManager.printAll();
         } catch (IOException e) {
             System.err.println("handleClient IO Exception");
         } finally {
