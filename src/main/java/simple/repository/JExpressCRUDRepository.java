@@ -17,20 +17,8 @@ import static simple.constant.ApplicationSettingFlags.DB_MYSQL;
 
 public class JExpressCRUDRepository implements IJExpressRepository {
 
-    private static volatile JExpressCRUDRepository INSTANCE;
 
-    private JExpressCRUDRepository() {}
-
-    public static JExpressCRUDRepository getInstance() {
-        if (INSTANCE == null) {
-            synchronized (JExpressCRUDRepository.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new JExpressCRUDRepository();
-                }
-            }
-        }
-        return INSTANCE;
-    }
+    public JExpressCRUDRepository() {}
 
     @Override
     public <T> List<T> findAll(Class<T> clazz) {

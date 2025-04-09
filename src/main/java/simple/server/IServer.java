@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public interface IServer {
 
-    void run(int port) throws IOException;
+    void run(String port) throws IOException;
 
     void use(ApplicationSettingFlags applicationSettingFlags);
 

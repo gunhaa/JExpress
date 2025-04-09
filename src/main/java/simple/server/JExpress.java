@@ -77,7 +77,7 @@ public class JExpress implements IServer {
 
 
     @Override
-    public void run(int port) throws IOException {
+    public void run(String port) throws IOException {
 
         ApplicationContext.initialize(
                 GetMapper.getInstance(),
@@ -93,7 +93,8 @@ public class JExpress implements IServer {
         System.out.println("server port : " + port);
         System.out.println("thread pool : " + this.threadPool);
 
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
+        int portInteger = Integer.parseInt(port);
+        try (ServerSocket serverSocket = new ServerSocket(portInteger)) {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 threadPool.execute(() -> handleClient(clientSocket, applicationContext));

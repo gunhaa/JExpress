@@ -28,12 +28,12 @@ public class Main {
         app.use(CORS);
 //        app.use(CORS, "https://bitlibrary.com");
         app.use(RESPONSE_TIME);
-//        app.use(DB_H2);
-        app.use(DB_MYSQL);
+        app.use(DB_H2);
+//        app.use(DB_MYSQL);
 
         //curl -i -X GET "localhost:8020/members"
         app.get("/members", (req, res) -> {
-            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            JExpressCRUDRepository jcr = new JExpressCRUDRepository();
             List<Member> List = jcr.findAll(Member.class);
 
             res.send(List);
@@ -41,7 +41,7 @@ public class Main {
 
         //curl -i -X GET "localhost:8020/teams"
         app.get("/teams", (req, res) -> {
-            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            JExpressCRUDRepository jcr = new JExpressCRUDRepository();
             List<Team> List = jcr.findAll(Team.class);
 
             res.send(List);
@@ -58,7 +58,7 @@ public class Main {
             if(value1 != null){
                 query.append(" AND ").append(key1).append("=").append("'").append(value1).append("'");
             }
-            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            JExpressCRUDRepository jcr = new JExpressCRUDRepository();
 
             List<MemberDto1> List = jcr.findListWithNativeQuery(MemberDto1.class, query.toString());
 
@@ -77,7 +77,7 @@ public class Main {
 
             StringBuilder jpql = new StringBuilder("SELECT new simple.userEntity.MemberDto2(m.name, m.engName, m.team) FROM Member m join m.team t");
 
-            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            JExpressCRUDRepository jcr = new JExpressCRUDRepository();
             List<MemberDto2> result = jcr.executeJpql(jpql, MemberDto2.class, condition1, condition2);
 
             res.send(result);
@@ -92,7 +92,7 @@ public class Main {
 
             StringBuilder jpql = new StringBuilder("SELECT new simple.userEntity.MemberDto3(m.age, m.engName) FROM Member m");
 
-            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            JExpressCRUDRepository jcr = new JExpressCRUDRepository();
             List<MemberDto3> result = jcr.executeJpql(jpql, MemberDto3.class, condition);
 
             res.send(result);
@@ -111,7 +111,7 @@ public class Main {
 
             Map<String, String> map = req.getBodyMap();
 
-            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            JExpressCRUDRepository jcr = new JExpressCRUDRepository();
             Member registerMember = jcr.registerEntityOrNull(map, Member.class);
 
             res.send(registerMember);
@@ -129,7 +129,7 @@ public class Main {
         app.post("/team", (req, res)-> {
             Map<String, String> map = req.getBodyMap();
 
-            JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+            JExpressCRUDRepository jcr = new JExpressCRUDRepository();
             Team registerTeam = jcr.registerEntityOrNull(map, Team.class);
 
             res.send(registerTeam);
@@ -154,6 +154,8 @@ public class Main {
         }, MemberTeamDto.class);
 
         String port = System.getenv("PORT");
-        app.run(Integer.parseInt(port));
+        // use docker
+        //app.run(Integer.parseInt(port));
+        app.run("8020");
     }
 }
