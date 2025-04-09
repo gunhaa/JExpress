@@ -4,6 +4,8 @@ package simple.context;
 import simple.config.ApplicationConfig;
 import simple.constant.ApplicationSettingFlags;
 import simple.constant.ServerSettingChecker;
+import simple.logger.LoggerFactory;
+import simple.logger.LoggerManager;
 import simple.mapper.IMapper;
 import simple.middleware.MiddlewareProvider;
 
@@ -17,11 +19,13 @@ public class ApplicationContext {
     private final ApplicationConfig applicationConfig;
     private final MapperResolver mapperResolver;
     private final MiddlewareProvider middlewareProvider;
+    private final LoggerFactory loggerFactory;
 
     private ApplicationContext(MapperResolver mapperResolver, MiddlewareProvider middlewareProvider, ApplicationConfig applicationConfig) {
         this.mapperResolver = mapperResolver;
         this.middlewareProvider = middlewareProvider;
         this.applicationConfig = applicationConfig;
+        this.loggerFactory = new LoggerFactory();
     }
 
     public static void initialize(IMapper getMapper, IMapper postMapper, MiddlewareProvider middlewareProvider, ApplicationConfig applicationConfig) {
@@ -56,6 +60,10 @@ public class ApplicationContext {
                 this.middlewareProvider.execute(setting);
             }
         }
+    }
+
+    public LoggerManager getLoggerManager() {
+        return new LoggerManager(this.loggerFactory);
     }
 
     public MapperResolver getMapperResolver(){

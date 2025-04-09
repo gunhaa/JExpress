@@ -12,9 +12,6 @@ public class RequestLogger implements ILogger {
 
     public RequestLogger() {
         this.log = new StringBuilder();
-        if(ServerSettingChecker.isServerEnabled(RESPONSE_TIME)){
-            this.startTime = System.currentTimeMillis();
-        }
     }
 
     @Override
@@ -31,10 +28,6 @@ public class RequestLogger implements ILogger {
     public void print() {
         System.out.println("=============Request log===============");
         System.out.println(log);
-        if(startTime != null){
-            Long responseTime = System.currentTimeMillis();
-            System.out.println("response time : " + (responseTime- this.startTime) + "ms");
-        }
     }
 
 }
