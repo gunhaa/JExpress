@@ -63,8 +63,6 @@ public class CharHttpRequestBuilder {
                     this.queryString.put(keyValue[0], keyValue[1]);
                 }
             }
-
-
         }
 
         this.protocol = request[2];

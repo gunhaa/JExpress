@@ -150,14 +150,14 @@ public class Main {
         */
         // team에 소속된 member 등록
         app.post("/member/team", (req, res)-> {
-            Map<String, String> map = req.getBodyMap();
+            Map<String, String> body = req.getBodyMap();
 
-            Member registerMember = CustomRepository.registerMemberWithTeamOrNull(map);
+            Member registerMember = CustomRepository.registerMemberWithTeamOrNull(body);
 
             res.send(registerMember);
         }, MemberTeamDto.class);
 
         String port = System.getenv("PORT");
-        app.run(port);
+        app.run("8123");
     }
 }
