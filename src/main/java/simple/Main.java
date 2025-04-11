@@ -30,7 +30,7 @@ public class Main {
         app.use(DB_H2);
 //        app.use(DB_MYSQL);
 
-        //curl -i -X GET "localhost:8020/members"
+        //curl -i -X GET "localhost:8123/members"
         app.get("/members", (req, res) -> {
             JExpressCRUDRepository jcr = new JExpressCRUDRepository();
             List<Member> List = jcr.findAll(Member.class);
@@ -38,7 +38,7 @@ public class Main {
             res.send(List);
         }, Member.class);
 
-        //curl -i -X GET "localhost:8020/teams"
+        //curl -i -X GET "localhost:8123/teams"
         app.get("/teams", (req, res) -> {
             JExpressCRUDRepository jcr = new JExpressCRUDRepository();
             List<Team> List = jcr.findAll(Team.class);
@@ -46,8 +46,8 @@ public class Main {
             res.send(List);
         }, Team.class);
 
-        // curl -i -X GET "localhost:8020/member/team?teamName=일팀"
-        // curl -G "localhost:8020/member/team" --data-urlencode "teamName=drop table users"
+        // curl -i -X GET "localhost:8123/member/team?teamName=일팀"
+        // curl -G "localhost:8123/member/team" --data-urlencode "teamName=drop table users"
         app.get("/member/team", (req, res) -> {
 
             String key1 = "teamName";
@@ -69,7 +69,7 @@ public class Main {
             res.send(List);
         }, MemberDto1.class);
 
-        // curl -i -X GET "localhost:8020/member/team/gunha/1"
+        // curl -i -X GET "localhost:8123/member/team/gunha/1"
         // success
         app.get("/member/team/:memberName/:teamId", (req, res) -> {
 
@@ -88,7 +88,7 @@ public class Main {
 
         }, MemberDto2.class);
 
-        // curl -i -X GET "localhost:8020/member/team/gunha"
+        // curl -i -X GET "localhost:8123/member/team/gunha"
         app.get("/member/team/:memberName", (req, res)->{
 
             String memberName = req.getParam("memberName");
