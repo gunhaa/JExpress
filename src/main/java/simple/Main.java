@@ -158,8 +158,6 @@ public class Main {
         }, MemberTeamDto.class);
 
         String port = System.getenv("PORT");
-        // use docker
-        //app.run(port);
-        app.run("8020");
+        app.run(port);
     }
 }

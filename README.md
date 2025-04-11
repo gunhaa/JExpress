@@ -20,7 +20,7 @@
 
     //curl -i -X GET "localhost:8020/members"
     app.get("/members", (req, res) -> {
-      JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+      JExpressCRUDRepository jcr = new JExpressCRUDRepository();
       List<Member> List = jcr.findAll(Member.class);
     
     // curl -i -X GET "localhost:8020/member/team?teamName=일팀"
