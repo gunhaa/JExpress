@@ -126,7 +126,7 @@ public class Main {
         /* body
         {
           "teamName": "테스트팀",
-          "teamEngName": "testTeam",
+          "teamEngName": "testTeam"
         }
         */
         // team 등록
