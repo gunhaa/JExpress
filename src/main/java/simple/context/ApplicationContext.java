@@ -1,16 +1,17 @@
 package simple.context;
 
 
+import jakarta.persistence.EntityManager;
 import simple.config.ApplicationConfig;
 import simple.constant.ApplicationSettingFlags;
 import simple.constant.ServerSettingChecker;
+import simple.database.DBConnectionManager;
 import simple.logger.LoggerFactory;
 import simple.logger.LoggerManager;
 import simple.mapper.IMapper;
 import simple.middleware.MiddlewareProvider;
 
 import static simple.constant.ApplicationSettingFlags.DB_H2;
-import static simple.constant.ApplicationSettingFlags.DB_MYSQL;
 
 
 public class ApplicationContext {
@@ -20,12 +21,14 @@ public class ApplicationContext {
     private final MapperResolver mapperResolver;
     private final MiddlewareProvider middlewareProvider;
     private final LoggerFactory loggerFactory;
+    private final DBConnectionManager dbConnectionManager;
 
     private ApplicationContext(MapperResolver mapperResolver, MiddlewareProvider middlewareProvider, ApplicationConfig applicationConfig) {
         this.mapperResolver = mapperResolver;
         this.middlewareProvider = middlewareProvider;
         this.applicationConfig = applicationConfig;
         this.loggerFactory = new LoggerFactory();
+        this.dbConnectionManager = DBConnectionManager.getInstance();
     }
 
     public static void initialize(IMapper getMapper, IMapper postMapper, MiddlewareProvider middlewareProvider, ApplicationConfig applicationConfig) {
@@ -70,4 +73,7 @@ public class ApplicationContext {
         return this.mapperResolver;
     }
 
+    public static EntityManager getEntityManager() {
+        return DBConnectionManager.getInstance().getConfigureEntityManager();
+    }
 }
