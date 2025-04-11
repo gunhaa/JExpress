@@ -1,9 +1,9 @@
 package simple.url;
 
+import simple.decoder.URLDecoder;
 import simple.httpRequest.HttpRequest;
 import simple.lambda.LambdaHandlerWrapper;
 
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -65,7 +65,7 @@ public class GetUrlRouterRouterTrie implements IRouterTrie {
             if(child.isDynamic()){
                 String key = child.getPath().replace(":", "");
                 String rawValue = httpRequest.getUrl().split("/")[depth+1];
-                String value = URLDecoder.decode(rawValue, StandardCharsets.UTF_8);
+                String value = URLDecoder.decodeURL(rawValue);
                 httpRequest.setParams(key , value);
                 return searchLambdaHandlerRecursive(child, parts, depth+1, httpRequest);
             }

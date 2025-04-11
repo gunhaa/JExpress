@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import simple.constant.CustomHttpMethod;
 import simple.constant.HttpStatus;
+import simple.decoder.URLDecoder;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -60,7 +61,9 @@ public class CharHttpRequestBuilder {
             for (String param : queryParams) {
                 String[] keyValue = param.split("=");
                 if (keyValue.length == 2) {
-                    this.queryString.put(keyValue[0], keyValue[1]);
+                    String rawValue = keyValue[1];
+                    String value = URLDecoder.decodeURL(rawValue);
+                    this.queryString.put(keyValue[0], value);
                 }
             }
         }

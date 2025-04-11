@@ -1,5 +1,6 @@
 package simple.url;
 
+import simple.decoder.URLDecoder;
 import simple.httpRequest.HttpRequest;
 import simple.lambda.LambdaHandlerWrapper;
 
@@ -61,7 +62,8 @@ public class PostUrlRouterRouterTrie implements IRouterTrie {
         for(UrlRouterNode child : node.getChild().values()){
             if(child.isDynamic()){
                 String key = child.getPath().replace(":", "");
-                String value = httpRequest.getUrl().split("/")[depth+1];
+                String rawValue = httpRequest.getUrl().split("/")[depth+1];
+                String value = URLDecoder.decodeURL(rawValue);
                 httpRequest.setParams(key , value);
                 return searchLambdaHandlerRecursive(child, parts, depth+1, httpRequest);
             }
