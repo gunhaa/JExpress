@@ -3,6 +3,7 @@ package simple.repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import simple.context.ApplicationContext;
 import simple.userEntity.Member;
 import simple.userEntity.MemberTeamDto;
 import simple.userEntity.Team;
@@ -12,7 +13,7 @@ import java.util.Map;
 public class CustomRepository {
 
     public static Member registerMemberWithTeamOrNull(Map<String, String> map) {
-        try (EntityManager em = JExpressCRUDRepository.getEntityManager()) {
+        try (EntityManager em = ApplicationContext.getEntityManager()) {
 
             Member member;
             EntityTransaction tx = em.getTransaction();

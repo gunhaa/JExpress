@@ -6,6 +6,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import simple.constant.ServerSettingChecker;
+import simple.context.ApplicationContext;
 import simple.database.IDBConnection;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
 
     @Override
     public <T> List<T> findAll(Class<T> clazz) {
-        try(EntityManager em = getEntityManager()){
+        try(EntityManager em = ApplicationContext.getEntityManager()){
             String clazzName = clazz.getName();
 
             StringBuilder jpql = new StringBuilder("SELECT m FROM "+ clazzName +" m");
@@ -38,7 +39,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
      */
     @Deprecated
     public <T> T findEntity(Class<T> clazz, JExpressCondition... conditions){
-        EntityManager em = getEntityManager();
+        EntityManager em = ApplicationContext.getEntityManager();
 
         String clazzName = clazz.getName();
         StringBuilder jpql = new StringBuilder("SELECT new simple.tempEntity.MemberTestDTO1(m.name, m.engName, m.team, m.age) FROM Member m WHERE 1=1");
@@ -78,7 +79,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
 
     @Override
     public <T> List<T> findListWithNativeQuery(Class<T> clazz, String query){
-        try(EntityManager em = getEntityManager()){
+        try(EntityManager em = ApplicationContext.getEntityManager()){
             try {
                 List resultList = em.createNativeQuery(query, clazz)
                         .getResultList();
@@ -92,7 +93,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
 
     @Override
     public <T> List<T> executeJpql(StringBuilder jpqlQuery, Class<T> mappingClazz, JExpressCondition... conditions){
-        try(EntityManager em = getEntityManager()){
+        try(EntityManager em = ApplicationContext.getEntityManager()){
             String jpqlLower = jpqlQuery.toString().toLowerCase();
             boolean hasWhere = jpqlLower.contains("where");
 
@@ -112,7 +113,6 @@ public class JExpressCRUDRepository implements IJExpressRepository {
                 }
             }
 
-            System.out.println("query : " +jpqlQuery.toString());
             TypedQuery<T> building = em.createQuery(jpqlQuery.toString(), mappingClazz);
 
             for (int i = 0; i < conditions.length; i++) {
@@ -125,7 +125,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
 
     @Override
     public <T> T registerEntityOrNull(Map<String, String> map, Class<T> clazz){
-        try(EntityManager em = getEntityManager()){
+        try(EntityManager em = ApplicationContext.getEntityManager()){
 
             T entity;
             EntityTransaction tx = em.getTransaction();
@@ -157,20 +157,5 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         return columnName.replace(".", "") + "_" + index;
     }
 
-    protected static EntityManager getEntityManager() {
-        IDBConnection db;
 
-        if(ServerSettingChecker.isServerEnabled(DB_MYSQL)){
-            db = IDBConnection.getMySQLConnection();
-            return db.getEntityManager();
-        }
-
-        if(ServerSettingChecker.isServerEnabled(DB_H2)){
-            db = IDBConnection.getH2Connection();
-            return db.getEntityManager();
-        }
-
-        // default used h2 db
-        return IDBConnection.getH2Connection().getEntityManager();
-    }
 }

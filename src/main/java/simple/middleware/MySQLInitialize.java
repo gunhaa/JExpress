@@ -3,7 +3,6 @@ package simple.middleware;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import simple.database.IDBConnection;
-import simple.database.MySQLConnection;
 import simple.userEntity.Member;
 import simple.userEntity.Team;
 
