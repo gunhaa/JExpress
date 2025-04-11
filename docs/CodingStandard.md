@@ -10,7 +10,7 @@
 - [Java Code Conventions](https://www.oracle.com/technetwork/java/codeconventions-150003.pdf)
 - [Google Java Style Guide](https://source.android.com/docs/setup/contribute/code-style?hl=ko)
 - [Android Open Source Project Java Code Style for Contributors](https://google.github.io/styleguide/javaguide.html)
-- [Pocu 아카데미](https://docs.popekim.com/ko/coding-standards/pocu-java)
+- [Pocu](https://docs.popekim.com/ko/coding-standards/pocu-java)
 
 ## 메인 코딩 표준
 

@@ -5,64 +5,48 @@
 ## 사용예제
 
 ```java
+
+    // IServer app = new JExpress();
+    // threadPool을 이용한 서버 생성방법
+    IServer app = new JExpress(15);
+
+    app.use(API_DOCS);
+    app.use(CORS);
+//        app.use(CORS, "https://bitlibrary.com");
+    app.use(REQUEST_LOGGER);
+    app.use(RESPONSE_TIME);
+    app.use(DB_H2);
+//        app.use(DB_MYSQL);
+
     //curl -i -X GET "localhost:8020/members"
     app.get("/members", (req, res) -> {
       JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
       List<Member> List = jcr.findAll(Member.class);
-
-      res.send(List);
-    }, Member.class);
-
-    //curl -i -X GET "localhost:8020/teams"
-    app.get("/teams", (req, res) -> {
-      JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-      List<Team> List = jcr.findAll(Team.class);
-
-      res.send(List);
-    }, Team.class);
     
-    // curl -i -X GET "localhost:8020/member/team/gunha/1"
-    // success
-    app.get("/member/team/:memberName/:teamId", (req, res) -> {
+    // curl -i -X GET "localhost:8020/member/team?teamName=일팀"
+    // curl -G "localhost:8020/member/team" --data-urlencode "teamName=drop table users"
+    app.get("/member/team", (req, res) -> {
 
-      String memberName = req.getParam("memberName");
-      JExpressCondition condition1 = new JExpressCondition("m.name", memberName);
+      String key1 = "teamName";
+      String value1 = req.getQueryString(key1);
+      JExpressCRUDRepository jcr = new JExpressCRUDRepository();
 
-      String teamId = req.getParam("teamId");
-      JExpressCondition condition2 = new JExpressCondition("t.id", teamId);
+      if(value1 != null && jcr.isSqlInjection(value1)){
+        res.send(new ErrorStatus(BAD_REQUEST_400, "sql injection detected"));
+        return;
+      }
 
-      StringBuilder jpql = new StringBuilder("SELECT new simple.userEntity.MemberDto2(m.name, m.engName, m.team) FROM Member m join m.team t");
+      StringBuilder query = new StringBuilder("SELECT m.name, m.engName, m.age FROM MEMBER m JOIN TEAM t ON t.TEAM_ID=m.TEAM_ID WHERE 1=1");
+      if(value1 != null){
+        query.append(" AND ").append(key1).append("=").append("'").append(value1).append("'");
+      }
 
-      JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-      List<MemberDto2> result = jcr.executeJpql(jpql, MemberDto2.class, condition1, condition2);
+      List<MemberDto1> List = jcr.findListWithNativeQuery(MemberDto1.class, query.toString());
 
-      res.send(result);
-
-    }, MemberDto2.class);
-
-    // curl -i -X GET "localhost:8020/member/team/gunha"
-    app.get("/member/team/:memberName", (req, res)->{
-
-      String memberName = req.getParam("memberName");
-      JExpressCondition condition = new JExpressCondition("m.name", memberName);
-
-      StringBuilder jpql = new StringBuilder("SELECT new simple.userEntity.MemberDto3(m.age, m.engName) FROM Member m");
-
-      JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-      List<MemberDto3> result = jcr.executeJpql(jpql, MemberDto3.class, condition);
-
-      res.send(result);
-
-    }, MemberDto3.class);
-        
-        /* body
-        {
-          "name": "테스트",
-          "age": "150",
-          "engName" : "Test"
-        }
-        */
-    // member 등록
+      res.send(List);
+    }, MemberDto1.class);
+      
+    // team에 소속된 member 등록
     app.post("/member", (req, res)-> {
 
       Map<String, String> map = req.getBodyMap();
@@ -73,42 +57,7 @@
       res.send(registerMember);
 
     }, Member.class);
-
-
-        /* body
-        {
-          "teamName": "테스트팀",
-          "teamEngName": "testTeam",
-        }
-        */
-    // team 등록
-    app.post("/team", (req, res)-> {
-      Map<String, String> map = req.getBodyMap();
-
-      JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-      Team registerTeam = jcr.registerEntityOrNull(map, Team.class);
-
-      res.send(registerTeam);
-    }, Team.class);
-
-
-        /* body
-        {
-          "name": "테스트이름",
-          "age": "70",
-          "engName": "testName",
-          "teamId": "1"
-        }
-        */
-    // member team 동시 등록
-    app.post("/member/team", (req, res)-> {
-      Map<String, String> map = req.getBodyMap();
-
-      Member registerMember = CustomRepository.registerMemberWithTeamOrNull(map);
-
-      res.send(registerMember);
-    }, MemberTeamDto.class);
-
+    
     app.run(8020);
 ```
 ## 코딩 표준
@@ -162,10 +111,14 @@
 ## 브랜치 전략
 - `main` : 안정적인 주요 기능이 통합되는 브랜치로, 실행 가능한 코드를 유지한다.
 - `feat/*` : 새로운 기능 개발 시 사용하는 브랜치로, 실패 가능성이 있는 실험적인 작업에 사용한다.
+- `test/h2`: h2,Docker로 JExpress를 실행해 볼 수 있는 브랜치
+- `test/mysql`: mysql,docker-compose로 JExpress를 실행해 볼 수 있는 브랜치
 
 ## 사용 방법
 - MySQL 미사용시
+  - `git checkout test/h2`
   - `docker build --no-cache -t jexpress .`
   - `docker run --env-file .env -d --rm -p 8123:8123 jexpress`
 - MySQL 사용시
+  - `git checkout test/mysql` 
   - `docker-compose up`

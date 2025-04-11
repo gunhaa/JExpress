@@ -148,7 +148,7 @@ public class Main {
           "teamId": "1"
         }
         */
-        // member team 동시 등록
+        // team에 소속된 member 등록
         app.post("/member/team", (req, res)-> {
             Map<String, String> map = req.getBodyMap();
 
