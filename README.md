@@ -1,6 +1,6 @@
 # JExpress
 
-- json을 반환하는 REST API를 만들수 있는 웹 프레임워크
+- Java의 경량 서버 JExpress
 
 ## 사용예제
 
