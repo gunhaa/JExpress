@@ -46,7 +46,6 @@ public class ApiDocs implements IMiddleWare {
             res.send(postDocs);
         });
 
-        System.out.println("ApiDocs 미들웨어 실행.. 메소드 작성");
+        System.out.println("ApiDocs 미들웨어 실행..");
     }
-
 }

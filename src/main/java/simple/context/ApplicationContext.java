@@ -28,6 +28,7 @@ public class ApplicationContext {
         this.middlewareProvider = middlewareProvider;
         this.applicationConfig = applicationConfig;
         this.loggerFactory = new LoggerFactory();
+        // lazy loading
         this.dbConnectionManager = DBConnectionManager.getInstance();
     }
 

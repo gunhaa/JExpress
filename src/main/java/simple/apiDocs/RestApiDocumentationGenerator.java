@@ -31,12 +31,6 @@ public class RestApiDocumentationGenerator {
             } else {
                 Field[] fields = returnClazz.getDeclaredFields();
                 for (Field field : fields) {
-//                    if (field.isAnnotationPresent(ManyToOne.class) ||
-//                            field.isAnnotationPresent(OneToMany.class) ||
-//                            field.isAnnotationPresent(OneToOne.class) ||
-//                            field.isAnnotationPresent(ManyToMany.class)) {
-//                        continue;
-//                    }
                     if(field.isAnnotationPresent(OneToMany.class)){
                         continue;
                     }
@@ -47,6 +41,12 @@ public class RestApiDocumentationGenerator {
         }
         return apiList;
     }
+
+
+
+
+
+
     /*
          private final List<String> lambdaParam = new ArrayList<>();
 

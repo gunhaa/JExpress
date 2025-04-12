@@ -22,37 +22,14 @@
     app.get("/members", (req, res) -> {
       JExpressCRUDRepository jcr = new JExpressCRUDRepository();
       List<Member> List = jcr.findAll(Member.class);
-    
-    // curl -i -X GET "localhost:8020/member/team?teamName=일팀"
-    // curl -G "localhost:8020/member/team" --data-urlencode "teamName=drop table users"
-    app.get("/member/team", (req, res) -> {
-
-      String key1 = "teamName";
-      String value1 = req.getQueryString(key1);
-      JExpressCRUDRepository jcr = new JExpressCRUDRepository();
-
-      if(value1 != null && jcr.isSqlInjection(value1)){
-        res.send(new ErrorStatus(BAD_REQUEST_400, "sql injection detected"));
-        return;
-      }
-
-      StringBuilder query = new StringBuilder("SELECT m.name, m.engName, m.age FROM MEMBER m JOIN TEAM t ON t.TEAM_ID=m.TEAM_ID WHERE 1=1");
-      if(value1 != null){
-        query.append(" AND ").append(key1).append("=").append("'").append(value1).append("'");
-      }
-
-      List<MemberDto1> List = jcr.findListWithNativeQuery(MemberDto1.class, query.toString());
-
-      res.send(List);
-    }, MemberDto1.class);
       
     // team에 소속된 member 등록
     app.post("/member", (req, res)-> {
 
-      Map<String, String> map = req.getBodyMap();
+      Map<String, String> body = req.getBodyMap();
 
       JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
-      Member registerMember = jcr.registerEntityOrNull(map, Member.class);
+      Member registerMember = jcr.registerEntityOrNull(body, Member.class);
 
       res.send(registerMember);
 

@@ -113,10 +113,10 @@ public class Main {
         // member 등록
         app.post("/member", (req, res)-> {
 
-            Map<String, String> map = req.getBodyMap();
+            Map<String, String> body = req.getBodyMap();
 
             JExpressCRUDRepository jcr = new JExpressCRUDRepository();
-            Member registerMember = jcr.registerEntityOrNull(map, Member.class);
+            Member registerMember = jcr.registerEntityOrNull(body, Member.class);
 
             res.send(registerMember);
 
@@ -131,10 +131,10 @@ public class Main {
         */
         // team 등록
         app.post("/team", (req, res)-> {
-            Map<String, String> map = req.getBodyMap();
+            Map<String, String> body = req.getBodyMap();
 
             JExpressCRUDRepository jcr = new JExpressCRUDRepository();
-            Team registerTeam = jcr.registerEntityOrNull(map, Team.class);
+            Team registerTeam = jcr.registerEntityOrNull(body, Team.class);
 
             res.send(registerTeam);
         }, Team.class);
