@@ -49,18 +49,6 @@ public class RequestHandlerProvider {
             }
         }
 
-//        if(ServerSettingChecker.isServerEnabled(API_DOCS) && httpRequest.getUrl() != null && httpRequest.getUrl().endsWith(URL_JAVASCRIPT)){
-//            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
-//        }
-//
-//        if(ServerSettingChecker.isServerEnabled(API_DOCS) && httpRequest.getUrl() != null  && httpRequest.getUrl().endsWith(URL_HTML)){
-//            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
-//        }
-//
-//        if(ServerSettingChecker.isServerEnabled(API_DOCS) && httpRequest.getUrl() != null  && httpRequest.getUrl().equals(URL_FAVICON)){
-//            return requestHandlers.get(HttpMethod.EXCEPTION_STATIC);
-//        }
-
         return requestHandlers.getOrDefault(httpRequest.getMethod(), RequestErrorHandler.getInstance());
     }
 

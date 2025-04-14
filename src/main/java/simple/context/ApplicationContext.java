@@ -60,7 +60,6 @@ public class ApplicationContext {
 
         for (ApplicationSettingFlags setting : ApplicationSettingFlags.values()) {
             if ((config & setting.getBit()) == setting.getBit()) {
-                System.out.println("현재 설정된 세팅 : " + setting);
                 this.middlewareProvider.execute(setting);
             }
         }

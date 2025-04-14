@@ -16,8 +16,6 @@ public class MapperResolver {
     public IMapper resolveMapper(HttpRequest httpRequest){
         CustomHttpMethod httpMethod = httpRequest.getMethod();
 
-        // todo refactoring
-        // 올바르지 않은 요청의 경우 get에서 처리한다
         if (httpRequest.getMethod() == null) {
             return getMapper;
         }

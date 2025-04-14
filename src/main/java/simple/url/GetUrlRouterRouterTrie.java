@@ -4,7 +4,6 @@ import simple.decoder.URLDecoder;
 import simple.httpRequest.HttpRequest;
 import simple.lambda.LambdaHandlerWrapper;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class GetUrlRouterRouterTrie implements IRouterTrie {

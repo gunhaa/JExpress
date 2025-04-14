@@ -3,10 +3,7 @@ package simple.server;
 import simple.constant.ApplicationSettingFlags;
 import simple.config.ApplicationConfig;
 import simple.httpRequest.HttpRequest;
-import simple.logger.LoggerFactory;
 import simple.logger.LoggerManager;
-import simple.logger.RequestLogger;
-import simple.logger.ILogger;
 import simple.mapper.GetMapper;
 import simple.mapper.IMapper;
 import simple.context.MapperResolver;
@@ -14,7 +11,7 @@ import simple.mapper.PostMapper;
 import simple.middleware.Cors;
 import simple.middleware.MiddlewareProvider;
 import simple.parser.IHttpRequestParser;
-import simple.parser.HttpRequestCharParser;
+import simple.parser.HttpRequestParser;
 import simple.context.ApplicationContext;
 import simple.requestHandler.IRequestHandler;
 import simple.provider.RequestHandlerProvider;
@@ -112,7 +109,7 @@ public class JExpress implements IServer {
 
             LoggerManager loggerManager = applicationContext.getLoggerManager();
 
-            IHttpRequestParser requestIHttpRequestParser = new HttpRequestCharParser(loggerManager);
+            IHttpRequestParser requestIHttpRequestParser = new HttpRequestParser(loggerManager);
             OutputStream clientOutputStream = clientSocket.getOutputStream();
 
             HttpRequest httpRequest = requestIHttpRequestParser.parsing(request);

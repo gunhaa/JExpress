@@ -2,19 +2,18 @@ package simple.parser;
 
 import simple.httpRequest.HttpRequest;
 import simple.httpRequest.CharHttpRequestBuilder;
-import simple.logger.ILogger;
 import simple.logger.LoggerManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class HttpRequestCharParser implements IHttpRequestParser {
+public class HttpRequestParser implements IHttpRequestParser {
     private final CharHttpRequestBuilder charHttpRequestBuilder;
     private final LoggerManager loggerManager;
     private final StringBuilder lineBuilder;
 
-    public HttpRequestCharParser(LoggerManager loggerManager) {
+    public HttpRequestParser(LoggerManager loggerManager) {
         this.charHttpRequestBuilder = new CharHttpRequestBuilder();
         this.loggerManager = loggerManager;
         this.lineBuilder = new StringBuilder();

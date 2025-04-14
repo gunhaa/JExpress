@@ -34,8 +34,6 @@ class GetUrlRouterTrieTest {
         getUrlRouterTrie.insert("/member/:memberId", mock);
         getUrlRouterTrie.insert("/member", mock);
 
-//        urlRouterTrie.printTrie();
-
         UrlRouterNode root = getUrlRouterTrie.getRoot();
         HashMap<String, UrlRouterNode> current = root.getChild();
 
