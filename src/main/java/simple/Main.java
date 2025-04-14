@@ -6,7 +6,12 @@ import simple.repository.JExpressCRUDRepository;
 import simple.repository.JExpressCondition;
 import simple.server.IServer;
 import simple.server.JExpress;
-import simple.userEntity.*;
+import simple.userEntity.Member;
+import simple.userEntity.MemberDto1;
+import simple.userEntity.MemberDto2;
+import simple.userEntity.MemberDto3;
+import simple.userEntity.MemberTeamDto;
+import simple.userEntity.Team;
 
 import java.io.IOException;
 import java.util.List;

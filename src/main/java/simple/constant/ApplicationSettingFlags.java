@@ -19,10 +19,6 @@ public enum ApplicationSettingFlags {
         return bitMask;
     }
 
-    public boolean isCors(){
-        return (bitMask & CORS.bitMask) != 0;
-    }
-
     public boolean isSettingEnabled(int config){
         return (bitMask & config) != 0;
     }
