@@ -32,8 +32,8 @@ public class Main {
 //        app.use(CORS, "https://bitlibrary.com");
         app.use(REQUEST_LOGGER);
         app.use(RESPONSE_TIME);
-        app.use(DB_H2);
-//        app.use(DB_MYSQL);
+//        app.use(DB_H2);
+        app.use(DB_MYSQL);
 
         //curl -i -X GET "localhost:8123/members"
         app.get("/members", (req, res) -> {
@@ -163,7 +163,6 @@ public class Main {
         }, MemberTeamDto.class);
 
         String port = System.getenv("PORT");
-//        app.run(port);
-        app.run("8123");
+        app.run(port);
     }
 }
