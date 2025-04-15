@@ -123,7 +123,7 @@ public class JExpress implements IServer {
 
             handler.sendResponse(clientOutputStream, httpRequest, ILambdaHandler);
 
-            loggerManager.printAll();
+            loggerManager.exportLog();
         } catch (IOException e) {
             System.err.println("handleClient IO Exception");
         } finally {

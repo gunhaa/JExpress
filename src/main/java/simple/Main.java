@@ -163,6 +163,7 @@ public class Main {
         }, MemberTeamDto.class);
 
         String port = System.getenv("PORT");
-        app.run(port);
+//        app.run(port);
+        app.run("8123");
     }
 }

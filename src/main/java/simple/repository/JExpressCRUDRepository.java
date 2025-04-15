@@ -34,8 +34,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
     }
 
     /**
-     * JExpressQueryString이 전달되지 않으면 entity의 첫 결과를 반환하며, 결과가 여러개라면 첫 번째 결과를 반환함
-     * 연관 객체가 있을 시 순환 참조 문제 있음
+     * todo
      */
     @Deprecated
     public <T> T findEntity(Class<T> clazz, JExpressCondition... conditions){

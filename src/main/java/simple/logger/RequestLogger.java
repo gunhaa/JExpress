@@ -3,12 +3,14 @@ package simple.logger;
 
 import simple.constant.ServerSettingChecker;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 import static simple.constant.ApplicationSettingFlags.RESPONSE_TIME;
 
 public class RequestLogger implements ILogger {
 
     private final StringBuilder log;
-    private Long startTime;
 
     public RequestLogger() {
         this.log = new StringBuilder();
@@ -25,9 +27,14 @@ public class RequestLogger implements ILogger {
     }
 
     @Override
-    public void print() {
-        System.out.println("=============Request log===============");
-        System.out.println(log);
+    public void exportLog(BufferedWriter bufferedWriter) {
+        try {
+            bufferedWriter.newLine();
+            bufferedWriter.write(this.log.toString());
+            bufferedWriter.newLine();
+        } catch (IOException e) {
+            System.err.println("log io err");
+        }
     }
 
 }
