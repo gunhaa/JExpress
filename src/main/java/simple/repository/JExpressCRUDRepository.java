@@ -5,16 +5,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
-import simple.constant.ServerSettingChecker;
 import simple.context.ApplicationContext;
-import simple.database.IDBConnection;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static simple.constant.ApplicationSettingFlags.DB_H2;
-import static simple.constant.ApplicationSettingFlags.DB_MYSQL;
 
 public class JExpressCRUDRepository implements IJExpressRepository {
 
@@ -33,10 +28,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
         }
     }
 
-    /**
-     * todo
-     */
-    @Deprecated
+
     public <T> T findEntity(Class<T> clazz, JExpressCondition... conditions){
         EntityManager em = ApplicationContext.getEntityManager();
 
@@ -45,7 +37,6 @@ public class JExpressCRUDRepository implements IJExpressRepository {
 
         TypedQuery<T> query = em.createQuery(jpql.toString(), clazz);
 
-        // todo : refactoring
         if(conditions.length == 0){
             List<T> resultList = query
                     .getResultList();
@@ -80,7 +71,7 @@ public class JExpressCRUDRepository implements IJExpressRepository {
     public <T> List<T> findListWithNativeQuery(Class<T> clazz, String query){
         try(EntityManager em = ApplicationContext.getEntityManager()){
             try {
-                List resultList = em.createNativeQuery(query, clazz)
+                List<T> resultList = em.createNativeQuery(query, clazz)
                         .getResultList();
                 return resultList;
             } catch (NoResultException e) {
