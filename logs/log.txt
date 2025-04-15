@@ -1,0 +1,138 @@
+GET /members HTTP/1.1
+Host: localhost:8123
+User-Agent: curl/8.9.1
+Accept: */*
+
+
+
+GET /members HTTP/1.1
+Host: localhost:8123
+User-Agent: curl/8.9.1
+Accept: */*
+
+
+
+GET /members HTTP/1.1
+Host: localhost:8123
+User-Agent: curl/8.9.1
+Accept: */*
+
+
+
+ResponseTime : 539ms
+ResponseTime : 16ms
+ResponseTime : 0ms
+
+GET /members HTTP/1.1
+Host: localhost:8123
+User-Agent: curl/8.9.1
+Accept: */*
+
+
+
+ResponseTime : 562ms
+
+GET /members HTTP/1.1
+Host: localhost:8123
+User-Agent: curl/8.9.1
+Accept: */*
+
+
+
+
+ResponseTime : 531ms
+
+GET /members HTTP/1.1
+Host: localhost:8123
+User-Agent: curl/8.9.1
+Accept: */*
+
+
+
+
+ResponseTime : 0ms
+
+GET /members HTTP/1.1
+Host: localhost:8123
+User-Agent: curl/8.9.1
+Accept: */*
+
+
+
+
+ResponseTime : 16ms
+
+
+
+
+ResponseTime : 16ms
+
+POST /member/team HTTP/1.1
+Content-Type: application/json
+User-Agent: PostmanRuntime/7.43.3
+Accept: */*
+Cache-Control: no-cache
+Postman-Token: 4862a782-445e-451a-913f-375529769ecf
+Host: localhost:8123
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Content-Length: 88
+
+{
+    "name": "재원",
+    "age": "120",
+    "engName": "jae",
+    "teamId": "1"
+}
+
+
+ResponseTime : 101ms
+
+
+
+
+ResponseTime : 4ms
+
+POST /team HTTP/1.1
+Content-Type: application/json
+User-Agent: PostmanRuntime/7.43.3
+Accept: */*
+Cache-Control: no-cache
+Postman-Token: 6b31e506-1066-4a1a-8be7-feec2e5c8e54
+Host: localhost:8123
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Content-Length: 68
+
+{
+    "teamName": "테스트팀",
+    "teamEngName": "testTeam"
+}
+
+
+ResponseTime : 6ms
+
+
+
+
+ResponseTime : 3ms
+
+POST /member HTTP/1.1
+Content-Type: application/json
+User-Agent: PostmanRuntime/7.43.3
+Accept: */*
+Cache-Control: no-cache
+Postman-Token: c00a1126-1397-4dee-804d-ef871cbad62e
+Host: localhost:8123
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Content-Length: 73
+
+{
+    "name": "테스트",
+    "age": "150",
+    "engName" : "Test"
+}
+
+
+ResponseTime : 18ms

@@ -1,5 +1,7 @@
 package simple.logger;
 
+import java.io.BufferedWriter;
+
 public class EmptyLogger implements ILogger{
     @Override
     public void add(String message) {
@@ -12,7 +14,7 @@ public class EmptyLogger implements ILogger{
     }
 
     @Override
-    public void print() {
+    public void exportLog(BufferedWriter bufferedWriter) {
 
     }
 }

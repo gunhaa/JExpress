@@ -1,8 +1,11 @@
 package simple.logger;
 
-public class ResponseTimeLogger implements ILogger{
+import java.io.BufferedWriter;
+import java.io.IOException;
 
-    private Long startTime;
+public class ResponseTimeLogger implements ILogger {
+
+    private final Long startTime;
 
     public ResponseTimeLogger() {
         this.startTime = System.currentTimeMillis();
@@ -19,10 +22,18 @@ public class ResponseTimeLogger implements ILogger{
     }
 
     @Override
-    public void print() {
-        if(startTime != null){
+    public void exportLog(BufferedWriter bufferedWriter) {
+        if (startTime != null) {
             Long responseTime = System.currentTimeMillis();
-            System.out.println("response time : " + (responseTime- this.startTime) + "ms");
+            try {
+                bufferedWriter.newLine();
+                bufferedWriter.write("ResponseTime : ");
+                bufferedWriter.write(Long.toString(responseTime - this.startTime));
+                bufferedWriter.write("ms");
+                bufferedWriter.newLine();
+            } catch (IOException e) {
+                System.err.println("response time io err");
+            }
         }
     }
 }
