@@ -61,9 +61,9 @@
 
 ### DB 설정 (`persistence.xml` 설정 사용)
 - H2 사용  
-  `app.use(DB_H2)`
-- MySQL 사용
-  `app.use(DB_MYSQL)`
+ `app.use(DB_H2)`
+- MySQL 사용<br>
+ `app.use(DB_MYSQL)`
 
 ### API 문서 자동 생성
 - `app.use(API_DOCS)`
