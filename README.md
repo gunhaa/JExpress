@@ -22,6 +22,7 @@
     app.get("/members", (req, res) -> {
       JExpressCRUDRepository jcr = new JExpressCRUDRepository();
       List<Member> List = jcr.findAll(Member.class);
+    }, Member.class);
       
     // team에 소속된 member 등록
     app.post("/member", (req, res)-> {
