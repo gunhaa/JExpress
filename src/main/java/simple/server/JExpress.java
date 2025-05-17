@@ -106,7 +106,6 @@ public class JExpress implements IServer {
     private void handleClient(Socket clientSocket, ApplicationContext applicationContext) {
         try (InputStream clientInputStream = clientSocket.getInputStream();
             BufferedReader request = new BufferedReader(new InputStreamReader(clientInputStream))) {
-
             LoggerManager loggerManager = applicationContext.getLoggerManager();
 
             IHttpRequestParser requestIHttpRequestParser = new HttpRequestParser(loggerManager);
