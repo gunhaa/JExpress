@@ -28,7 +28,7 @@
 
       Map<String, String> body = req.getBodyMap();
 
-      JExpressCRUDRepository jcr = JExpressCRUDRepository.getInstance();
+      JExpressCRUDRepository jcr = new JExpressCRUDRepository();
       Member registerMember = jcr.registerEntityOrNull(body, Member.class);
 
       res.send(registerMember);
